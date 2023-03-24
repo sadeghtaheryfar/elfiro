@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="logotitel.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="apple-touch-icon" href="logotitel.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title></title>
+  </head>
+    <script>
+      var data;
+      const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
+        fetch('https://server.elfiro.com/api/v1/basic/base', options)
+            .then(response => response.json())
+            .then(result => {
+              data = result.data.base;
+              document.title = (data.title);
+              var seoDescription = document.createElement('meta');
+              seoDescription.setAttribute('property','og:description');
+              seoDescription.setAttribute('Description',data.seoDescription);
+              document.head.appendChild(seoDescription);
+            })
+    </script>
+  <body dir="rtl">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
