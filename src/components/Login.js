@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [DataLogin, SetDataLogin] = useState("");
@@ -171,7 +172,7 @@ const Login = () => {
                             <br></br>
                             <span id='error-phone-pass'></span>
                             <div className='recent-code-login flex-box flex-justify-space'>
-                                <a href='/login'>تصحیح شماره</a>
+                                <Link to='/login'>تصحیح شماره</Link>
 
                                 <div className="countdown-text">
                                     <button
@@ -195,7 +196,7 @@ const Login = () => {
                     <div className='more-login-header'>
                         <span>حساب کاربری ندارید؟</span>
 
-                        <a href='/Register' className='color-blue'>ثبت نام</a>
+                        <Link to='/Register' className='color-blue'>ثبت نام</Link>
                     </div>
                 </div>
             </section>

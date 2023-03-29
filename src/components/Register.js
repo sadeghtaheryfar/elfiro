@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
     const [DataPhone, SetDataPhone] = useState("");
@@ -117,7 +118,7 @@ const Register = () => {
                     <div className='more-login-header'>
                         <span>حساب کاربری دارید ؟</span>
 
-                        <a href='/Login' className='color-blue'>ورود</a>
+                        <Link to='/Login' className='color-blue'>ورود</Link>
                     </div>
                 </div>
             </section>

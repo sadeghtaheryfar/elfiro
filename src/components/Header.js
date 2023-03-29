@@ -2,6 +2,7 @@
 import React from 'react';
 import LogoUser from './../imags/logo-user.png';
 import { useState,useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = (props) => {
     const [DataHeader, SetDataHeader] = useState();
@@ -69,12 +70,12 @@ const Header = (props) => {
     {
         DataIconLogin = (
             <div className='flex-box'>
-                <a href='/login' className='flex-box'>
+                <Link to='/login' className='flex-box'>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z" fill="#7007FA"/>
                     <path d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z" fill="#7007FA"/>
                     </svg>
-                </a>
+                </Link>
             </div>
         )
     }else{
@@ -109,7 +110,7 @@ const Header = (props) => {
                             </li>
                             
                             <li>
-                                <a href='/dashboard' className='item-hover-user-header flex-box wdth-max flex-justify-space'>
+                                <Link to='/dashboard' className='item-hover-user-header flex-box wdth-max flex-justify-space'>
                                     <div className='flex-box width-max'>
                                         <span>مشاهده پروفایل</span>
                                     </div>
@@ -117,7 +118,7 @@ const Header = (props) => {
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M15 19.9201L8.47997 13.4001C7.70997 12.6301 7.70997 11.3701 8.47997 10.6001L15 4.08008" stroke="#3D42DF" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
-                                </a>
+                                </Link>
                             </li>
 
                             <li>

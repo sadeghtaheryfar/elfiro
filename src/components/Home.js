@@ -5,9 +5,9 @@ import { useState,useEffect } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import SliderRange from './SliderRange';
+import { Link } from 'react-router-dom';
+import { Helmet } from "react-helmet";
 
 const Home = () => {
     const [DataCategory, SetDataCategory] = useState();
@@ -43,7 +43,7 @@ const Home = () => {
             <div className='box-most-categories-home flex-box flex-wrap flex-right'>
                 {DataCategory.map((item)=> 
                     <div className='show-item-most-categories-home' key={item.id}>
-                        <a href='/login' className='item-most-categories-home flex-box flex-column'>
+                        <Link to='/login' className='item-most-categories-home flex-box flex-column'>
                             <div>
                                 <img src={item.slider}></img>
                             </div>
@@ -57,7 +57,7 @@ const Home = () => {
 
                                 <span>{item.orders_count}</span>
                             </div>
-                        </a>
+                        </Link>
                     </div>
                 )}
             </div>
@@ -86,19 +86,21 @@ const Home = () => {
             <div className='flex-box flex-right flex-wrap'>
                 {DataPrudect.map((item)=> 
                     <div className='item-prudect-home' key={item.id}>
-                        <a href={`orders/${item.id}`}>
+                        <Link to={`orders/${item.id}`}>
                             <div className='show-item-prudect-home'>
                                 <div className='top-item-prudect-home flex-box flex-justify-space'>
                                     <div className='flex-box flex-right'>
                                         <div>
                                             <img src={item.category.default_image}></img>
 
-                                            <div>
-                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M10.0001 18.3334C14.5834 18.3334 18.3334 14.5834 18.3334 10.0001C18.3334 5.41675 14.5834 1.66675 10.0001 1.66675C5.41675 1.66675 1.66675 5.41675 1.66675 10.0001C1.66675 14.5834 5.41675 18.3334 10.0001 18.3334Z" fill="#0094FF"/>
-                                                    <path d="M6.45825 9.99993L8.81659 12.3583L13.5416 7.6416" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                                </svg>
-                                            </div>
+                                            {item.status_label === "تایید شده" && 
+                                                <div>
+                                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M10.0001 18.3334C14.5834 18.3334 18.3334 14.5834 18.3334 10.0001C18.3334 5.41675 14.5834 1.66675 10.0001 1.66675C5.41675 1.66675 1.66675 5.41675 1.66675 10.0001C1.66675 14.5834 5.41675 18.3334 10.0001 18.3334Z" fill="#0094FF"/>
+                                                        <path d="M6.45825 9.99993L8.81659 12.3583L13.5416 7.6416" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                                    </svg>
+                                                </div>
+                                            }
                                         </div>
 
                                         <div className='flex-box flex-column flex-aling-right'>
@@ -114,7 +116,6 @@ const Home = () => {
                                         </div>
                                     </div>
 
-                                    {item.status_label === "تایید شده" && 
                                     <div>
                                         <svg width="16" height="4" viewBox="0 0 16 4" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="2" cy="2" r="2" fill="#808191"/>
@@ -122,7 +123,6 @@ const Home = () => {
                                             <circle cx="14" cy="2" r="2" fill="#808191"/>
                                         </svg>
                                     </div>
-                                    }
                                 </div>
 
                                 <div className="img-item-prudect-home">
@@ -139,7 +139,7 @@ const Home = () => {
 
                                 <div className='price-item-prudect-home flex-box flex-justify-space'>
                                     <div className='flex-box'>
-                                        <span>pc</span>
+                                        <span>{item.platforms}</span>
                                     </div>
 
                                     <div className='flex-box flex-aling-left flex-column'>
@@ -149,13 +149,12 @@ const Home = () => {
                                     </div>
                                 </div>
                             </div>
-                        </a>
+                        </Link>
                     </div>
                 )}
             </div>
         );
     }
-
     const detalistheadermenuh = document.getElementsByClassName("detalist-header-menuh");
     const svgboxheadermenuh = document.getElementsByClassName("svg-box-header-menuh");
 
@@ -184,7 +183,7 @@ const Home = () => {
                         </div>
                         
                         <div>
-                            <input type={"submit"} />
+                            <input type={"submit"} value={"submit"} />
                         </div>
                     </div>
                 </div>
