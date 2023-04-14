@@ -82,7 +82,7 @@ const DashOrder = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashOrder"}>
+                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                         <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -94,7 +94,7 @@ const DashOrder = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashTransaction"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Transaction"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 5.56006H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M14.22 2H19.78C21.56 2 22 2.44 22 4.2V8.31C22 10.07 21.56 10.51 19.78 10.51H14.22C12.44 10.51 12 10.07 12 8.31V4.2C12 2.44 12.44 2 14.22 2Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -109,7 +109,7 @@ const DashOrder = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashAccount"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Account"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M18.04 13.55C17.62 13.96 17.38 14.55 17.44 15.18C17.53 16.26 18.52 17.05 19.6 17.05H21.5V18.24C21.5 20.31 19.81 22 17.74 22H6.26C4.19 22 2.5 20.31 2.5 18.24V11.51C2.5 9.44001 4.19 7.75 6.26 7.75H17.74C19.81 7.75 21.5 9.44001 21.5 11.51V12.95H19.48C18.92 12.95 18.41 13.17 18.04 13.55Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M2.5 12.4101V7.8401C2.5 6.6501 3.23 5.59006 4.34 5.17006L12.28 2.17006C13.52 1.70006 14.85 2.62009 14.85 3.95009V7.75008" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -122,7 +122,7 @@ const DashOrder = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashProfile"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right'  to={"/Dashboard/Profile"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z" stroke="#808191" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z" stroke="#808191" strokeLinecap="round" strokeLinejoin="round"/>
@@ -133,7 +133,7 @@ const DashOrder = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashSupport"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Support"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5H7" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
@@ -167,8 +167,66 @@ const DashOrder = () => {
         <>
             <Header style="1rem 2rem" />
 
-            <section id='main-dashboard'>
+            <section id='main-dashboard' className='flex-box flex-justify-space flex-aling-right'>
                 {sidbardashboard}
+
+                <section id='detalist-dashboard' className='width-max flex-box flex-column'>
+                    <div className='header-detalist-order-dashboard width-max'>
+                        <div>
+                            <span>آگهی ها</span>
+                        </div>
+
+                        <div className='nav-detalist-order-dashboard flex-box flex-right'>
+                            <Link className='active' to={"/Dashboard/Order"}>
+                                <span>همه آگهی ها</span>
+                            </Link>
+
+                            <Link to={"/Dashboard/Order/Accepted"}>
+                                <span>تایید شده</span>
+                            </Link>
+
+                            <Link to={"/Dashboard/Order/Coming"}>
+                                <span>در انتظار تایید</span>
+                            </Link>
+
+                            <Link to={"/Dashboard/Order/Failed"}>
+                                <span>رد شده</span>
+                            </Link>
+
+                            <Link to={"/Dashboard/Order/Sold"}>
+                                <span>فروخته شده</span>
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className='flex-box flex-aling-right flex-wrap flex-right width-max'>
+                        <div className='box-item-order-dashboard'>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link className='flex-box'>ویرایش</Link>
+
+                                    <button className='flex-box'>
+                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
+                                        </svg>
+
+                                        <span>فروخته شد</span>
+                                    </button>
+
+                                    <button className='flex-box'>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </section>
         </>
     );

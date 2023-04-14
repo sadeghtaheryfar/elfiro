@@ -178,7 +178,12 @@ input[type="number"]:focus{
 
 
 .color-green{
-    color: #009829 !important;
+    color: #0DD400 !important;
+}
+
+
+.bac-color-green{
+    background-color: #0DD400 !important;
 }
 
 
@@ -531,7 +536,7 @@ body{
 
 .item-hover-user-header-one > div:nth-child(1) img{
     width: 100%;
-    border-radius: 16px;
+    border-radius: 50px;
     height: 100%;
 }
 
@@ -2348,7 +2353,7 @@ body{
 /* style mobile ................................................................. */
 
 #main-dashboard{
-    padding: 7rem 2rem;
+    padding: 8rem 2rem 2rem 2rem;
 }
 
 
@@ -2377,6 +2382,7 @@ body{
 
 .logo-sidbar-dashboard img{
     width: 100%;
+    height: 100%;
     border-radius: 100px;
 }
 
@@ -2551,6 +2557,524 @@ body{
 
 .box-item-notif-dashboard{
     padding: 1rem;
+}
+
+
+.header-detalist-dashboard button{
+    background: #FFFFFF;
+    border: 1px solid #7007FA;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 16px;
+    color: #7007FA;
+}
+
+
+.table-support-dashboard{
+    width: 100%;
+    border: 1px solid #E9E9E9;
+    border-bottom-left-radius: 10px;
+    border-collapse: collapse;
+}
+
+
+.box-table-support-dashboard{
+    width: 100%;
+    min-height: 34rem;
+    border: 1px solid #E9E9E9;
+}
+
+
+:is(tr,td,th){
+    border: 1px solid #E9E9E9;
+    padding: 1rem;
+    text-align: center;
+}
+
+
+th{
+    font-weight: 400;
+    font-size: 16px;
+    color: #808191;
+    background: #E4E4E4;
+}
+
+
+td{
+    font-weight: 400;
+    font-size: 14px;
+    color: #000000;
+}
+
+
+.header-detalist-order-dashboard{
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #E9E9E9;
+}
+
+
+.header-detalist-order-dashboard > div:nth-child(1){
+    font-weight: 400;
+    font-size: 22px;
+    color: #000000;
+    padding-bottom: 2rem;
+}
+
+
+.nav-detalist-order-dashboard{
+    margin-bottom: 1rem;
+}
+
+
+.nav-detalist-order-dashboard > a{
+    width: 10.5rem;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    color: #808191 !important;
+}
+
+
+.nav-detalist-order-dashboard .active{
+    background: #7007fa33;
+    border-radius: 8px;
+    color: #7007FA !important;
+}
+
+
+.img-item-order-dashboard{
+    height: 12rem;
+}
+
+
+.img-item-order-dashboard img{
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+
+.box-item-order-dashboard{
+    width: 25%;
+    padding: 0.5rem;
+}
+
+
+.show-item-order-dashboard{
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+
+.title-item-order-dashboard{
+    font-weight: 400;
+    font-size: 16px;
+    color: #000000;
+    margin: 1rem 0rem;
+    line-height: 1.2;
+}
+
+
+.btn-item-order-dashboard{
+    margin-top: 1rem;
+}
+
+
+.btn-item-order-dashboard a{
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    color: #7007FA !important;
+    width: 32%;
+    height: 2.3rem;
+    background: #FFFFFF;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+}
+
+
+.btn-item-order-dashboard button:nth-child(2){
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    color: #0DD400 !important;
+    width: 32%;
+    height: 2.3rem;
+    background: #FFFFFF;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+
+.btn-item-order-dashboard button:nth-child(2) span{
+    margin-right: 0.2rem;
+}
+
+
+.btn-item-order-dashboard button:nth-child(3){
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    color: #FF3838 !important;
+    width: 32%;
+    height: 2.3rem;
+    background: #FFFFFF;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+
+.btn-item-order-dashboard #disabled{
+    color: #BFBFBF !important;
+    cursor: auto;
+}
+
+
+.btn-item-order-dashboard #disabled svg path{
+    fill: #BFBFBF !important;
+}
+
+
+.btn-show-item-order-dashboard{
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+
+.btn-show-item-order-dashboard button{
+    background: #7007FA;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 400;
+    font-size: 12px;
+    color: #FFFFFF;
+    height: 2.5rem;
+}
+
+
+.item-transaction-dashboard{
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+
+.header-item-transaction-dashboard{
+    background: #E4E4E4;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px 8px 0px 0px;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+
+.right-header-item-transaction-dashboard > div div{
+    width: 0.5rem;
+    height: 0.5rem;
+    min-width: 0.5rem;
+    min-height: 0.5rem;
+    background-color: #7007FA;
+    border-radius: 16px;
+    margin-left: 0.5rem;
+}
+
+
+.right-header-item-transaction-dashboard > div span{
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin-left: 0.5rem;
+}
+
+
+.left-header-item-transaction-dashboard > div:nth-child(1){
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin-left: 1rem;
+}
+
+
+.left-header-item-transaction-dashboard > div:nth-child(2){
+    font-weight: 400;
+    font-size: 16px;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+}
+
+
+.detalist-item-transaction-dashboard{
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+
+.detalist-item-transaction-dashboard > div:nth-child(1){
+    width: 6rem;
+    height: 6rem;
+    min-width: 6em;
+    min-height: 6rem;
+    background: #E4E4E4;
+    border-radius: 8px;
+    margin-left: 1rem;
+}
+
+
+.detalist-item-transaction-dashboard > div:nth-child(1) img{
+    width: 100%;
+    max-height: 100%;
+}
+
+
+.morebtn-item-transaction-dashboard{
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+
+.detalist-item-transaction-dashboard > div:nth-child(2){
+    font-weight: 400;
+    font-size: 16px;
+    color: #808191;
+    margin-left: 1rem;
+}
+
+
+.detalist-item-transaction-dashboard > div:nth-child(3) >div:nth-child(1){
+    width: 0.5rem;
+    height: 0.5rem;
+    min-width: 0.5rem;
+    min-height: 0.5rem;
+    background-color: #000000;
+    border-radius: 16px;
+    margin-left: 0.5rem;
+}
+
+
+.detalist-item-transaction-dashboard > div:nth-child(3) >div:nth-child(2){
+    font-weight: 400;
+    font-size: 16px;
+    color: #808191;
+}
+
+
+.morebtn-item-transaction-dashboard a{
+    font-weight: 400;
+    font-size: 16px;
+    color: #7007FA !important;
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    outline: none;
+}
+
+
+.morebtn-item-transaction-dashboard a span{
+    margin-left: 0.5rem;
+}
+
+
+.left-account-dashboard{
+    width: 18rem;
+    min-width: 18rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+    margin-right: 2rem;
+}
+
+
+.left-account-dashboard > div:nth-child(1){
+    height: 10rem;
+    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%);
+    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+
+.left-account-dashboard > div:nth-child(1) img{
+    position: absolute;
+    bottom: -5.5rem;
+    right: -5.5rem;
+}
+
+
+.left-account-dashboard > div:nth-child(1) > span{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-weight: 400;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+
+
+.left-account-dashboard > div:nth-child(1) > div span:first-child{
+    font-weight: 400;
+    font-size: 22px;
+    color: #FFFFFF;
+}
+
+
+.left-account-dashboard > div:nth-child(1) > div span:last-child{
+    font-weight: 400;
+    font-size: 14px;
+    color: #FFFFFF;
+    margin-right: 0.2rem;
+}
+
+
+.left-account-dashboard > div:nth-child(2) > div{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 3rem;
+    position: relative;
+    margin: 0.6rem 0rem 1rem 0rem;
+}
+
+
+.left-account-dashboard > div:nth-child(2) > div div{
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #0DD400;
+    border-radius: 16px 0px 0px 16px;
+}
+
+
+.left-account-dashboard > div:nth-child(2) > div span{
+    font-weight: 400;
+    font-size: 22px;
+    color: #000000;
+}
+
+
+.left-account-dashboard > div:nth-child(2) > div span:nth-child(2){
+    font-size: 16px;
+    margin: 0.3rem 0.2rem 0rem 0rem;
+}
+
+
+.left-account-dashboard > div:nth-child(3) > div{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 3rem;
+    position: relative;
+    margin: 0.6rem 0rem 1rem 0rem;
+}
+
+
+.left-account-dashboard > div:nth-child(3) > div span{
+    font-weight: 400;
+    font-size: 22px;
+    color: #000000;
+}
+
+
+.left-account-dashboard > div:nth-child(3) > div span:nth-child(2){
+    font-size: 16px;
+    margin: 0.3rem 0.2rem 0rem 0rem;
+}
+
+
+.left-account-dashboard > div:nth-child(3) > div div{
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #FABA07;
+    border-radius: 16px 0px 0px 16px;
+}
+
+
+.left-account-dashboard > div:nth-child(4){
+    margin-bottom: 1rem;
+}
+
+
+.left-account-dashboard > div:nth-child(4) button{
+    font-weight: 400;
+    font-size: 16px;
+    color: #FFFFFF;
+    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%);
+    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%);
+    border-radius: 8px;
+    border: none;
+    height: 2.5rem;
+    cursor: pointer;
+    padding: 0rem 1.5rem;
+    width: 100%;
+}
+
+
+.left-account-dashboard > div:nth-child(5){
+    width: 100%;
+    position: relative;
+}
+
+
+.left-account-dashboard > div:nth-child(5) input{
+    border: none;
+    outline: none;
+    font-weight: 400;
+    font-size: 12px;
+    color: #808191;
+    background-color: #F1F1F1;
+    border-radius: 8px;
+    width: 100%;
+    height: 2.5rem;
+    padding: 0rem 1rem;
+    box-sizing: border-box;
+}
+
+
+.left-account-dashboard > div:nth-child(5) button{
+    font-weight: 400;
+    font-size: 14px;
+    color: #FFFFFF;
+    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%);
+    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%);
+    border-radius: 8px;
+    border: none;
+    height: 2.5rem;
+    cursor: pointer;
+    padding: 0rem 0.5rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+
+.authenticated-profile-dashboard{
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    color: #0DD400 !important;
+    border: 1px solid #0DD400;
+    padding: 0rem 1rem;
+    height: 3rem;
+    margin-bottom: 0.7rem;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+
+.authenticated-profile-dashboard span{
+    margin-right: 0.3rem;
 }
 
 /* style mobile ................................................................. */

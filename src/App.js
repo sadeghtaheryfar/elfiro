@@ -12,6 +12,10 @@ import DashSupport from "./components/DashSupport";
 import DashTransaction from "./components/DashTransaction";
 import DashAccount from "./components/DashAccount";
 import { Route,Routes } from "react-router-dom";
+import DashOrderAccepted from "./components/DashOrderAccepted";
+import DashOrderComing from "./components/DashOrderComing";
+import DashOrderFailed from "./components/DashOrderFailed";
+import DashOrderSold from "./components/DashOrderSold";
 
 function App() {
   
@@ -22,11 +26,15 @@ function App() {
         <Route path="/Login"  element={<Login/>}/>
         <Route path="/Register"  element={<Register/>}/>
         <Route path="/Dashboard"  element={<Dashboard/>}/>
-        <Route path="/Dashboard/DashOrder"  element={<DashOrder/>}/>
-        <Route path="/Dashboard/DashProfile"  element={<DashProfile/>}/>
-        <Route path="/Dashboard/DashSupport"  element={<DashSupport/>}/>
-        <Route path="/Dashboard/DashTransaction"  element={<DashTransaction/>}/>
-        <Route path="/Dashboard/DashAccount"  element={<DashAccount/>}/>
+        <Route path="/Dashboard/Order"  element={<DashOrder/>}/>
+        <Route path="/Dashboard/Order/Accepted"  element={<DashOrderAccepted/>}/>
+        <Route path="/Dashboard/Order/Coming"  element={<DashOrderComing/>}/>
+        <Route path="/Dashboard/Order/Failed"  element={<DashOrderFailed/>}/>
+        <Route path="/Dashboard/Order/Sold"  element={<DashOrderSold/>}/>
+        <Route path="/Dashboard/Profile"  element={<DashProfile/>}/>
+        <Route path="/Dashboard/Support"  element={<DashSupport/>}/>
+        <Route path="/Dashboard/Transaction"  element={<DashTransaction/>}/>
+        <Route path="/Dashboard/Account"  element={<DashAccount/>}/>
         <Route path="/orders/:productId" element={<Order/>} />
         <Route path="*"  element={<NoPage/>}/>
       </Routes>

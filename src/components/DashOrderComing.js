@@ -3,11 +3,10 @@ import Header from './Header';
 import { Link } from 'react-router-dom';
 import { useState,useEffect } from 'react';
 
-const Dashboard = () => {
+const DashOrderComing = () => {
     const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
     const usertoken = localStorage.getItem("user-login");
-    const [userdata, setuserdata] = useState();
-    const [dashboarddata, setdashboarddata] = useState()
+    const [userdata, setuserdata] = useState()
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
         {
@@ -31,19 +30,6 @@ const Dashboard = () => {
                     .catch(err => {
                         window.location = "/Login"
                     });
-
-                const optionst = {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `${usertoken}`
-                    }
-                    };
-
-                    fetch('https://server.elfiro.com/api/v1/client/dashboard', optionst)
-                    .then(response => response.json())
-                    .then(response => setdashboarddata(response.data))
-                    .catch(err => console.error(err));
             }else{
                 window.location = "/Login";
             }
@@ -51,9 +37,8 @@ const Dashboard = () => {
             window.location = "/Login";
         }
     }, [])
-    
+
     var sidbardashboard;
-    var dashboarddatacl;
 
     if(userdata != undefined)
     {
@@ -84,7 +69,7 @@ const Dashboard = () => {
                     <div className='menu-sidbar-dashboard'>
                         <ul>
                             <li>
-                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/dashboard"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/dashboard"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22 8.52V3.98C22 2.57 21.36 2 19.77 2H15.73C14.14 2 13.5 2.57 13.5 3.98V8.51C13.5 9.93 14.14 10.49 15.73 10.49H19.77C21.36 10.5 22 9.93 22 8.52Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                         <path d="M22 19.77V15.73C22 14.14 21.36 13.5 19.77 13.5H15.73C14.14 13.5 13.5 14.14 13.5 15.73V19.77C13.5 21.36 14.14 22 15.73 22H19.77C21.36 22 22 21.36 22 19.77Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -97,7 +82,7 @@ const Dashboard = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
+                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                         <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -178,79 +163,6 @@ const Dashboard = () => {
         )
     }
 
-    
-    if(dashboarddata != undefined)
-    {
-        dashboarddatacl = (
-            <section id='detalist-dashboard' className='width-max flex-box flex-column'>
-                <div className='header-detalist-dashboard width-max'>
-                    <span>داشبورد</span>
-                </div>
-
-                <div className='flex-box flex-aling-right width-max'>
-                    <div className='box-notif-dashboard width-max'>
-                        <div className='header-notif-dashboard flex-box'>
-                            <span>پیام های اخیر</span>
-                        </div>
-
-                        <div className='box-item-notif-dashboard'>
-                            {dashboarddata.notification.records.map((item)=> 
-                                <div className='item-notif-dashboard' dangerouslySetInnerHTML={{ __html: item.content}} key={Math.random()}>
-
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className='box-left-detalist-dashboard'>
-                        <div className='item-left-detalist-dashboard'>
-                            <div className='flex-box'>
-                                <div className='flex-box'>
-                                    
-                                </div>
-
-                                <span className='width-max flex-box'>{dashboarddata.details.orders}</span>
-                            </div>
-
-                            <div className='flex-box'>
-                                <span>تعداد آگهی ها</span>
-                            </div>
-                        </div>
-
-                        <div className='item-left-detalist-dashboard'>
-                            <div className='flex-box'>
-                                <div className='flex-box'>
-                                    
-                                </div>
-
-                                <span className='width-max flex-box'>{dashboarddata.details.orders_views_count}</span>
-                            </div>
-
-                            <div className='flex-box'>
-                                <span>تعداد بازدید آگهی ها</span>
-                            </div>
-                        </div>
-
-                        <div className='item-left-detalist-dashboard'>
-                            <div className='flex-box'>
-                                <div className='flex-box'>
-                                    
-                                </div>
-
-                                <span className='width-max flex-box'>{dashboarddata.details.orders_has_transaction}</span>
-                            </div>
-
-                            <div className='flex-box'>
-                                <span>تعداد آگهی ها در حال معامله</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        )
-    }
-    
-
     return (
         <>
             <Header style="1rem 2rem" />
@@ -258,10 +170,66 @@ const Dashboard = () => {
             <section id='main-dashboard' className='flex-box flex-justify-space flex-aling-right'>
                 {sidbardashboard}
 
-                {dashboarddatacl}
+                <section id='detalist-dashboard' className='width-max flex-box flex-column'>
+                    <div className='header-detalist-order-dashboard width-max'>
+                        <div>
+                            <span>آگهی ها</span>
+                        </div>
+
+                        <div className='nav-detalist-order-dashboard flex-box flex-right'>
+                            <Link to={"/Dashboard/Order"}>
+                                <span>همه آگهی ها</span>
+                            </Link>
+
+                            <Link to={"/Dashboard/Order/Accepted"}>
+                                <span>تایید شده</span>
+                            </Link>
+
+                            <Link className='active' to={"/Dashboard/Order/Coming"}>
+                                <span>در انتظار تایید</span>
+                            </Link>
+
+                            <Link to={"/Dashboard/Order/Failed"}>
+                                <span>رد شده</span>
+                            </Link>
+
+                            <Link to={"/Dashboard/Order/Sold"}>
+                                <span>فروخته شده</span>
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className='flex-box flex-aling-right flex-wrap flex-right width-max'>
+                        <div className='box-item-order-dashboard'>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link id='disabled' className='flex-box'>ویرایش</Link>
+
+                                    <button id='disabled' className='flex-box'>
+                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
+                                        </svg>
+
+                                        <span>فروخته شد</span>
+                                    </button>
+
+                                    <button className='flex-box'>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </section>
         </>
     );
 };
 
-export default Dashboard;
+export default DashOrderComing;

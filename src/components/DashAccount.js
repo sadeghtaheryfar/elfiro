@@ -2,6 +2,7 @@ import React from 'react';
 import Header from './Header';
 import { Link } from 'react-router-dom';
 import { useState,useEffect } from 'react';
+import ImgBac from './../imags/Group 516.png';
 
 const DahAccount = () => {
     const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
@@ -82,7 +83,7 @@ const DahAccount = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashOrder"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                         <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -94,7 +95,7 @@ const DahAccount = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashTransaction"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Transaction"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 5.56006H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M14.22 2H19.78C21.56 2 22 2.44 22 4.2V8.31C22 10.07 21.56 10.51 19.78 10.51H14.22C12.44 10.51 12 10.07 12 8.31V4.2C12 2.44 12.44 2 14.22 2Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -122,7 +123,7 @@ const DahAccount = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashProfile"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right'  to={"/Dashboard/Profile"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z" stroke="#808191" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z" stroke="#808191" strokeLinecap="round" strokeLinejoin="round"/>
@@ -133,7 +134,7 @@ const DahAccount = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashSupport"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Support"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5H7" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
@@ -167,8 +168,98 @@ const DahAccount = () => {
         <>
             <Header style="1rem 2rem" />
 
-            <section id='main-dashboard'>
+            <section id='main-dashboard' className='flex-box flex-justify-space flex-aling-right'>
                 {sidbardashboard}
+
+                <section id='detalist-dashboard' className='width-max flex-box flex-column'>
+                    <div className='header-detalist-order-dashboard width-max'>
+                        <div>
+                            <span>حسابداری</span>
+                        </div>
+                    </div>
+
+                    <div className='flex-box flex-aling-right width-max'>
+                        <div className='box-table-support-dashboard flex-box flex-aling-right width-max'>
+                            <table className='table-support-dashboard'>
+                                <thead>
+                                    <tr>
+                                        <th>تاریخ</th>
+
+                                        <th>وضعیت</th>
+
+                                        <th>کد پیگیری</th>
+
+                                        <th>مبلغ</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>1400/10/10</td>
+
+                                        <td className='color-blue'>برداشت وجه</td>
+
+                                        <td>12385858585</td>
+                                        
+                                        <td>
+                                            <span>100,000</span>
+
+                                            <span>تومان</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section className='left-account-dashboard'>
+                    <div className='flex-box'>
+                        <span>موجودی کیف پول</span>
+
+                        <div>
+                            <span>1000000</span>
+
+                            <span>تومان</span>
+                        </div>
+
+                        <img src={ImgBac} />
+                    </div>
+
+                    <div>
+                        <span>قابل برداشت</span>
+
+                        <div className='flex-box'>
+                            <span>1,500,000</span>
+
+                            <span>تومان</span>
+                            
+                            <div></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span>در حال معامله</span>
+
+                        <div className='flex-box'>
+                            <span>1,500,000</span>
+
+                            <span>تومان</span>
+
+                            <div></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button>برداشت وجه</button>
+                    </div>
+
+                    <div>
+                        <input type='number' placeholder='مبلغ به تومان' />
+
+                        <button>شارژ کیف پول</button>
+                    </div>
+                </section>
             </section>
         </>
     );

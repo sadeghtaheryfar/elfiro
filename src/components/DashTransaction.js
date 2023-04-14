@@ -82,7 +82,7 @@ const DashTransaction = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashOrder"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                         <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -94,7 +94,7 @@ const DashTransaction = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashTransaction"}>
+                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Transaction"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 5.56006H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M14.22 2H19.78C21.56 2 22 2.44 22 4.2V8.31C22 10.07 21.56 10.51 19.78 10.51H14.22C12.44 10.51 12 10.07 12 8.31V4.2C12 2.44 12.44 2 14.22 2Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -109,7 +109,7 @@ const DashTransaction = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashAccount"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Account"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M18.04 13.55C17.62 13.96 17.38 14.55 17.44 15.18C17.53 16.26 18.52 17.05 19.6 17.05H21.5V18.24C21.5 20.31 19.81 22 17.74 22H6.26C4.19 22 2.5 20.31 2.5 18.24V11.51C2.5 9.44001 4.19 7.75 6.26 7.75H17.74C19.81 7.75 21.5 9.44001 21.5 11.51V12.95H19.48C18.92 12.95 18.41 13.17 18.04 13.55Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M2.5 12.4101V7.8401C2.5 6.6501 3.23 5.59006 4.34 5.17006L12.28 2.17006C13.52 1.70006 14.85 2.62009 14.85 3.95009V7.75008" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -122,7 +122,7 @@ const DashTransaction = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashProfile"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Profile"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z" stroke="#808191" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z" stroke="#808191" strokeLinecap="round" strokeLinejoin="round"/>
@@ -133,7 +133,7 @@ const DashTransaction = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashSupport"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Support"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5H7" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
@@ -167,8 +167,164 @@ const DashTransaction = () => {
         <>
             <Header style="1rem 2rem" />
 
-            <section id='main-dashboard'>
+            <section id='main-dashboard' className='flex-box flex-justify-space flex-aling-right'>
                 {sidbardashboard}
+
+                <section id='detalist-dashboard' className='width-max flex-box flex-column'>
+                    <div className='header-detalist-order-dashboard width-max'>
+                        <div>
+                            <span>معامله ها</span>
+                        </div>
+
+                        <div className='nav-detalist-order-dashboard flex-box flex-right'>
+                            <Link className='active' to={"/Dashboard/Order"}>
+                                <span>همه معاملات </span>
+                            </Link>
+
+                            <Link to={"/Dashboard/Order/Accepted"}>
+                                <span>خرید</span>
+                            </Link>
+
+                            <Link to={"/Dashboard/Order/Coming"}>
+                                <span>فروش</span>
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className='flex-box flex-aling-right flex-wrap flex-right width-max'>
+                        <div className='item-transaction-dashboard flex-box flex-column width-max'>
+                            <div className='header-item-transaction-dashboard flex-box flex-justify-space width-max'>
+                                <div className='right-header-item-transaction-dashboard flex-box'>
+                                    <div className='flex-box'>
+                                        <div></div>
+
+                                        <span>تاریخ : </span>
+
+                                        <span>1400/10/10</span>
+                                    </div>
+
+                                    <div className='flex-box'>
+                                        <div></div>
+
+                                        <span>شناسه معامله : </span>
+
+                                        <span>1234567859</span>
+                                    </div>
+                                </div>
+
+                                <div className='left-header-item-transaction-dashboard flex-box'>
+                                    <div>
+                                        <span>وضعیت معامله : </span>
+
+                                        <span>تایید اطلاعات</span>
+                                    </div>
+
+                                    <div className='bac-color-green'>
+                                        <span>معامله خرید</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className='flex-box flex-column width-max'>
+                                <div className='detalist-item-transaction-dashboard flex-box flex-right width-max'>
+                                    <div className='flex-box'>
+                                        <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
+                                    </div>
+
+                                    <div>
+                                        <span>اکانت فورتنایت از سیزن دو </span>
+                                    </div>
+
+                                    <div className='flex-box'>
+                                        <div></div>
+
+                                        <div>
+                                            <span>نام فروشنده : </span>
+
+                                            <span className='color-blue'>MOSIO</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className='morebtn-item-transaction-dashboard flex-box flex-left width-max'>
+                                    <Link className='flex-box'>
+                                        <span>مشاهده معامله</span>
+
+                                        <svg width="10" height="15" viewBox="0 0 10 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.11328 1.5L2 7.61279L8.11328 13.7261" stroke="#7007FA" strokeWidth="2" strokeLinecap="round"/>
+                                        </svg>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='item-transaction-dashboard flex-box flex-column width-max'>
+                            <div className='header-item-transaction-dashboard flex-box flex-justify-space width-max'>
+                                <div className='right-header-item-transaction-dashboard flex-box'>
+                                    <div className='flex-box'>
+                                        <div></div>
+
+                                        <span>تاریخ : </span>
+
+                                        <span>1400/10/10</span>
+                                    </div>
+
+                                    <div className='flex-box'>
+                                        <div></div>
+
+                                        <span>شناسه معامله : </span>
+
+                                        <span>1234567859</span>
+                                    </div>
+                                </div>
+
+                                <div className='left-header-item-transaction-dashboard flex-box'>
+                                    <div>
+                                        <span>وضعیت معامله : </span>
+
+                                        <span>تایید اطلاعات</span>
+                                    </div>
+
+                                    <div className='bac-color-blue'>
+                                        <span>معامله فروش</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className='flex-box flex-column width-max'>
+                                <div className='detalist-item-transaction-dashboard flex-box flex-right width-max'>
+                                    <div className='flex-box'>
+                                        <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
+                                    </div>
+
+                                    <div>
+                                        <span>اکانت فورتنایت از سیزن دو </span>
+                                    </div>
+
+                                    <div className='flex-box'>
+                                        <div></div>
+
+                                        <div>
+                                            <span>نام فروشنده : </span>
+
+                                            <span className='color-blue'>MOSIO</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className='morebtn-item-transaction-dashboard flex-box flex-left width-max'>
+                                    <Link className='flex-box'>
+                                        <span>مشاهده معامله</span>
+
+                                        <svg width="10" height="15" viewBox="0 0 10 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.11328 1.5L2 7.61279L8.11328 13.7261" stroke="#7007FA" strokeWidth="2" strokeLinecap="round"/>
+                                        </svg>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </section>
         </>
     );

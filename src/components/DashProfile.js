@@ -82,7 +82,7 @@ const DashProfile = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashOrder"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                         <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -94,7 +94,7 @@ const DashProfile = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashTransaction"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Transaction"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 5.56006H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M14.22 2H19.78C21.56 2 22 2.44 22 4.2V8.31C22 10.07 21.56 10.51 19.78 10.51H14.22C12.44 10.51 12 10.07 12 8.31V4.2C12 2.44 12.44 2 14.22 2Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -109,7 +109,7 @@ const DashProfile = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashAccount"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Account"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M18.04 13.55C17.62 13.96 17.38 14.55 17.44 15.18C17.53 16.26 18.52 17.05 19.6 17.05H21.5V18.24C21.5 20.31 19.81 22 17.74 22H6.26C4.19 22 2.5 20.31 2.5 18.24V11.51C2.5 9.44001 4.19 7.75 6.26 7.75H17.74C19.81 7.75 21.5 9.44001 21.5 11.51V12.95H19.48C18.92 12.95 18.41 13.17 18.04 13.55Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M2.5 12.4101V7.8401C2.5 6.6501 3.23 5.59006 4.34 5.17006L12.28 2.17006C13.52 1.70006 14.85 2.62009 14.85 3.95009V7.75008" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -122,7 +122,7 @@ const DashProfile = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashProfile"}>
+                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right'  to={"/Dashboard/Profile"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z" stroke="#808191" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z" stroke="#808191" strokeLinecap="round" strokeLinejoin="round"/>
@@ -133,7 +133,7 @@ const DashProfile = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashSupport"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Support"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5H7" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
@@ -162,13 +162,71 @@ const DashProfile = () => {
             </div>
         )
     }
+    const [formData, setFormData] = useState({
+        category_id: '1',
+        name: 'test ',
+        content: 'te st test ',
+        price: '00000',
+        image: 'image.png'
+    });
+
+    const handleInputChange = (event) => {
+
+    };
+
+    const formDataBase64 = btoa(formData);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        console.log('>>>>>>>>>>>', formData)
+
+        fetch('https://server.elfiro.com/api/v1/client/orders', {
+            method: 'POST',
+            body: JSON.stringify({ formDataBase64 }),
+            headers: {
+                'Content-Type': 'application/json',
+            Authorization: 'Bearer Bearer 138|g73u5vgzwQAivpWF8jIzUELOC3HioutEV1etSBxc'
+        }
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
+    };
 
     return (
         <>
             <Header style="1rem 2rem" />
 
-            <section id='main-dashboard'>
+            <section id='main-dashboard' className='flex-box flex-justify-space flex-aling-right'>
                 {sidbardashboard}
+
+                <section id='detalist-dashboard' className='width-max flex-box flex-column'>
+                    <div className='header-detalist-order-dashboard flex-box flex-justify-space width-max'>
+                        <div>
+                            <span>پروفایل</span>
+                        </div>
+
+                        <div>
+                            <Link className='authenticated-profile-dashboard flex-box'>
+                                
+
+                                <span>احراز هویت شده</span>
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className='flex-box flex-aling-right width-max'>
+                        <form onSubmit={handleSubmit}>
+                            <input type="text" name="category_id" onChange={handleInputChange} />
+                            <input type="text" name="name" onChange={handleInputChange} />
+                            <input type="text" name="content" onChange={handleInputChange} />
+                            <input type="number" name="price" onChange={handleInputChange} />
+                            <input type="file" name="image" onChange={handleInputChange} />
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </section>
             </section>
         </>
     );

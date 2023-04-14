@@ -9,6 +9,7 @@
     "antd": "^5.3.1",
     "bootstrap": "^5.2.3",
     "dev-server": "^0.2.0",
+    "html-react-parser": "^3.0.15",
     "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
