@@ -164,6 +164,144 @@ const DahAccount = () => {
         )
     }
 
+    var paymentdetalist;
+    
+    const [chargenum, setchargenum] = useState();
+    const [chargeerr, setchargeerr] = useState();
+
+    const fusetchargenum = (item) => {
+        setchargenum(item);
+    }
+
+    const fusendchargenum = () => {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${usertoken}`
+            },
+            body: `{"price":${chargenum},"gateway":"payir","call_back_address":"http://localhost:3000/Dashboard/Account"}`
+        };
+
+        fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
+            .then(response => response.json())
+            .then(response => {
+                if(response.status === "success")
+                {
+                    window.location = response.data.gateway.link;
+                    setchargeerr("");
+                }else{
+                    setchargeerr(response.data.message.price);
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
+    
+    if(userdata != undefined)
+    {
+        paymentdetalist = (
+            <section className='left-account-dashboard'>
+                <div className='flex-box'>
+                    <span>موجودی کیف پول</span>
+
+                    <div>
+                        <span>{userdata.data.user_data.user.wallet}</span>
+
+                        <span>تومان</span>
+                    </div>
+
+                    <img src={ImgBac} />
+                </div>
+
+                <div>
+                    <span>قابل برداشت</span>
+
+                    <div className='flex-box'>
+                        <span>{userdata.data.user_data.user.wallet}</span>
+
+                        <span>تومان</span>
+                        
+                        <div></div>
+                    </div>
+                </div>
+
+                <div>
+                    <span>در حال معامله</span>
+
+                    <div className='flex-box'>
+                        <span>0</span>
+
+                        <span>تومان</span>
+
+                        <div></div>
+                    </div>
+                </div>
+
+                <div>
+                    <button>برداشت وجه</button>
+                </div>
+
+                <div>
+                    <input onChange={(e) => fusetchargenum(e.target.value)} type='number' placeholder='مبلغ به تومان' />
+
+                    <button onClick={fusendchargenum}>شارژ کیف پول</button>
+
+                    <span>{chargeerr}</span>
+                </div>
+            </section>
+        )
+    }
+
+    var paymentitem;
+
+    if(userdata != undefined)
+    {
+        paymentitem = (
+            <section id='detalist-dashboard' className='width-max flex-box flex-column'>
+                <div className='header-detalist-order-dashboard width-max'>
+                    <div>
+                        <span>حسابداری</span>
+                    </div>
+                </div>
+
+                <div className='flex-box flex-aling-right width-max'>
+                    <div className='box-table-support-dashboard flex-box flex-aling-right width-max'>
+                        <table className='table-support-dashboard'>
+                            <thead>
+                                <tr>
+                                    <th>تاریخ</th>
+
+                                    <th>وضعیت</th>
+
+                                    <th>کد پیگیری</th>
+
+                                    <th>مبلغ</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>1400/10/10</td>
+
+                                    <td className='color-blue'>برداشت وجه</td>
+
+                                    <td>12385858585</td>
+                                    
+                                    <td>
+                                        <span>100,000</span>
+
+                                        <span>تومان</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
     return (
         <>
             <Header style="1rem 2rem" />
@@ -171,95 +309,9 @@ const DahAccount = () => {
             <section id='main-dashboard' className='flex-box flex-justify-space flex-aling-right'>
                 {sidbardashboard}
 
-                <section id='detalist-dashboard' className='width-max flex-box flex-column'>
-                    <div className='header-detalist-order-dashboard width-max'>
-                        <div>
-                            <span>حسابداری</span>
-                        </div>
-                    </div>
+                {paymentitem}
 
-                    <div className='flex-box flex-aling-right width-max'>
-                        <div className='box-table-support-dashboard flex-box flex-aling-right width-max'>
-                            <table className='table-support-dashboard'>
-                                <thead>
-                                    <tr>
-                                        <th>تاریخ</th>
-
-                                        <th>وضعیت</th>
-
-                                        <th>کد پیگیری</th>
-
-                                        <th>مبلغ</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <tr>
-                                        <td>1400/10/10</td>
-
-                                        <td className='color-blue'>برداشت وجه</td>
-
-                                        <td>12385858585</td>
-                                        
-                                        <td>
-                                            <span>100,000</span>
-
-                                            <span>تومان</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-
-                <section className='left-account-dashboard'>
-                    <div className='flex-box'>
-                        <span>موجودی کیف پول</span>
-
-                        <div>
-                            <span>1000000</span>
-
-                            <span>تومان</span>
-                        </div>
-
-                        <img src={ImgBac} />
-                    </div>
-
-                    <div>
-                        <span>قابل برداشت</span>
-
-                        <div className='flex-box'>
-                            <span>1,500,000</span>
-
-                            <span>تومان</span>
-                            
-                            <div></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <span>در حال معامله</span>
-
-                        <div className='flex-box'>
-                            <span>1,500,000</span>
-
-                            <span>تومان</span>
-
-                            <div></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <button>برداشت وجه</button>
-                    </div>
-
-                    <div>
-                        <input type='number' placeholder='مبلغ به تومان' />
-
-                        <button>شارژ کیف پول</button>
-                    </div>
-                </section>
+                {paymentdetalist}
             </section>
         </>
     );

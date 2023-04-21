@@ -1,14 +1,12 @@
 import React from 'react';
 import Header from './Header';
 import { Link } from 'react-router-dom';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useRef } from 'react';
 
-const DashTransaction = () => {
-    const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
+const DashSupportAd = () => {
     const usertoken = localStorage.getItem("user-login");
     const [userdata, setuserdata] = useState();
-    const [userTran, setuserTran] = useState();
-
+    const [ticketsdata, setticketsdata] = useState();
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
         {
@@ -33,11 +31,9 @@ const DashTransaction = () => {
                         window.location = "/Login"
                     });
 
-                fetch('https://server.elfiro.com/api/v1/client/transactions', options)
+                fetch('https://server.elfiro.com/api/v1/client/tickets/details', options)
                     .then(response => response.json())
-                    .then(response => {
-                        setuserTran(response.data.transactions.records)
-                    })
+                    .then(response => setticketsdata(response.data.details))
                     .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
@@ -48,7 +44,6 @@ const DashTransaction = () => {
     }, [])
 
     var sidbardashboard;
-    var transactions;
 
     if(userdata != undefined)
     {
@@ -104,7 +99,7 @@ const DashTransaction = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Transaction"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashTransaction"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 5.56006H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M14.22 2H19.78C21.56 2 22 2.44 22 4.2V8.31C22 10.07 21.56 10.51 19.78 10.51H14.22C12.44 10.51 12 10.07 12 8.31V4.2C12 2.44 12.44 2 14.22 2Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -132,7 +127,7 @@ const DashTransaction = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Profile"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right'  to={"/Dashboard/Profile"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z" stroke="#808191" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M7.15997 14.56C4.73997 16.18 4.73997 18.82 7.15997 20.43C9.90997 22.27 14.42 22.27 17.17 20.43C19.59 18.81 19.59 16.17 17.17 14.56C14.43 12.73 9.91997 12.73 7.15997 14.56Z" stroke="#808191" strokeLinecap="round" strokeLinejoin="round"/>
@@ -143,7 +138,7 @@ const DashTransaction = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Support"}>
+                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Support"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5H7" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
@@ -173,87 +168,110 @@ const DashTransaction = () => {
         )
     }
 
-    if(userTran != undefined && userdata != undefined)
+    const submitdataSub = React.useRef();
+    const submitdataPri = React.useRef();
+    const submitdataCon = React.useRef();
+
+    const [submitdataRes, setsubmitdataRes] = useState();
+
+    const submitform = (event) => {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer Bearer 146|a0bPxbB2WLgvW4Zgauk8hrL9w8s7ixJopFeMSP7X'
+        },
+            body: `{"subject":"${submitdataSub.current.value}","content":"${submitdataCon.current.value}}","priority":"${submitdataPri.current.value}"}`
+        };
+
+        event.preventDefault();
+        fetch('https://server.elfiro.com/api/v1/client/tickets', options)
+            .then(response => response.json())
+            .then(response => setsubmitdataRes(response))
+            .catch(err => console.log(err));
+    }
+
+    var submitadddata;
+
+    if(userdata != undefined && ticketsdata != undefined)
     {
-        transactions=(
-            <div className='flex-box flex-aling-right flex-wrap flex-right width-max'>
-                {userTran.map((item) => 
-                    <div className='item-transaction-dashboard flex-box flex-column width-max' key={item.id}>
-                        <div className='header-item-transaction-dashboard flex-box flex-justify-space width-max'>
-                            <div className='right-header-item-transaction-dashboard flex-box'>
-                                <div className='flex-box'>
-                                    <div></div>
-
-                                    <span>تاریخ : </span>
-
-                                    <span>{item.date}</span>
-                                </div>
-
-                                <div className='flex-box'>
-                                    <div></div>
-
-                                    <span>شناسه معامله : </span>
-
-                                    <span>{item.code}</span>
-                                </div>
-                            </div>
-
-                            <div className='left-header-item-transaction-dashboard flex-box'>
-                                <div>
-                                    <span>وضعیت معامله : </span>
-
-                                    <span>{item.status_label}</span>
-                                </div>
-
-                                {item.seller.id === userdata.data.user_data.user.id && 
-                                    <div className='bac-color-blue'>
-                                        <span>معامله فروش</span>
-                                    </div>
-                                }
-
-                                {item.seller.id != userdata.data.user_data.user.id && 
-                                    <div className='bac-color-green'>
-                                        <span>معامله خرید</span>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-
-                        <div className='flex-box flex-column width-max'>
-                            <div className='detalist-item-transaction-dashboard flex-box flex-right width-max'>
-                                <div className='flex-box'>
-                                    <img src={item.order.image} />
-                                </div>
-
-                                <div>
-                                    <span>{item.order.name}</span>
-                                </div>
-
-                                <div className='flex-box'>
-                                    <div></div>
-
-                                    <div>
-                                        <span>نام فروشنده : </span>
-
-                                        <span className='color-blue'>{item.seller.name}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='morebtn-item-transaction-dashboard flex-box flex-left width-max'>
-                                <Link className='flex-box'>
-                                    <span>مشاهده معامله</span>
-
-                                    <svg width="10" height="15" viewBox="0 0 10 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8.11328 1.5L2 7.61279L8.11328 13.7261" stroke="#7007FA" strokeWidth="2" strokeLinecap="round"/>
-                                    </svg>
-                                </Link>
-                            </div>
-                        </div>
+        submitadddata = (
+            <form onSubmit={submitform}>
+                <div className='item-suppurt-add'>
+                    <div className='err-tiket-add'>
+                        <span id='errsubj' className='err-tiket-add'></span>
                     </div>
-                )}
-            </div>
+
+                    <label htmlFor='subject-dashsup-ad'>موضوع پیام خود  را انتخاب کنید : </label>
+
+                    <select ref={submitdataSub} id='subject-dashsup-ad' defaultValue={"none"}>
+                        <option value={"none"} disabled hidden >انتخاب کنید</option>
+                        {ticketsdata.subjects.map((item) => 
+                            <option key={Math.random()} value={item}>{item}</option>
+                        )}
+                    </select>
+                </div>
+
+                <div className='item-suppurt-add'>
+                    <div className='err-tiket-add'>
+                        <span id='errprio' className='err-tiket-add'></span>
+                    </div>
+
+                    <label htmlFor='priority-dashsup-ad'>اولویت پیام خود  را انتخاب کنید : </label>
+
+                    <select ref={submitdataPri} id='priority-dashsup-ad' defaultValue={"none"}>
+                        <option value={"none"} disabled hidden >انتخاب کنید</option>
+                        <option value={"high"}>زیاد</option>
+                        <option value={"normal"}>متوسط</option>
+                        <option value={"low"}>کم</option>
+                    </select>
+                </div>
+
+                <div className='item-suppurt-add'>
+                    <div className='err-tiket-add'>
+                        <span id='errcont'></span>
+                    </div>
+
+                    <label htmlFor='priority-dashsup-ad'>متن پیام خود  را انتخاب کنید : </label>
+
+                    <textarea ref={submitdataCon} id='priority-dashsup-ad' />
+                </div>
+
+                <div className='item-suppurt-add flex-box'>
+                    <input type='submit' value={"ارسال درخواست"} />
+                </div>
+            </form>
         )
+    }
+
+    if(submitdataRes != undefined)
+    {
+        if(submitdataRes.status === "success")
+        {
+            document.getElementById("sucsess-tiket-add").innerHTML = submitdataRes.data.message.ticket;
+        }else
+        {
+            if(submitdataRes.data.message.user != undefined)
+            {
+                document.getElementById("status-tiket-add").innerHTML = submitdataRes.data.message.user;
+            }
+
+            if(submitdataRes.data.message.subject != undefined)
+            {
+                document.getElementById("errsubj").innerHTML = submitdataRes.data.message.subject;
+            }
+
+            if(submitdataRes.data.message.priority != undefined)
+            {
+                document.getElementById("errprio").innerHTML = submitdataRes.data.message.priority;
+                console.log('>>>>>>>>>>>', "true")
+            }
+
+            if(submitdataRes.data.message.content != undefined)
+            {
+                document.getElementById("errcont").innerHTML = submitdataRes.data.message.content;
+            }
+        }
     }
 
     return (
@@ -264,31 +282,24 @@ const DashTransaction = () => {
                 {sidbardashboard}
 
                 <section id='detalist-dashboard' className='width-max flex-box flex-column'>
-                    <div className='header-detalist-order-dashboard width-max'>
+                    <div className='header-detalist-dashboard flex-box flex-justify-space width-max'>
                         <div>
-                            <span>معامله ها</span>
-                        </div>
-
-                        <div className='nav-detalist-order-dashboard flex-box flex-right'>
-                            <Link className='active' to={"/Dashboard/Order"}>
-                                <span>همه معاملات </span>
-                            </Link>
-
-                            <Link>
-                                <span>خرید</span>
-                            </Link>
-
-                            <Link>
-                                <span>فروش</span>
-                            </Link>
+                            <span>درخواست پشتیبانی</span>
                         </div>
                     </div>
 
-                    {transactions}
+                    <div className='box-suppurt-add'>
+                        <div className='flex-box flex-column'>
+                            <span id='status-tiket-add'></span>
+                            <span id='sucsess-tiket-add'></span>
+                        </div>
+
+                        {submitadddata}
+                    </div>
                 </section>
             </section>
         </>
     );
 };
 
-export default DashTransaction;
+export default DashSupportAd;

@@ -1,12 +1,21 @@
 import React from 'react';
 import Header from './Header';
 import { Link } from 'react-router-dom';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useRef } from 'react';
 
 const DashProfile = () => {
-    const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
     const usertoken = localStorage.getItem("user-login");
     const [userdata, setuserdata] = useState()
+    const [userdatas, setuserdatas] = useState()
+    const [imageprofile, setimageprofile] = useState();
+    const [descriptionprofile, setdescriptionprofile] = useState();
+    const [provinceprofile, setprovinceprofile] = useState("Tehran");
+    const [cityprofile, setcityprofile] = useState("Tehran");
+    const [emailprofile, setemailprofile] = useState();
+    const [usernameprofile, setusernameprofile] = useState();
+    const [nameprofile, setnameprofile] = useState();
+    const [passprofile, setpassprofile] = useState();
+
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
         {
@@ -24,12 +33,21 @@ const DashProfile = () => {
                         {
                             window.location = "/Login";
                         }else{
-                            setuserdata(response);
+                            setuserdata(response.data.user_data.user);
+                            setdescriptionprofile(response.data.user_data.user.description);
+                            setemailprofile(response.data.user_data.user.email);
+                            setusernameprofile(response.data.user_data.user.user_name);
+                            setnameprofile(response.data.user_data.user.name);
                         }
                     })
                     .catch(err => {
                         window.location = "/Login"
                     });
+
+                fetch('https://server.elfiro.com/api/v1/client/profile', options)
+                    .then(response => response.json())
+                    .then(response => setuserdatas(response.data.details))
+                    .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
             }
@@ -46,11 +64,11 @@ const DashProfile = () => {
             <div id='sidbar-dashboard'>
                 <div className='show-sidbar-dashboard flex-box flex-column'>
                     <div className='logo-sidbar-dashboard'>
-                        <img src={userdata.data.user_data.user.profile_image} />
+                        <img src={userdata.profile_image} />
                     </div>
 
                     <div className='name-sidbar-dashboard'>
-                        <span>{userdata.data.user_data.user.name}</span>
+                        <span>{userdata.name}</span>
                     </div>
 
                     <div className='ad-sidbar-dashboard'>
@@ -162,37 +180,259 @@ const DashProfile = () => {
             </div>
         )
     }
-    const [formData, setFormData] = useState({
-        category_id: '1',
-        name: 'test ',
-        content: 'te st test ',
-        price: '00000',
-        image: 'image.png'
-    });
 
-    const handleInputChange = (event) => {
+    var dataprofile;
 
-    };
+    const [datacity, setdatacity] = useState();
 
-    const formDataBase64 = btoa(formData);
+    const chengecity = (e) => {
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    }
 
-        console.log('>>>>>>>>>>>', formData)
+    const imageprofiler = useRef();
 
-        fetch('https://server.elfiro.com/api/v1/client/orders', {
+    const chengeimage = (e) => {
+        setimageprofile(e);
+    }
+
+    const onSend = async () => {
+        const formData = new FormData();
+        formData.append('name', nameprofile);
+        formData.append('user_name', usernameprofile);
+        formData.append('email', emailprofile);
+        formData.append('password', passprofile);
+        formData.append('description', descriptionprofile);
+        formData.append('province', "Tehran");
+        formData.append('city', "Tehran");
+        formData.append('image', imageprofile);
+
+        fetch('https://server.elfiro.com/api/v1/client/profile', {
             method: 'POST',
-            body: JSON.stringify({ formDataBase64 }),
+            body: formData,
             headers: {
-                'Content-Type': 'application/json',
-            Authorization: 'Bearer Bearer 138|g73u5vgzwQAivpWF8jIzUELOC3HioutEV1etSBxc'
-        }
+                Authorization: 'Bearer 138|g73u5vgzwQAivpWF8jIzUELOC3HioutEV1etSBxc',
+            },
         })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error(error));
+            .then((res) => res.json())
+            .then((res) => 
+            {
+                if(res.status === "success")
+                {
+                    document.getElementById("sucsess-tiket-add").innerHTML = res.data.message.profile;
+                    document.getElementById("errname").innerHTML = "";
+                    document.getElementById("errusername").innerHTML = "";
+                    document.getElementById("errpassword").innerHTML = "";
+                    document.getElementById("errdescription").innerHTML = "";
+                    document.getElementById("errimage").innerHTML = "";
+                    document.getElementById("errprovince").innerHTML = "";
+                    document.getElementById("errcity").innerHTML = "";
+                }else{
+                    if(res.data.message.name != undefined)
+                    {
+                        document.getElementById("errname").innerHTML = res.data.message.name;
+                    }
+                    
+                    if(res.data.message.user_name != undefined)
+                    {
+                        document.getElementById("errusername").innerHTML = res.data.message.user_name;
+                    }
+                    
+                    if(res.data.message.email != undefined)
+                    {
+                        document.getElementById("erremail").innerHTML = res.data.message.email;
+                    }
+                    
+                    if(res.data.message.password != undefined)
+                    {
+                        document.getElementById("errpassword").innerHTML = res.data.message.password;
+                    }
+                    
+                    if(res.data.message.description != undefined)
+                    {
+                        document.getElementById("errdescription").innerHTML = res.data.message.description;
+                    }
+                    
+                    if(res.data.message.profile_image != undefined)
+                    {
+                        document.getElementById("errimage").innerHTML = res.data.message.profile_image;
+                    }
+                    
+                    if(res.data.message.province != undefined)
+                    {
+                        document.getElementById("errprovince").innerHTML = res.data.message.province;
+                    }
+                    
+                    if(res.data.message.city != undefined)
+                    {
+                        document.getElementById("errcity").innerHTML = res.data.message.city;
+                    }
+                }
+            })
+            .catch((error) => console.error(error))
     };
+    
+
+    if(userdata != undefined && userdatas != undefined)
+    {
+        dataprofile = (
+            <div className='box-profile-edit flex-box flex-column'>
+                <div className='flex-box width-max'>
+                    <div className='err-tiket-add'>
+                        <span id='errpimage' className='err-tiket-add'></span>
+                    </div>
+
+                    <button className='btn-upload-profile' onClick={() => imageprofiler.current?.click()}>
+                        <img src={userdata.profile_image} />
+
+                        <div className='flex-box'>
+                            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.48802 2.02441H6.10501C3.28502 2.02441 0.999023 4.31042 0.999023 7.13144V14.4074C0.999023 17.2274 3.28502 19.5144 6.10501 19.5144H13.382C16.202 19.5144 18.488 17.2274 18.488 14.4074V10.5564" stroke="#161615" strokeWidth="2"/>
+                                <path d="M6.61106 9.93359L5.96805 13.9376C5.93006 14.1776 6.12905 14.3896 6.37105 14.3656L10.629 13.9516L18.8461 5.73459C19.1531 5.42758 19.1531 4.92957 18.8461 4.62259L15.9401 1.71658C15.633 1.40958 15.135 1.40958 14.8281 1.71658L6.61106 9.93359Z" stroke="#161615" strokeWidth="2"/>
+                                <line x1="13.4508" y1="2.76457" x2="17.4242" y2="6.73798" stroke="#161615" strokeWidth="2"/>
+                            </svg>
+
+
+                            <span>برای آپلود کن</span>
+                        </div>
+                    </button>
+
+                    <input ref={imageprofiler} onChange={(e) => chengeimage(e.target.files[0])} type='file' hidden />
+                </div>
+
+                <div className='item-profile-edit flex-box flex-column width-max'>
+                    <div className='err-tiket-add'>
+                        <span id='errdescription' className='err-tiket-add'></span>
+                    </div>
+
+                    <label htmlFor="biography">بیوگرافی</label>
+
+                    <textarea id='biography' defaultValue={userdata.description} onChange={(e) => setdescriptionprofile(e)}></textarea>
+                </div>
+
+                <div className='flex-box width-max'>
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errname' className='err-tiket-add'></span>
+                        </div>
+                    
+                        <label htmlFor="name">نام</label>
+
+                        <input defaultValue={userdata.name} type='text' id='name' onChange={(e) => setnameprofile(e)} />
+                    </div>
+
+                    <div className='margin-horizontal-1'></div>
+
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errusername' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="username">نام  کاربری</label>
+
+                        <input defaultValue={userdata.user_name} type='text' id='username' onChange={(e) => setusernameprofile(e)} />
+                    </div>
+                </div>
+
+                <div className='flex-box width-max'>
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errpassword' className='err-tiket-add'></span>
+                        </div>
+
+                        <label htmlFor="password">رمز عبور</label>
+
+                        <input type='text' id='password' onChange={(e) => setpassprofile(e.target.value)} />
+                    </div>
+
+                    <div className='margin-horizontal-1'></div>
+
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='erremail' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="email">ایمیل</label>
+
+                        <input defaultValue={userdata.email} type='text' id='email' onChange={(e) => setemailprofile(e)}/>
+                    </div>
+                </div>
+
+                <div className='flex-box width-max'>
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errprovince' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="province">استان</label>
+
+                        <select id='province' defaultValue={"none"} onChange={(e) => chengecity(e.target.value)}>
+                            <option value={"none"} disabled hidden >انتخاب کنید</option>
+                            <option value="Alborz">البز</option><option value="Ardabil">ادربیل</option><option value="Azerbaijan East">اذربایجان شرقی</option><option value="Azerbaijan West">اذربایجان غربی</option><option value="Bushehr">بوشر</option><option value="Chahar Mahaal and Bakhtiari">چهار محال و بختیاری</option><option value="Fars">فارس</option><option value="Gilan">گیلان</option><option value="Golestan">گلستان</option><option value="Hamadan">گرگان</option><option value="Hormozgān">هرمزگان</option><option value="Ilam">ایلام</option><option value="Isfahan">اصفهان</option><option value="Kerman">کرمان</option><option value="Kermanshah">کرمانشاه</option><option value="Khorasan North">خراسان شمالی</option><option value="Khorasan Razavi">خراسان رضوی</option><option value="Khorasan South">خراسان جنوبی</option><option value="Khuzestan">خوزستان</option><option value="Kohgiluyeh and Boyer-Ahmad">کهگیلویه و بویر احمد</option><option value="Kurdistan">کردستان</option><option value="Lorestan">لرستان</option><option value="Markazi">مرکزی</option><option value="Mazandaran">مازندران</option><option value="Qazvin">قزوین</option><option value="Qom">قم</option><option value="Semnan">سمنان</option><option value="Sistan and Baluchestan">سیستان و بلوچستان</option><option value="Tehran">تهران</option><option value="Yazd">یزد</option><option value="Zanjan">زنجان</option>
+                        </select>
+                    </div>
+
+                    <div className='margin-horizontal-1'></div>
+
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errcity' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="city">شهر</label>
+
+                        <select id='city' defaultValue={"none"}>
+                            <option value={"none"} disabled hidden >انتخاب کنید</option>
+
+                            {datacity}
+                        </select>
+                    </div>
+                </div>
+
+                <div className='item-profile-edit width-max flex-box flex-right'>
+                    <button onClick={onSend}>ثبت تغییرات</button>
+                </div>
+
+                <div className='flex-box flex-column'>
+                    <span id='status-tiket-add'></span>
+                    <span id='sucsess-tiket-add'></span>
+                </div>
+            </div>
+        )
+    }
+
+    var dataauthenticated;
+
+    if(userdata != undefined)
+    {
+        if(userdata.status === "confirmed")
+        {
+            dataauthenticated = (
+                <Link className='authenticated-profile-dashboard flex-box'>
+                    <svg width="17" height="21" viewBox="0 0 17 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.90198 4.6073C1.35397 4.85129 1.00098 5.39429 1.00098 5.99329V11.7103C1.00098 15.7993 8.40598 19.1143 8.40598 19.1143C8.40598 19.1143 15.81 15.7993 15.81 11.7103V5.81928C15.81 5.21127 15.447 4.66129 14.888 4.42328L9.34497 2.06128C8.78598 1.82428 8.15396 1.82828 7.59998 2.07529L1.90198 4.6073Z" stroke="#0DD400" strokeWidth="2"/>
+                    <path d="M12.4054 7.79492L8.32028 11.9651L5.76709 10.263" stroke="#0DD400" strokeWidth="2"/>
+                    </svg>
+
+                    <span>احراز هویت شده</span>
+                </Link>
+            )
+        }
+
+        if(userdata.status === "new" || userdata.status === "not_confirmed")
+        {
+            dataauthenticated = (
+                <Link to={"/Dashboard/Profile/Authentication"} className='not-authenticated-profile-dashboard flex-box'>
+                    <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.901 4.1068C1.353 4.34981 1 4.89281 1 5.49278V11.2088C1 15.2988 8.40399 18.6138 8.40399 18.6138C8.40399 18.6138 15.808 15.2988 15.808 11.2088V5.3178C15.808 4.70979 15.445 4.16081 14.886 3.92281L9.34299 1.56081C8.785 1.3228 8.15298 1.32781 7.59799 1.57381L1.901 4.1068Z" stroke="#7007FA" strokeٌidth="2"/>
+                    <path d="M11.3905 6.26193C11.3905 4.67356 10.1033 3.38574 8.5149 3.38574C6.92651 3.38574 5.63867 4.67356 5.63867 6.26193C5.63867 7.85029 6.92651 9.13747 8.5149 9.13747C10.1033 9.13747 11.3905 7.85029 11.3905 6.26193Z" fill="#7007FA"/>
+                    <path d="M12.7853 13.2186C12.7853 14.1415 10.8236 14.8893 8.40308 14.8893C5.98381 14.8893 4.02148 14.1415 4.02148 13.2186C4.02148 12.2957 5.98381 11.5479 8.40308 11.5479C10.8236 11.5479 12.7853 12.2957 12.7853 13.2186Z" fill="#7007FA"/>
+                    </svg>
+
+                    <span>احراز هویت</span>
+                </Link>
+            )
+        }
+    }
 
     return (
         <>
@@ -207,25 +447,10 @@ const DashProfile = () => {
                             <span>پروفایل</span>
                         </div>
 
-                        <div>
-                            <Link className='authenticated-profile-dashboard flex-box'>
-                                
-
-                                <span>احراز هویت شده</span>
-                            </Link>
-                        </div>
+                        {dataauthenticated}
                     </div>
 
-                    <div className='flex-box flex-aling-right width-max'>
-                        <form onSubmit={handleSubmit}>
-                            <input type="text" name="category_id" onChange={handleInputChange} />
-                            <input type="text" name="name" onChange={handleInputChange} />
-                            <input type="text" name="content" onChange={handleInputChange} />
-                            <input type="number" name="price" onChange={handleInputChange} />
-                            <input type="file" name="image" onChange={handleInputChange} />
-                            <button type="submit">Submit</button>
-                        </form>
-                    </div>
+                    {dataprofile}
                 </section>
             </section>
         </>

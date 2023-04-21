@@ -161,9 +161,9 @@ const Header = (props) => {
         <>
             <div className='show-box-header'>
                 <div className='box-header flex-box flex-justify-space' style={{padding: styleH.style}}>
-                    <a href='/'>
+                    <Link to='/'>
                         <img src={Logo}></img>
-                    </a>
+                    </Link>
 
                     <div className='flex-box'>
                         <div className='flex-box box-icons-header'>

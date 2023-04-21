@@ -6,7 +6,8 @@ import { useState,useEffect } from 'react';
 const DashSupport = () => {
     const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
     const usertoken = localStorage.getItem("user-login");
-    const [userdata, setuserdata] = useState()
+    const [userdata, setuserdata] = useState();
+    const [supdata, setsupdata] = useState();
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
         {
@@ -30,6 +31,11 @@ const DashSupport = () => {
                     .catch(err => {
                         window.location = "/Login"
                     });
+
+                fetch('https://server.elfiro.com/api/v1/client/tickets', options)
+                    .then(response => response.json())
+                    .then(response => setsupdata(response.data.tickets.records))
+                    .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
             }
@@ -163,6 +169,59 @@ const DashSupport = () => {
         )
     }
 
+    var datasupport;
+
+    if(userdata != undefined && supdata.length != 0)
+    {
+        datasupport = (
+            <div className='box-table-support-dashboard flex-box flex-aling-right width-max'>
+                <table className='table-support-dashboard'>
+                    <thead>
+                        <tr>
+                            <th>شناسه</th>
+
+                            <th>موضوع درخواست</th>
+
+                            <th>اولویت</th>
+
+                            <th>وضعیت</th>
+
+                            <th>آخرین  بروز رسانی</th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {supdata.map((item) => 
+                            <tr key={Math.random()}>
+                                <td>شناسه</td>
+
+                                <td>{item.subject}</td>
+
+                                <td>{item.priority_label}</td>
+
+                                <td>{item.status_label}</td>
+
+                                <td>{item.date}</td>
+
+                                <td><Link className='color-blue'>مشاهده تیکت</Link></td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+        )
+    }else{
+        datasupport = (
+            <div className='box-empity-supporddash flex-box flex-column'>
+                <img src='https://server.elfiro.com/storage/photos/support.png'></img>
+
+                <span>درخواست پشتیبانی وجود ندارد</span>
+            </div>
+        )
+    }
+
     return (
         <>
             <Header style="1rem 2rem" />
@@ -176,48 +235,12 @@ const DashSupport = () => {
                             <span>پشتیبانی</span>
                         </div>
 
-                        <button>
+                        <Link to={"/Dashboard/Support/ad"}>
                             <span>درخواست پشتیبانی</span>
-                        </button>
+                        </Link>
                     </div>
 
-                    <div className='box-table-support-dashboard flex-box flex-aling-right width-max'>
-                        <table className='table-support-dashboard'>
-                            <thead>
-                                <tr>
-                                    <th>شناسه</th>
-
-                                    <th>موضوع درخواست</th>
-
-                                    <th>عنوان درخواست</th>
-
-                                    <th>وضعیت</th>
-
-                                    <th>آخرین  بروز رسانی</th>
-
-                                    <th></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td>123456</td>
-
-                                    <td>ابچاقال اضافی</td>
-
-                                    <td>سلام دو کیلو ابچاقال اضافی میخوام </td>
-                                    
-                                    <td className='color-blue'>پاسخ پشتیبانی</td>
-                                    
-                                    <td>2 روز پیش</td>
-                                    
-                                    <td>
-                                        <Link className='color-blue'>مشاهده پیام</Link>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    {datasupport}
                 </section>
             </section>
         </>

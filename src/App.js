@@ -16,6 +16,8 @@ import DashOrderAccepted from "./components/DashOrderAccepted";
 import DashOrderComing from "./components/DashOrderComing";
 import DashOrderFailed from "./components/DashOrderFailed";
 import DashOrderSold from "./components/DashOrderSold";
+import DashSupportAd from "./components/DashSupportAd";
+import DashProfileAuth from "./components/DashProfileAuth";
 
 function App() {
   
@@ -32,7 +34,9 @@ function App() {
         <Route path="/Dashboard/Order/Failed"  element={<DashOrderFailed/>}/>
         <Route path="/Dashboard/Order/Sold"  element={<DashOrderSold/>}/>
         <Route path="/Dashboard/Profile"  element={<DashProfile/>}/>
+        <Route path="/Dashboard/Profile/Authentication"  element={<DashProfileAuth/>}/>
         <Route path="/Dashboard/Support"  element={<DashSupport/>}/>
+        <Route path="/Dashboard/Support/ad"  element={<DashSupportAd/>}/>
         <Route path="/Dashboard/Transaction"  element={<DashTransaction/>}/>
         <Route path="/Dashboard/Account"  element={<DashAccount/>}/>
         <Route path="/orders/:productId" element={<Order/>} />
