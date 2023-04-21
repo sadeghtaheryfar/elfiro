@@ -35,6 +35,16 @@ const DashSupportAd = () => {
                     .then(response => response.json())
                     .then(response => setticketsdata(response.data.details))
                     .catch(err => console.log(err));
+
+                fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status === "success")
+                        {
+                            window.location = "/Dashboard/Profile/Authentication"
+                        }
+                    })
+                    .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
             }
@@ -281,7 +291,7 @@ const DashSupportAd = () => {
             <section id='main-dashboard' className='flex-box flex-justify-space flex-aling-right'>
                 {sidbardashboard}
 
-                <section id='detalist-dashboard' className='width-max flex-box flex-column'>
+                <section id='detalist-dashboard' className='detalist-dashboard-support-add width-max flex-box flex-column'>
                     <div className='header-detalist-dashboard flex-box flex-justify-space width-max'>
                         <div>
                             <span>درخواست پشتیبانی</span>

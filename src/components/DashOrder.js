@@ -7,6 +7,22 @@ const DashOrder = () => {
     const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
     const usertoken = localStorage.getItem("user-login");
     const [userdata, setuserdata] = useState()
+
+    useEffect(() => {
+        window.addEventListener('resize', setWindow);
+        if(window.innerWidth < 1024)
+        {
+            window.location = "/Dashboard";
+        }
+    }, [])
+    
+    const setWindow = () => {
+        if(window.innerWidth < 1024)
+        {
+            window.location = "/Dashboard";
+        }
+    }
+
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
         {
@@ -37,6 +53,8 @@ const DashOrder = () => {
             window.location = "/Login";
         }
     }, [])
+
+    
 
     var sidbardashboard;
 
@@ -133,7 +151,7 @@ const DashOrder = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Support"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right'>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5H7" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
@@ -146,7 +164,7 @@ const DashOrder = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard last-item-menu-sidbar-dashboard flex-box flex-right'>
+                                <Link onClick={() => {localStorage.removeItem("user-login");window.location = "/";}} className='item-menu-sidbar-dashboard last-item-menu-sidbar-dashboard flex-box flex-right'>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M2 12H14.88" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -200,6 +218,110 @@ const DashOrder = () => {
                     </div>
 
                     <div className='flex-box flex-aling-right flex-wrap flex-right width-max'>
+                        <div className='box-item-order-dashboard'>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link className='flex-box'>ویرایش</Link>
+
+                                    <button className='flex-box'>
+                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
+                                        </svg>
+
+                                        <span>فروخته شد</span>
+                                    </button>
+
+                                    <button className='flex-box'>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className='box-item-order-dashboard'>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link className='flex-box'>ویرایش</Link>
+
+                                    <button className='flex-box'>
+                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
+                                        </svg>
+
+                                        <span>فروخته شد</span>
+                                    </button>
+
+                                    <button className='flex-box'>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className='box-item-order-dashboard'>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link className='flex-box'>ویرایش</Link>
+
+                                    <button className='flex-box'>
+                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
+                                        </svg>
+
+                                        <span>فروخته شد</span>
+                                    </button>
+
+                                    <button className='flex-box'>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className='box-item-order-dashboard'>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link className='flex-box'>ویرایش</Link>
+
+                                    <button className='flex-box'>
+                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
+                                        </svg>
+
+                                        <span>فروخته شد</span>
+                                    </button>
+
+                                    <button className='flex-box'>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div className='box-item-order-dashboard'>
                             <div className='show-item-order-dashboard flex-box flex-column'>
                                 <div className='img-item-order-dashboard'>

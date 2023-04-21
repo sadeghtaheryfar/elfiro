@@ -7,7 +7,6 @@ import "swiper/css";
 import Modal from 'react-bootstrap/Modal';
 import SliderRange from './SliderRange';
 import { Link } from 'react-router-dom';
-import { Helmet } from "react-helmet";
 
 const Home = () => {
     const [DataCategory, SetDataCategory] = useState();

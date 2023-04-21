@@ -1,7 +1,7 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import LogoUser from './../imags/logo-user.png';
 import { useState,useEffect } from 'react';
+import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
 
 const Header = (props) => {
@@ -11,6 +11,9 @@ const Header = (props) => {
     const [DataUser, SetDataUser] = useState();
     const usertoken = localStorage.getItem("user-login");
     const [styleH, setstyleH] = useState(props);
+    const [notifmod, setnotifmod] = useState(false);
+    const notifmodClose = () => setnotifmod(false);
+    const notifmodShow = () => setnotifmod(true);
 
     useEffect(() => {
         if(usertoken != undefined)
@@ -122,15 +125,15 @@ const Header = (props) => {
                             </li>
 
                             <li>
-                                <a className='item-hover-user-header flex-box width-max'>
+                                <Link to={"/Dashboard/Profile/Authentication"} className='item-hover-user-header flex-box width-max'>
                                     <span>احراز هویت</span>
-                                </a>
+                                </Link>
                             </li>
 
                             <li>
-                                <a className='item-hover-user-header flex-box width-max'>
+                                <Link to={"/Dashboard/Order"} className='item-hover-user-header flex-box width-max'>
                                     <span>آگهی های من</span>
-                                </a>
+                                </Link>
                             </li>
 
                             <li>
@@ -155,6 +158,30 @@ const Header = (props) => {
                 <div id='exit-user-header' className='hide-item' onClick={menuhoverheader}></div>
             </div>
         )
+    }
+
+    var datanotif;
+
+    if(DataUser != undefined)
+    {
+        if(DataUser.data.user_data.notifications.length > 0)
+        {
+            datanotif = (
+                <div className='show-hover-notif-header'>
+                    {DataUser.data.user_data.notifications.map((item)=> 
+                        <div className='item-hover-notif-header' key={Math.random()}>
+                            <div dangerouslySetInnerHTML={{ __html: item.content}}>
+
+                            </div>
+
+                            <div className='flex-box flex-left'>
+                                <span>{item.date}</span>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )
+        }
     }
 
     return (
@@ -198,35 +225,19 @@ const Header = (props) => {
                                     <path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10"/>
                                     </svg>
                                 </a>
+                                
+                                <a className='flex-box' onClick={notifmodShow}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round"/>
+                                    <path d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10"/>
+                                    </svg>
+                                </a>
 
                                 <span></span>
 
                                 <div id='box-hover-notif-header' className='box-hover-notif-header hide-item'>
-                                    <div className='show-hover-notif-header'>
-                                        <div className='item-hover-notif-header'>
-                                            <div>
-                                                <span>باسلام خدمت دوستان عزیز
-                                                    یک عددکیس کامپیوترهمین طورکه درعکس مشاهده میشه کم کاروخواب بوده لازمم نمی‌شده الآنم به پولش احتیاج دارم می‌خوام بفروشم ازهمه نظرسالم به شرط تست یه سری مشخصاتشوبراتون توعکس گذاشتم خدایی قیمت هم خوب زدم پای معامله تخفیف هم میدم.به کارهرکسی میادمن در خدمتم.
-                                                </span>
-                                            </div>
-
-                                            <div className='flex-box flex-left'>
-                                                <span>10 اردیبهشت</span>
-                                            </div>
-                                        </div>
-
-                                        <div className='item-hover-notif-header'>
-                                            <div>
-                                                <span>باسلام خدمت دوستان عزیز
-                                                    یک عددکیس کامپیوترهمین طورکه درعکس مشاهده میشه کم کاروخواب بوده لازمم نمی‌شده الآنم به پولش احتیاج دارم می‌خوام بفروشم ازهمه نظرسالم به شرط تست یه سری مشخصاتشوبراتون توعکس گذاشتم خدایی قیمت هم خوب زدم پای معامله تخفیف هم میدم.به کارهرکسی میادمن در خدمتم.
-                                                </span>
-                                            </div>
-
-                                            <div className='flex-box flex-left'>
-                                                <span>10 اردیبهشت</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {datanotif}
                                 </div>
 
                                 <div id='hover-notif-header' className='hover-notif-header hide-item'></div>
@@ -243,6 +254,16 @@ const Header = (props) => {
                     </div>
                 </div>
             </div>
+
+            {/* moals ............... */}
+            <Modal className='modal-filter-home' show={notifmod} onHide={notifmodClose}>
+                <Modal.Header  className='modal-header-filter-mo width-max flex-box flex-justify-space' closeButton>
+                    <Modal.Title>اعلان ها</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {datanotif}
+                </Modal.Body>
+            </Modal>
         </>
     );
 };

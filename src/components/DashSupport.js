@@ -8,6 +8,22 @@ const DashSupport = () => {
     const usertoken = localStorage.getItem("user-login");
     const [userdata, setuserdata] = useState();
     const [supdata, setsupdata] = useState();
+
+    useEffect(() => {
+        window.addEventListener('resize', setWindow);
+        if(window.innerWidth < 1024)
+        {
+            window.location = "/Dashboard";
+        }
+    }, [])
+    
+    const setWindow = () => {
+        if(window.innerWidth < 1024)
+        {
+            window.location = "/Dashboard";
+        }
+    }
+    
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
         {
@@ -171,7 +187,7 @@ const DashSupport = () => {
 
     var datasupport;
 
-    if(userdata != undefined && supdata.length != 0)
+    if(userdata != undefined && supdata != undefined)
     {
         datasupport = (
             <div className='box-table-support-dashboard flex-box flex-aling-right width-max'>
