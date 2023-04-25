@@ -2427,13 +2427,13 @@ body{
 }
 
 
-.ad-sidbar-dashboard button{
+.ad-sidbar-dashboard{
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
     color: #FFFFFF;
-    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%);
-    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%);
+    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%) !important;
+    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%) !important;
     border-radius: 8px;
     border: none;
     height: 2.5rem;
@@ -2442,7 +2442,12 @@ body{
 }
 
 
-.ad-sidbar-dashboard button svg{
+.ad-sidbar-dashboard a{
+    color: white !important;
+}
+
+
+.ad-sidbar-dashboard a svg{
     margin-left: 0.5rem;
 }
 
@@ -3566,6 +3571,150 @@ td{
     color: black;
 }
 
+
+#main-OrderAd{
+    padding: 7.5rem 2rem 2rem 2rem;
+}
+
+
+#section-OrderAd{
+    padding: 5rem 2rem; height: 100%;
+    width: 50%;
+    box-sizing: border-box;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+}
+
+
+#section-OrderAd .header-OrderAd{
+    font-weight: 400;
+    font-size: 28px;
+    color: #000000;
+    margin-bottom: 1.5rem;
+}
+
+
+.box-from-orderAd{
+    width: 100%;
+}
+
+
+
+.box-from-orderAd label{
+    font-weight: 400;
+    font-size: 16px;
+    color: #7007FA;
+}
+
+
+.box-from-orderAd select{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0rem 1rem;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin: 0.5rem 0rem 1rem 0rem;
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+
+.box-from-orderAd button{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #FFFFFF;
+    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%) !important;
+    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%) !important;
+    border-radius: 8px;
+    border: none;
+    height: 2.5rem;
+    cursor: pointer;
+    padding: 0rem 1.5rem;
+    margin-top: 2rem;
+}
+
+
+.box-from-orderAd [type=text]{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0rem 1rem;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin: 0.5rem 0rem 1rem 0rem;
+}
+
+
+.box-category-orderAd{
+    background: #E4E4E4;
+    border-radius: 8px;
+    font-weight: 400;
+    font-size: 14px;
+    color: #7007FA;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+.box-category-orderAd svg{
+    margin: 0rem 0.5rem;
+}
+
+
+.box-from-orderAd [type=number]{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0rem 1rem;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin: 0.5rem 0rem 1rem 0rem;
+    border: none;
+    outline: none;
+}
+
+
+.box-from-orderAd textarea{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 10rem !important;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem !important;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin-bottom: 1rem;
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+
+.ant-checkbox-wrapper{
+    font-weight: 400;
+    font-size: 12px;
+    color: #808191 !important;
+}
+
+
+.box-from-orderAd .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #7007FA;
+    border-color: #7007FA;
+}
+
 /* style mobile ................................................................. */
 
 @media screen and (max-width : 1400px){
@@ -3840,6 +3989,11 @@ td{
 
     .box-icons-header > div:nth-child(3) a:nth-child(2){
         display: flex;
+    }
+
+
+    #section-OrderAd{
+        width: 100%;
     }
 }
 

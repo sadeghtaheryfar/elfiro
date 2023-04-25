@@ -77,8 +77,8 @@ const DashTransaction = () => {
                         <span>{userdata.data.user_data.user.name}</span>
                     </div>
 
-                    <div className='ad-sidbar-dashboard'>
-                        <button>
+                    <div className='ad-sidbar-dashboard flex-box'>
+                        <Link to={"/Order/add"}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
                             <g id="Group_530" data-name="Group 530" transform="translate(-1473.118 -172.217)">
                                 <path id="Path_1181" data-name="Path 1181" d="M1481.762,173.217v10" transform="translate(-2.644)" fill="none" stroke="#fff" strokeLinecap="round" strokeWidth="2"/>
@@ -87,7 +87,7 @@ const DashTransaction = () => {
                             </svg>
 
                             <span>ثبت آگهی</span>
-                        </button>
+                        </Link>
                     </div>
 
                     <div className='menu-sidbar-dashboard'>
@@ -157,7 +157,7 @@ const DashTransaction = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right'>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right'  to={"/Dashboard/support"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5H7" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>

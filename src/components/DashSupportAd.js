@@ -68,8 +68,8 @@ const DashSupportAd = () => {
                         <span>{userdata.data.user_data.user.name}</span>
                     </div>
 
-                    <div className='ad-sidbar-dashboard'>
-                        <button>
+                    <div className='ad-sidbar-dashboard flex-box'>
+                        <Link to={"/Order/add"}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
                             <g id="Group_530" data-name="Group 530" transform="translate(-1473.118 -172.217)">
                                 <path id="Path_1181" data-name="Path 1181" d="M1481.762,173.217v10" transform="translate(-2.644)" fill="none" stroke="#fff" strokeLinecap="round" strokeWidth="2"/>
@@ -78,7 +78,7 @@ const DashSupportAd = () => {
                             </svg>
 
                             <span>ثبت آگهی</span>
-                        </button>
+                        </Link>
                     </div>
 
                     <div className='menu-sidbar-dashboard'>

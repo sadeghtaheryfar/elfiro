@@ -18,6 +18,7 @@ import DashOrderFailed from "./components/DashOrderFailed";
 import DashOrderSold from "./components/DashOrderSold";
 import DashSupportAd from "./components/DashSupportAd";
 import DashProfileAuth from "./components/DashProfileAuth";
+import OrderAdd from "./components/OrderAdd";
 
 function App() {
   
@@ -29,6 +30,7 @@ function App() {
         <Route path="/Register"  element={<Register/>}/>
         <Route path="/Dashboard"  element={<Dashboard/>}/>
         <Route path="/Dashboard/Order"  element={<DashOrder/>}/>
+        <Route path="Order/add"  element={<OrderAdd/>}/>
         <Route path="/Dashboard/Order/Accepted"  element={<DashOrderAccepted/>}/>
         <Route path="/Dashboard/Order/Coming"  element={<DashOrderComing/>}/>
         <Route path="/Dashboard/Order/Failed"  element={<DashOrderFailed/>}/>
