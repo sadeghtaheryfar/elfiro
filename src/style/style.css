@@ -3315,6 +3315,15 @@ td{
 }
 
 
+.sucsess-tiket-add{
+    margin: 0.5rem 0rem;
+    text-align: center;
+    color: green;
+    font-size: 14px;
+    width: 100%;
+}
+
+
 .err-tiket-add{
     margin: 0.5rem 0rem;
     color: red;
@@ -3395,6 +3404,28 @@ td{
     font-weight: 400;
     font-size: 14px;
     color: #808191;
+}
+
+
+.show-upload-btn img {
+    max-height: 10rem;
+    width: 100%;
+    border-radius: 8px;
+}
+
+
+.show-upload-btn button {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #FFFFFF;
+    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%);
+    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%);
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    padding: 0.8rem 1.5rem;
+    margin-top: 2rem;
 }
 
 

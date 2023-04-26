@@ -19,6 +19,7 @@ import DashOrderSold from "./components/DashOrderSold";
 import DashSupportAd from "./components/DashSupportAd";
 import DashProfileAuth from "./components/DashProfileAuth";
 import OrderAdd from "./components/OrderAdd";
+import Transactions from "./components/Transactions";
 
 function App() {
   
@@ -42,6 +43,7 @@ function App() {
         <Route path="/Dashboard/Transaction"  element={<DashTransaction/>}/>
         <Route path="/Dashboard/Account"  element={<DashAccount/>}/>
         <Route path="/orders/:productId" element={<Order/>} />
+        <Route path="/Transactions/:productId" element={<Transactions/>} />
         <Route path="*"  element={<NoPage/>}/>
       </Routes>
     </div>
