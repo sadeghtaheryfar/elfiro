@@ -96,7 +96,6 @@ const Order = () => {
         document.getElementById("btn-call-number-order").classList.add("hide-item");
         document.getElementById("show-call-number-order").classList.remove("hide-item");
     }
-    console.log(Data);
 
     if(Data != undefined)
     {
@@ -212,6 +211,21 @@ const Order = () => {
     var SliderOrder;
     var Datamobile;
     var PageDetalist;
+
+    console.log(+idorder)
+
+    const starttran = () => {
+        const usertoken = localStorage.getItem("user-login");
+        const options = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
+        };
+
+        fetch(`https://server.elfiro.com/api/v1/orders/start-transaction/${idorder}`, options)
+            .then(response => response.json())
+            .then(response => console.log('>>>>>>>>>>>', response))
+            .catch(err => console.log('>>>>>>>>>>>', err))
+    }
 
     if(Data != undefined)
     {
@@ -446,7 +460,7 @@ const Order = () => {
                         <div className='flex-box flex-justify-space'>
                             <button onClick={handleShowB}>اطلاعات تماس</button>
                         
-                            <button>معامله آنلاین</button>
+                            <button onClick={starttran}>معامله آنلاین</button>
                         </div>
                     </div>
 

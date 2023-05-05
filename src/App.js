@@ -43,7 +43,7 @@ function App() {
         <Route path="/Dashboard/Transaction"  element={<DashTransaction/>}/>
         <Route path="/Dashboard/Account"  element={<DashAccount/>}/>
         <Route path="/orders/:productId" element={<Order/>} />
-        <Route path="/Transactions/:productId" element={<Transactions/>} />
+        <Route path="/transactions/:productId" element={<Transactions/>} />
         <Route path="*"  element={<NoPage/>}/>
       </Routes>
     </div>

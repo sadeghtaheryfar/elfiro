@@ -237,8 +237,14 @@ input[type="number"]:focus{
     margin: 2rem 0rem !important;
 }
 
+
 .margin-horizontal-1{
     margin: 0rem 1rem !important;
+}
+
+
+.margin-horizontal-0-5{
+    margin: 0rem 0.5rem !important;
 }
 
 
@@ -3320,7 +3326,6 @@ td{
     text-align: center;
     color: green;
     font-size: 14px;
-    width: 100%;
 }
 
 
@@ -3744,6 +3749,427 @@ td{
 .box-from-orderAd .ant-checkbox-checked .ant-checkbox-inner {
     background-color: #7007FA;
     border-color: #7007FA;
+}
+
+
+#main-transsaction{
+    padding: 7.5rem 2rem 2rem 2rem;
+}
+
+
+#header-main-tran{
+    width: 18.5rem;
+    min-width: 18.5rem;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+    padding: 1rem;
+    box-sizing: border-box;
+    margin-left: 1rem;
+    position: sticky;
+    top: 7.5rem;
+}
+
+
+.item-user-box-tran{
+    width: 48%;
+}
+
+
+.item-user-box-tran > div:nth-child(1){
+    width: 5.5rem;
+    height: 5.5rem;
+    position: relative;
+    margin-bottom: 0.7rem;
+}
+
+
+.item-user-box-tran > div:nth-child(1) img{
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+}
+
+
+.item-user-box-tran > div:nth-child(1) div{
+    font-weight: 400;
+    font-size: 12px;
+    color: #FFFFFF;
+    padding: 0.3rem;
+    width: 3.8rem;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: -0.5rem;
+    border-radius: 8px;
+}
+
+
+.item-user-box-tran > div:nth-child(2) div{
+    font-weight: 400;
+    font-size: 22px;
+}
+
+
+.item-user-box-tran > div:nth-child(4) div a{
+    font-weight: 400;
+    font-size: 12px;
+}
+
+
+.border-header-tran{
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+    height: 1px;
+    width: 100%;
+    background-color: #E9E9E9;
+}
+
+
+.name-box-tran > div:nth-child(1) {
+    width: 4rem;
+    min-width: 4rem;
+    height: 4rem;
+    margin-left: 1rem;
+}
+
+
+.name-box-tran > div:nth-child(1) img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+
+.name-box-tran > div:nth-child(2) {
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+}
+
+
+.price-box-tran{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 3rem;
+    position: relative;
+    margin: 0.6rem 0rem 1rem 0rem;
+}
+
+
+.price-box-tran span:nth-child(1){
+    font-weight: 400;
+    font-size: 22px;
+    color: #000000
+}
+
+
+.price-box-tran span:nth-child(2){
+    font-size: 16px;
+    margin: 0.3rem 0.2rem 0rem 0rem;
+}
+
+
+.price-box-tran div{
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #7007FA;
+    border-radius: 16px 0px 0px 16px;
+}
+
+
+.secure-box-tran{
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+    height: 4rem;
+    padding: 0rem 1rem;
+    font-weight: 400;
+    font-size: 16px;
+    color: #7007FA;
+}
+
+
+.secure-box-tran div{
+    margin-left: 0.7rem;
+    padding-top: 0.5rem;
+}
+
+
+.item-status-bar-tran{
+    width: 10.5rem;
+    min-width: 10.5rem;
+    height: 5rem;
+}
+
+
+.item-status-bar-tran-active{
+    height: 20rem;
+}
+
+
+.item-status-bar-tran > div:nth-child(1){
+    height: 100%;
+}
+
+
+.item-status-bar-tran > div:nth-child(1) > div:nth-child(1){
+    width: 1rem;
+    height: 1rem;
+    min-height: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 100px;
+    background-color: #7007FA;
+}
+
+
+.item-status-bar-tran > div:nth-child(1) > div:nth-child(2){
+    border-right: 3px dashed #7007FA;
+    width: 1px;
+    height: 100%;
+    margin-bottom: 0.5rem;
+}
+
+
+.item-status-bar-tran > div:nth-child(2){
+    margin-right: 0.7rem;
+}
+
+
+.item-status-bar-tran > div:nth-child(2) > div:nth-child(1){
+    font-weight: 400;
+    font-size: 14px;
+    color: #BFBFBF;
+    margin-bottom: 0.5rem;
+}
+
+
+.item-status-bar-tran > div:nth-child(2) > div:nth-child(2){
+    font-weight: 400;
+    font-size: 16px;
+    color: #808191;
+}
+
+
+.box-detalist-tran{
+    width: 50%;
+}
+
+
+.box-detalist-tran .image{
+    width: 100%;
+}
+
+
+.box-detalist-tran .image img{
+    width: 100%;
+}
+
+
+.box-detalist-tran .text svg{
+    margin-left: 0.5rem;
+}
+
+
+.box-detalist-tran .text{
+    width: 100%;
+    background: #E4E4E4;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+    padding: 1rem;
+    font-weight: 400;
+    font-size: 16px;
+    color: #7007FA;
+    box-sizing: border-box;
+}
+
+
+.box-detalist-tran .box-accept{
+    background: #E4E4E4;
+    border-radius: 8px;
+    padding: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+
+.box-detalist-tran .box-accept .logo{
+    width: 5.5rem;
+    height: 5.5rem;
+}
+
+
+.box-detalist-tran .box-accept .logo img{
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+}
+
+
+.box-detalist-tran .box-accept .name{
+    font-size: 22px;
+    color: #7007FA;
+    margin: 0.7rem 0rem;
+}
+
+
+.box-detalist-tran .box-accept .detalist{
+    font-size: 16px;
+    color: #808191;
+}
+
+
+.box-detalist-tran .btn-accept button:nth-child(1){
+    font-size: 16px;
+    color: #FFFFFF;
+    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%) !important;
+    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%) !important;
+    border-radius: 8px;
+    border: none;
+    height: 3.5rem;
+    cursor: pointer;
+    padding: 0rem 1.5rem;
+    margin-left: 0.4rem;
+}
+
+
+.box-detalist-tran .btn-accept button:nth-child(2){
+    font-size: 16px;
+    font-size: 16px;
+    color: #7007FA;
+    background: #FFFFFF;
+    border: 1px solid #7007FA;
+    border-radius: 8px;
+    height: 3.5rem;
+    cursor: pointer;
+    padding: 0rem 1.5rem;
+    margin-right: 0.4rem;
+}
+
+
+.box-pay-header-tran .inventory{
+    font-size: 12px;
+    color: #808191;
+}
+
+
+.box-pay-header-tran .use-wallet{
+    margin: 0.5rem 0rem;
+}
+
+
+.box-pay-header-tran .use-wallet label{
+    font-size: 14px;
+    color: #808191;
+}
+
+
+.box-pay-header-tran .payment{
+    font-weight: 400;
+    font-size: 12px;
+    color: #7007FA;
+}
+
+
+.box-pay-header-tran .btns button:nth-child(1){
+    width: 100%;
+    font-size: 16px;
+    color: #FFFFFF;
+    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%) !important;
+    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%) !important;
+    border-radius: 8px;
+    border: none;
+    height: 2.5rem;
+    cursor: pointer;
+    padding: 0rem 1.5rem;
+    box-sizing: border-box;
+    margin-top: 0.5rem;
+}
+
+
+.box-pay-header-tran .btns button:nth-child(2){
+    font-size: 16px;
+    font-size: 16px;
+    color: #7007FA;
+    background: #FFFFFF;
+    border: 1px solid #7007FA;
+    border-radius: 8px;
+    width: 100%;
+    height: 2.5rem;
+    cursor: pointer;
+    padding: 0rem 1.5rem;
+    box-sizing: border-box;
+    margin: 0.7rem 0rem 1.5rem 0rem;
+}
+
+
+.paysuc-box-tran{
+    margin-bottom: 1rem;
+    font-size: 16px;
+    color: #000000;
+    background: #0ed40048;
+    border-radius: 8px;
+    height: 3rem;
+}
+
+
+.box-send-detalist-tran .inp {
+    margin-top: 1rem;
+}
+
+
+.box-send-detalist-tran .inp textarea {
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 10rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+
+.box-send-detalist-tran .inp label {
+    font-size: 12px;
+    color: #808191;
+}
+
+
+.box-send-detalist-tran .btns button:nth-child(1){
+    font-size: 16px;
+    color: #FFFFFF;
+    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%) !important;
+    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%) !important;
+    border-radius: 8px;
+    border: none;
+    height: 2.5rem;
+    cursor: pointer;
+    padding: 0rem 1.5rem;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+
+.box-send-detalist-tran .btns button:nth-child(2){
+    font-size: 16px;
+    font-size: 16px;
+    color: #7007FA;
+    background: #FFFFFF;
+    border: 1px solid #7007FA;
+    border-radius: 8px;
+    height: 2.5rem;
+    cursor: pointer;
+    padding: 0rem 1.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    margin-right: 1rem;
 }
 
 /* style mobile ................................................................. */

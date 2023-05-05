@@ -196,7 +196,7 @@ const DahAccount = () => {
                 'Content-Type': 'application/json',
                 Authorization: `${usertoken}`
             },
-            body: `{"price":${chargenum},"gateway":"payir","call_back_address":"http://localhost:3000/Dashboard/Account"}`
+            body: `{"price":${chargenum},"gateway":"zarinpal","call_back_address":"http://localhost:3000/Dashboard/Account"}`
         };
 
         fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)

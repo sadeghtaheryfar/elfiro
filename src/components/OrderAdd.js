@@ -115,6 +115,7 @@ const OrderAdd = () => {
                     document.getElementById("errimage").innerHTML = "";
                     document.getElementById("errdescription").innerHTML = "";
                     document.getElementById("errprice").innerHTML = "";
+                    document.getElementById("errsend").innerHTML = "";
                 }else{
                     console.log('>>>>>>>>>>>', res)
                     if(res.data.message.name != undefined)
@@ -133,9 +134,9 @@ const OrderAdd = () => {
                     {
                         document.getElementById("errprice").innerHTML = res.data.message.price;
                     }
-                    if(res.data.message.order != undefined)
+                    if(res.data.message != undefined)
                     {
-                        document.getElementById("errsend").innerHTML = res.data.message.order;
+                        document.getElementById("errsend").innerHTML = res.data.message;
                     }
                 }
             })
