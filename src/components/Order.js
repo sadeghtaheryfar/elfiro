@@ -21,6 +21,9 @@ const Order = () => {
     const [showB, setShowB] = useState(false);
     const handleCloseB = () => setShowB(false);
     const handleShowB = () => setShowB(true);
+    const [showC, setShowC] = useState(false);
+    const handleCloseC = () => setShowC(false);
+    const handleShowC = () => setShowC(true);
 
     useEffect(() => {
         const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
@@ -95,6 +98,24 @@ const Order = () => {
         Setcallnumber(Data.user.phone);
         document.getElementById("btn-call-number-order").classList.add("hide-item");
         document.getElementById("show-call-number-order").classList.remove("hide-item");
+    }
+
+    const starttran = () => {
+        const usertoken = localStorage.getItem("user-login");
+        setShowC(true)
+        const options = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
+            Body : '{"confirmLaw":true}'
+        };
+
+        fetch(`https://server.elfiro.com/api/v1/orders/start-transaction/${Data.id}`, options)
+            .then(response => response.json())
+            .then(response =>  {
+                document.getElementById("show-start-tran").innerHTML = response.data.message.transaction;
+                console.log('>>>>>>>>>>>', response);
+            })
+            .catch(err => console.log('>>>>>>>>>>>', err))
     }
 
     if(Data != undefined)
@@ -189,7 +210,7 @@ const Order = () => {
                         <span>{callnumber}</span>
                     </div>
 
-                    <button>معامله آنلاین</button>
+                    <button onClick={starttran}>معامله آنلاین</button>
                 </div>
 
                 <div className='header-message-order'>
@@ -211,21 +232,6 @@ const Order = () => {
     var SliderOrder;
     var Datamobile;
     var PageDetalist;
-
-    console.log(+idorder)
-
-    const starttran = () => {
-        const usertoken = localStorage.getItem("user-login");
-        const options = {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
-        };
-
-        fetch(`https://server.elfiro.com/api/v1/orders/start-transaction/${idorder}`, options)
-            .then(response => response.json())
-            .then(response => console.log('>>>>>>>>>>>', response))
-            .catch(err => console.log('>>>>>>>>>>>', err))
-    }
 
     if(Data != undefined)
     {
@@ -463,6 +469,17 @@ const Order = () => {
                             <button onClick={starttran}>معامله آنلاین</button>
                         </div>
                     </div>
+
+                     {/* <!-- Modal --> */}
+                    <Modal className='modal-detalist-tran' show={showC} onHide={handleCloseC} centered>
+                        <Modal.Body>
+                            <div className='flex-box flex-column'>
+                                <div className='message'>
+                                    <span id='show-start-tran'></span>
+                                </div>
+                            </div>
+                        </Modal.Body>
+                    </Modal>
 
                     {/* <!-- Modal --> */}
                     <Modal className='modal-number-detalist-order-mo' show={showB} onHide={handleCloseB} centered>

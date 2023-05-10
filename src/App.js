@@ -20,6 +20,7 @@ import DashSupportAd from "./components/DashSupportAd";
 import DashProfileAuth from "./components/DashProfileAuth";
 import OrderAdd from "./components/OrderAdd";
 import Transactions from "./components/Transactions";
+import Chat from "./components/Chat";
 
 function App() {
   
@@ -42,6 +43,7 @@ function App() {
         <Route path="/Dashboard/Support/ad"  element={<DashSupportAd/>}/>
         <Route path="/Dashboard/Transaction"  element={<DashTransaction/>}/>
         <Route path="/Dashboard/Account"  element={<DashAccount/>}/>
+        <Route path="/chats"  element={<Chat/>}/>
         <Route path="/orders/:productId" element={<Order/>} />
         <Route path="/transactions/:productId" element={<Transactions/>} />
         <Route path="*"  element={<NoPage/>}/>

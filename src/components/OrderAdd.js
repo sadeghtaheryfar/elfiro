@@ -40,9 +40,9 @@ const OrderAdd = () => {
                         window.location = "/Login"
                     });
 
-                fetch('https://server.elfiro.com/api/v1/home/categories', options)
+                fetch('https://server.elfiro.com/api/v1/basic/sidebar', options)
                     .then(response => response.json())
-                    .then(result => SetDataCategory(result.data.most_used_categories.record))
+                    .then(result => SetDataCategory(result.data.sidebar.categories))
             }else{
                 window.location = "/Login";
             }
@@ -206,7 +206,7 @@ const OrderAdd = () => {
                             <label htmlFor='name'>نام آگهی شما</label>
                             <br />
                             <span id='errname' className='errinputs'></span>
-                            <input type='text' id='name' onChange={(e) => setnameOr(e)} />
+                            <input type='text' id='name' onChange={(e) => setnameOr(e.target.value)} />
                         </div>
 
                         <div>
@@ -256,7 +256,7 @@ const OrderAdd = () => {
                             <label htmlFor='description'>توضیحات</label>
                             <br />
                             <span id='errdescription' className='err-tiket-add'></span>
-                            <textarea type='text' id='description' onChange={(e) => setdescriptionOr(e)} />
+                            <textarea type='text' id='description' onChange={(e) => setdescriptionOr(e.target.value)} />
                         </div>
 
                         <div className='box-from-orderAd'>
