@@ -1482,6 +1482,7 @@ body{
     outline: none;
     padding: 0rem 0.5rem;
     margin: 1rem 0rem;
+    box-sizing: border-box;
 }
 
 
@@ -4498,13 +4499,15 @@ td{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 10.5rem;
+    max-width: 9rem;
 }
 
 
 .item-chat-sidbar .last{
     font-size: 12px;
     color: #7007FA;
+    width: min-content;
+    white-space: nowrap;
 }
 
 
@@ -4600,6 +4603,10 @@ td{
 
 .box-show-chatpage{
     background: #E4E4E4;
+    max-height: 100%;
+    overflow: auto;
+    padding: 2rem 1rem 0rem 1rem;
+    box-sizing: border-box;
 }
 
 
@@ -4632,6 +4639,59 @@ td{
 
 #footer-page-chat .file{
     padding-top: 0.4rem;
+}
+
+
+.box-ruils-chatpage{
+    width: 50%;
+    border: 1px solid #7007FA;
+    border-radius: 8px;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+
+.box-ruils-chatpage .header{
+    font-size: 16px;
+    color: #000000;
+}
+
+
+.box-ruils-chatpage .item{
+    font-size: 12px;
+    color: #000000;
+}
+
+
+.item-message-chatpage{
+    margin: 1rem;
+}
+
+
+.item-message-chatpage .text{
+    background: #FFFFFF;
+    border-radius: 20px 0px 20px 20px;
+    padding: 1rem;
+}
+
+
+.recive-message-chatpage .text{
+    border-radius: 0px 20px 20px 20px;
+    margin-left: 1rem;
+}
+
+
+.recive-message-chatpage .logo{
+    height: 3rem;
+    width: 3rem;
+    min-width: 3rem;
+}
+
+
+.recive-message-chatpage .logo img{
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
 }
 
 /* style mobile ................................................................. */

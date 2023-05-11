@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ChatPage = () => {
+const ChatPage = (props) => {
     return (
         <div className='width-max height-max flex-box flex-column'>
             <div id='hedaer-page-chat' className='flex-box flex-justify-space width-max'>
@@ -40,8 +40,69 @@ const ChatPage = () => {
                 </div>
             </div>
 
-            <div className='box-show-chatpage height-max width-max'>
-                paf
+            <div className='box-show-chatpage height-max width-max flex-box flex-column flex-right'>
+                <div className='box-ruils-chatpage'>
+                    <div className='header flex-box'>
+                        <span>قوانین چت</span>
+                    </div>
+
+                    <div className='item'>
+                        <span>1. </span>
+
+                        <span>test</span>
+                    </div>
+
+                    <div className='item'>
+                        <span>2. </span>
+
+                        <span>test</span>
+                    </div>
+
+                    <div className='item'>
+                        <span>3. </span>
+
+                        <span>test</span>
+                    </div>
+                </div>  
+
+                <div className='box-message-chatpage width-max'>
+                    <div className='item-message-chatpage send-message-chatpage flex-box flex-column flex-right flex-aling-right'>
+                        <div className='text'>
+                            <span>سلام وقت بخیر امان هست؟؟</span>
+                        </div>
+
+                        <div className='read'>
+                            <svg width="19" height="11" viewBox="0 0 19 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.9997 1.90527L10.8101 9.09497L9.7207 8.00562" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M12.2282 1.90527L5.03855 9.09497L1.77051 5.82693" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div className='item-message-chatpage recive-message-chatpage flex-box flex-column flex-right flex-aling-left'>
+                        <div className='flex-box'>
+                            <div className='text'>
+                                <span>سلام وقت بخیر امان نیست</span>
+                            </div>
+
+                            <div className='logo'>
+                                <img src='http://server.elfiro.com/storage/profiles/w0Lyoli1rzPWRxkU95WFlIJgF6RVVxirQEwdMkL8.jpg' />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='item-message-chatpage send-message-chatpage flex-box flex-column flex-right flex-aling-right'>
+                        <div className='text'>
+                            <span>عددکیس کامپیوترهمین طورکه درعکس مشاهده میشه کم کاروخواب بوده لازمم نمی‌</span>
+                        </div>
+
+                        <div className='read'>
+                            <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.9997 1.5L4.81004 8.6897L1.54199 5.42165" stroke="#BFBFBF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id='footer-page-chat' className='width-max flex-box'>
