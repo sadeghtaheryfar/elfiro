@@ -348,6 +348,11 @@ a{
 }
 
 
+.hide-item-pc-f{
+    display: flex !important;
+}
+
+
 .show-item{
     display: block !important;
 }
@@ -1986,7 +1991,6 @@ body{
 
 .modal-body{
     overflow-y: auto;
-    padding-bottom: 5rem !important;
 }
 
 
@@ -2261,19 +2265,13 @@ body{
 
 
 .menu-detalist-order-mo{
-    height: 4rem;
-    width: 100vw;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    background-color: white;
-    box-shadow: 0px -1px 3px rgba(0, 0, 0, 0.0705882);
     z-index: 9;
+    padding: 0.7rem 0rem;
+    border-bottom: 1px solid #BFBFBF;
 }
 
 
 .menu-detalist-order-mo > div{
-    padding: 0.5rem;
     width: 100%;
 }
 
@@ -2320,6 +2318,27 @@ body{
     background-color: white !important;
     border-radius: 8px;
     padding: 1rem;
+    padding-bottom: 1rem !important;
+    text-align: center;
+}
+
+
+.modal-send-offend-order-mo .modal-content{
+    width: 100vw !important;
+    background-color: rgba(255, 0, 0, 0) !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.modal-send-offend-order-mo .modal-body{
+    width: 50% !important;
+    background-color: white !important;
+    border-radius: 8px;
+    padding: 1rem;
+    padding-bottom: 1rem !important;
+    text-align: center;
 }
 
 
@@ -4313,6 +4332,7 @@ td{
     font-size: 16px;
     color: #000000;
     margin-bottom: 1rem;
+    text-align: center;
 }
 
 
@@ -4590,11 +4610,6 @@ td{
 }
 
 
-#hedaer-page-chat > div{
-    width: 33.3333%;
-}
-
-
 #hedaer-page-chat .header-chatpage{
     font-size: 16px;
     color: #7007FA;
@@ -4607,6 +4622,7 @@ td{
     overflow: auto;
     padding: 2rem 1rem 0rem 1rem;
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 
@@ -4692,6 +4708,82 @@ td{
     width: 100%;
     height: 100%;
     border-radius: 100px;
+}
+
+
+.recive-message-chatpage svg{
+    display: none;
+}
+
+
+.box-send-offend-modal label{
+    font-size: 12px;
+    color: #808191;
+    text-align: right;
+    width: 100%;
+    display: flex;
+}
+
+
+.box-send-offend-modal input[type=text] {
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0rem 1rem;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin: 0.5rem 0rem 1rem 0rem;
+}
+
+
+.box-send-offend-modal textarea {
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 10rem !important;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem !important;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin-bottom: 1rem;
+    border: none;
+    outline: none;
+    resize: none;
+    margin: 0.5rem 0rem 0.5rem 0rem;
+}
+
+
+.box-send-offend-modal button {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #FFFFFF;
+    background: linear-gradient(270deg, #7007FA 0%, #6C5DD3 100%) !important;
+    background-image: conic-gradient(from 30deg,#7007fa 10%,#9d56ff 120%,#7007fa 100%) !important;
+    border-radius: 8px;
+    border: none;
+    height: 2.5rem;
+    cursor: pointer;
+    padding: 0rem 1.5rem;
+}
+
+
+.modal-header-send-offend-order-mo {
+    border-bottom: 1px solid #E9E9E9 !important;
+    margin-bottom: 1rem;
+    padding-top: 0rem !important;
+    padding-left: 0rem !important;
+    padding-right: 0rem !important;
+}
+
+
+.modal-header-send-offend-order-mo button{
+    margin: 0rem !important;
+    cursor: pointer;
 }
 
 /* style mobile ................................................................. */
@@ -4782,8 +4874,24 @@ td{
         width: 100vw;
         height: 3.5rem;
         background: #FFFFFF;
-        box-shadow: 0px -1px 3px;
+        box-shadow: 0px 0px 12px rgb(0 0 0 / 22%);
         z-index: 20;
+    }
+
+
+    .icon-add-order-mobile{
+        border-radius: 100px;
+        width: 3rem;
+        height: 3rem;
+        background: #6C5DD3;
+        margin-top: -1.5rem;
+        border: 2px solid white;
+        box-shadow: 0px 0px 12px rgb(0 0 0 / 22%);
+    }
+
+
+    .icon-add-order-mobile path{
+        stroke: white;
     }
 
 
@@ -4839,7 +4947,7 @@ td{
 
 
     #main-order{
-        padding: 4.7rem 0rem 5rem 0rem;
+        padding: 4.7rem 0rem 0rem 0rem;
     }
 
 
@@ -4860,7 +4968,7 @@ td{
     }
 
     #main-dashboard{
-        padding: 7.5rem 2rem 2rem 2rem;
+        padding: 7.5rem 2rem 0rem 2rem;
     }
 
     .header-item-transaction-dashboard{
@@ -4927,6 +5035,59 @@ td{
 
     .box-detalist-tran{
         width: 100%;
+    }
+
+    #not-chat-box{
+        display: none;
+    }
+
+    #sidbar-chat{
+        width: 100%;
+        min-width: none;
+    }
+
+    #main-chat{
+        min-width: none;
+        min-height: auto;
+        overflow: visible;
+    }
+
+    .hide-item-pc{
+        display:  none !important;
+    }
+
+    .hide-item-pc-f{
+        display:  none !important;
+    }
+
+    .icon-exit-chat-mobile{
+        margin-left: 0.5rem;
+        cursor: pointer;
+    }
+
+    .box-show-chatpage{
+        padding: 2rem 0rem 0rem 0rem;
+    }
+
+
+    #footer-page-chat{
+        padding: 0.5rem 1rem;
+    }
+
+    #hedaer-page-chat{
+            padding: 0.8rem 1rem;
+    }
+
+    .box-ruils-chatpage{
+        width: 80%;
+    }
+
+    .modal-send-offend-order-mo .modal-body {
+        width: 80% !important;
+    }
+
+    #root {
+        padding-bottom: 5rem;
     }
 }
 

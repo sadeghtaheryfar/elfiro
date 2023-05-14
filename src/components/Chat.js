@@ -5,6 +5,7 @@ import ChatPage from './ChatPage';
 
 const Chat = () => {
     const [Data, setData] = useState();
+    const [Datauser, setDatauser] = useState();
     const [first, setfirst] = useState(1);
     const [datalistchat, setdatalistchat] = useState();
     useEffect(() => {
@@ -24,6 +25,8 @@ const Chat = () => {
                         if(response.status != "success")
                         {
                             window.location = "/Login"
+                        }else{
+                            setDatauser(response.data.user_data.user)
                         }
                     })
                     .catch(err => {
@@ -45,45 +48,73 @@ const Chat = () => {
         }
     }, [])
 
-    var ChatsList;
-
-    var ChatBoxHtml;
+    const [ChatBoxHtml, setChatBoxHtml] = useState();
 
     const ShowChatBox = (event) => {
         document.getElementById("not-chat-box").classList.add("hide-item");
-        ChatBoxHtml = "<ChatPage Datachat={Data} />";
+        document.getElementById("sidbar-chat").classList.add("hide-item-pc");
+        document.getElementById("box-chat-main").classList.remove("hide-item-pc-f");
+        setChatBoxHtml(<ChatPage id={event} />);
     }
 
-    if(Data != undefined && datalistchat != undefined)
+    var ChatsList;
+
+    if(Data != undefined && datalistchat != undefined && Datauser != undefined)
     {
         console.log(Data);
         ChatsList = (
             <div className='box-item-chat-sidbar'>
                 {datalistchat.map((item)=> 
                     <div className='item-chat-sidbar flex-box' key={item.id} onClick={(e) => ShowChatBox(item.id)}>
-                        <div className='width-max flex-box flex-right'>
-                            <div className='image'>
-                                <img src={item.user2.profile_image} />
+                        {item.user1.id === Datauser.id ?(
+                            <div className='width-max flex-box flex-right'>
+                                <div className='image'>
+                                    <img src={item.user2.profile_image} />
 
-                                {item.user2.status === "confirmed" && 
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.0001 18.3334C14.5834 18.3334 18.3334 14.5834 18.3334 10.0001C18.3334 5.41675 14.5834 1.66675 10.0001 1.66675C5.41675 1.66675 1.66675 5.41675 1.66675 10.0001C1.66675 14.5834 5.41675 18.3334 10.0001 18.3334Z" fill="#0094FF"/>
-                                        <path d="M6.45825 9.99993L8.81659 12.3583L13.5416 7.6416" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                }
-                            </div>
-
-                            <div className='detalist'>
-                                <div>
-                                    <span>{item.user2.name}</span>
+                                    {item.user2.status === "confirmed" && 
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M10.0001 18.3334C14.5834 18.3334 18.3334 14.5834 18.3334 10.0001C18.3334 5.41675 14.5834 1.66675 10.0001 1.66675C5.41675 1.66675 1.66675 5.41675 1.66675 10.0001C1.66675 14.5834 5.41675 18.3334 10.0001 18.3334Z" fill="#0094FF"/>
+                                            <path d="M6.45825 9.99993L8.81659 12.3583L13.5416 7.6416" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    }
                                 </div>
 
-                                <div>
-                                    <span>{item.user2.description}</span>
+                                <div className='detalist'>
+                                    <div>
+                                        <span>{item.user2.name}</span>
+                                    </div>
+
+                                    <div>
+                                        <span>{item.user2.description}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        ) : (
+                            <div className='width-max flex-box flex-right'>
+                                <div className='image'>
+                                    <img src={item.user1.profile_image} />
+
+                                    {item.user1.status === "confirmed" && 
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M10.0001 18.3334C14.5834 18.3334 18.3334 14.5834 18.3334 10.0001C18.3334 5.41675 14.5834 1.66675 10.0001 1.66675C5.41675 1.66675 1.66675 5.41675 1.66675 10.0001C1.66675 14.5834 5.41675 18.3334 10.0001 18.3334Z" fill="#0094FF"/>
+                                            <path d="M6.45825 9.99993L8.81659 12.3583L13.5416 7.6416" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    }
                                 </div>
 
+                                <div className='detalist'>
+                                    <div>
+                                        <span>{item.user1.name}</span>
+                                    </div>
+
+                                    <div>
+                                        <span>{item.user1.description}</span>
+                                    </div>
+
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                         <div className='last'>
                             <span>{item.last.date}</span>
@@ -111,7 +142,7 @@ const Chat = () => {
                     {ChatsList}
                 </section>
                 
-                <section id='box-chat-main' className='width-max height-max flex-box'>
+                <section id='box-chat-main' className='width-max height-max flex-box hide-item-pc-f'>
                     <div id='not-chat-box' className='not-chat-box'>
                         <div className='image'>
                             <img src='https://elfiro.com/img/66.png' />
@@ -122,7 +153,7 @@ const Chat = () => {
                         </div>
                     </div>
 
-                    <ChatPage Datachat={Data} />
+                    {ChatBoxHtml}
                 </section>
             </section>
         </div>

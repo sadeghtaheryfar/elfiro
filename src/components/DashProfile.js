@@ -9,8 +9,6 @@ const DashProfile = () => {
     const [userdatas, setuserdatas] = useState()
     const [imageprofile, setimageprofile] = useState();
     const [descriptionprofile, setdescriptionprofile] = useState();
-    const [provinceprofile, setprovinceprofile] = useState("Tehran");
-    const [cityprofile, setcityprofile] = useState("Tehran");
     const [emailprofile, setemailprofile] = useState();
     const [usernameprofile, setusernameprofile] = useState();
     const [nameprofile, setnameprofile] = useState();
@@ -198,16 +196,69 @@ const DashProfile = () => {
 
     var dataprofile;
 
-    const [datacity, setdatacity] = useState();
-
-    const chengecity = (e) => {
-
-    }
-
     const imageprofiler = useRef();
 
     const chengeimage = (e) => {
         setimageprofile(e);
+    }
+
+    const [province, setprovince] = useState("Tehran");
+    const [city, setcity] = useState("Tehran");
+
+    var dataprovince;
+
+    if(userdatas != undefined)
+    {
+        const formattedProvinces = Object.keys(userdatas.provinces).map((item) => ({
+            value : item,
+            label : userdatas.provinces[item],
+        }))
+
+        const formattedCitis = Object.keys(userdatas.cities[province])?.map((item) => ({
+            value : item,
+            label : userdatas.cities[province][item],
+        }))
+
+        if(formattedProvinces != undefined)
+        {
+            dataprovince = (
+                <div className='flex-box width-max'>
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errprovince' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="province">استان</label>
+
+                        <select value={province} onChange={(e) => setprovince(e.target.value)}>
+                            {formattedProvinces.map((item) => (
+                                <option key={item?.value} value={item?.value}>
+                                    {item?.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className='margin-horizontal-1'></div>
+
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errcity' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="city">شهر</label>
+
+                        <select value={city} onChange={(e) => setcity(e.target.value)}>
+                            {formattedCitis.map((item) => (
+                                <option key={item?.value} value={item?.value}>
+                                    {item?.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+            )
+        }
     }
 
     const onSend = async () => {
@@ -217,8 +268,8 @@ const DashProfile = () => {
         formData.append('email', emailprofile);
         formData.append('password', passprofile);
         formData.append('description', descriptionprofile);
-        formData.append('province', "Tehran");
-        formData.append('city', "Tehran");
+        formData.append('province', province);
+        formData.append('city', city);
         formData.append('image', imageprofile);
 
         fetch('https://server.elfiro.com/api/v1/client/profile', {
@@ -372,36 +423,7 @@ const DashProfile = () => {
                     </div>
                 </div>
 
-                <div className='flex-box width-max'>
-                    <div className='item-profile-edit flex-box flex-column'>
-                        <div className='err-tiket-add'>
-                            <span id='errprovince' className='err-tiket-add'></span>
-                        </div>
-                        
-                        <label htmlFor="province">استان</label>
-
-                        <select id='province' defaultValue={"none"} onChange={(e) => chengecity(e.target.value)}>
-                            <option value={"none"} disabled hidden >انتخاب کنید</option>
-                            <option value="Alborz">البز</option><option value="Ardabil">ادربیل</option><option value="Azerbaijan East">اذربایجان شرقی</option><option value="Azerbaijan West">اذربایجان غربی</option><option value="Bushehr">بوشر</option><option value="Chahar Mahaal and Bakhtiari">چهار محال و بختیاری</option><option value="Fars">فارس</option><option value="Gilan">گیلان</option><option value="Golestan">گلستان</option><option value="Hamadan">گرگان</option><option value="Hormozgān">هرمزگان</option><option value="Ilam">ایلام</option><option value="Isfahan">اصفهان</option><option value="Kerman">کرمان</option><option value="Kermanshah">کرمانشاه</option><option value="Khorasan North">خراسان شمالی</option><option value="Khorasan Razavi">خراسان رضوی</option><option value="Khorasan South">خراسان جنوبی</option><option value="Khuzestan">خوزستان</option><option value="Kohgiluyeh and Boyer-Ahmad">کهگیلویه و بویر احمد</option><option value="Kurdistan">کردستان</option><option value="Lorestan">لرستان</option><option value="Markazi">مرکزی</option><option value="Mazandaran">مازندران</option><option value="Qazvin">قزوین</option><option value="Qom">قم</option><option value="Semnan">سمنان</option><option value="Sistan and Baluchestan">سیستان و بلوچستان</option><option value="Tehran">تهران</option><option value="Yazd">یزد</option><option value="Zanjan">زنجان</option>
-                        </select>
-                    </div>
-
-                    <div className='margin-horizontal-1'></div>
-
-                    <div className='item-profile-edit flex-box flex-column'>
-                        <div className='err-tiket-add'>
-                            <span id='errcity' className='err-tiket-add'></span>
-                        </div>
-                        
-                        <label htmlFor="city">شهر</label>
-
-                        <select id='city' defaultValue={"none"}>
-                            <option value={"none"} disabled hidden >انتخاب کنید</option>
-
-                            {datacity}
-                        </select>
-                    </div>
-                </div>
+                {dataprovince}
 
                 <div className='item-profile-edit width-max flex-box flex-right'>
                     <button onClick={onSend}>ثبت تغییرات</button>

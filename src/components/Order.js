@@ -15,6 +15,7 @@ const Order = () => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     var idorder = window.location.pathname;
     const [Data, setData] = useState();
+    const [Datauser, setDatauser] = useState();
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -24,6 +25,9 @@ const Order = () => {
     const [showC, setShowC] = useState(false);
     const handleCloseC = () => setShowC(false);
     const handleShowC = () => setShowC(true);
+    const [showD, setShowD] = useState(false);
+    const handleCloseD = () => setShowD(false);
+    const handleShowD = () => setShowD(true);
 
     useEffect(() => {
         const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
@@ -44,6 +48,8 @@ const Order = () => {
                         if(response.status != "success")
                         {
                             window.location = "/Login"
+                        }else{
+                            setDatauser(response);
                         }
                     })
                     .catch(err => {
@@ -106,14 +112,71 @@ const Order = () => {
         const options = {
             method: 'POST',
             headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
-            Body : '{"confirmLaw":true}'
+            body: '{"confirmLaw":true}'
         };
 
         fetch(`https://server.elfiro.com/api/v1/orders/start-transaction/${Data.id}`, options)
             .then(response => response.json())
             .then(response =>  {
-                document.getElementById("show-start-tran").innerHTML = response.data.message.transaction;
-                console.log('>>>>>>>>>>>', response);
+                if(response.status === "success")
+                {
+                    document.getElementById("show-start-tran").innerHTML = response.data.message.transaction;
+                }else{
+                    if(response.data.message.user != undefined)
+                    {
+                        document.getElementById("show-start-tran").innerHTML = response.data.message.user;
+                    }
+                }
+
+            })
+            .catch(err => console.log('>>>>>>>>>>>', err))
+    }
+
+    const StartChatOnile = () => {
+        const usertoken = localStorage.getItem("user-login");
+        const options = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
+            Body : `{"confirmLaw":true,"user_target":${Data.user.id}}`
+        };
+
+        fetch(`https://server.elfiro.com/api/v1/client/chat/send`, options)
+            .then(response => response.json())
+            .then(response =>  console.log('>>>>>>>>>>>', response))
+            .catch(err => console.log('>>>>>>>>>>>', err))
+    }
+
+    const [InOffendSub, setInOffendSub] = useState();
+    const [InOffendDes, setInOffendDes] = useState();
+    const SendOffend = () => {
+        const usertoken = localStorage.getItem("user-login");
+        const options = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
+            body : `{"phone":"${Datauser.data.user_data.user.phone}","subject":"${InOffendSub}","content":"${InOffendDes}"}`
+        };
+
+        fetch(`https://server.elfiro.com/api/v1/users/offend/${Data.user.user_name}`, options)
+            .then(response => response.json())
+            .then(response =>  {
+                if(response.status === "success")
+                {
+                    document.getElementById("sucsend").innerHTML = response.data.message.content;
+                }else{
+                    console.log(response);
+                    if(response.data.message.subject != undefined)
+                    {
+                        document.getElementById("rr-subject-offend").innerHTML = response.data.message.subject;
+                    }
+                    if(response.data.message.content != undefined)
+                    {
+                        document.getElementById("rr-description-offend").innerHTML = response.data.message.content;
+                    }
+                    if(response.data.message.user != undefined)
+                    {
+                        document.getElementById("rr-description-offend").innerHTML = response.data.message.user;
+                    }
+                }
             })
             .catch(err => console.log('>>>>>>>>>>>', err))
     }
@@ -198,7 +261,7 @@ const Order = () => {
                 </div>
 
                 <div className='header-contact-order flex-box flex-left'>
-                    <button className='flex-box'>
+                    <button className='flex-box' onClick={StartChatOnile}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 19H8C4 19 2 18 2 13V8C2 4 4 2 8 2H16C20 2 22 4 22 8V13C22 17 20 19 16 19H15.5C15.19 19 14.89 19.15 14.7 19.4L13.2 21.4C12.54 22.28 11.46 22.28 10.8 21.4L9.3 19.4C9.14 19.18 8.77 19 8.5 19Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"></path><path d="M15.9965 11H16.0054" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M11.9955 11H12.0045" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M7.99451 11H8.00349" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
 
                         <span>چت آنلاین</span>
@@ -332,7 +395,7 @@ const Order = () => {
                 </div>
 
                 <div className='btn-slider-main-order'>
-                    <button className='flex-box'>
+                    <button className='flex-box' onClick={handleShowD}>
                         <svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M16.9917 18.752H4.57664C3.13066 18.752 1.83568 18.004 1.11266 16.752C0.389694 15.5 0.389694 14.004 1.11168 12.752L7.31969 2C8.04265 0.748016 9.33769 0 10.7826 0H10.7837C12.2297 0 13.5246 0.747009 14.2486 2L20.4557 12.752C21.1787 14.004 21.1797 15.499 20.4557 16.751C19.7327 18.004 18.4377 18.752 16.9917 18.752ZM10.7837 2C10.0607 2 9.41368 2.37402 9.05266 3L2.84465 13.752C2.48265 14.378 2.48265 15.126 2.84465 15.752C3.20567 16.378 3.85368 16.752 4.57664 16.752H16.9917C17.7157 16.752 18.3627 16.378 18.7237 15.752C19.0857 15.126 19.0857 14.378 18.7237 13.752L12.5157 3C12.1546 2.37302 11.5066 2 10.7837 2Z" fill="black"/>
                             <rect x="9.67773" y="5.76562" width="2" height="5.2124" fill="black"/>
@@ -438,6 +501,14 @@ const Order = () => {
                         </div>
                     </div>
 
+                    <div className='menu-detalist-order-mo flex-box'>
+                        <div className='flex-box flex-justify-space'>
+                            <button onClick={handleShowB}>اطلاعات تماس</button>
+                        
+                            <button onClick={starttran}>معامله آنلاین</button>
+                        </div>
+                    </div>
+
                     <div className='chat-detalist-order-mo flex-box'>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 19H8C4 19 2 18 2 13V8C2 4 4 2 8 2H16C20 2 22 4 22 8V13C22 17 20 19 16 19H15.5C15.19 19 14.89 19.15 14.7 19.4L13.2 21.4C12.54 22.28 11.46 22.28 10.8 21.4L9.3 19.4C9.14 19.18 8.77 19 8.5 19Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"></path><path d="M15.9965 11H16.0054" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M11.9955 11H12.0045" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M7.99451 11H8.00349" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
 
@@ -447,12 +518,12 @@ const Order = () => {
                     <div className='contact-detalist-order-mo'>
                         <span>توضیحات</span>
 
-                        <div>
-                            <span>{Data.content}</span>
+                        <div  dangerouslySetInnerHTML={{ __html: Data.content}}>
+
                         </div>
                     </div>
 
-                    <div className='violation-detalist-order-mo flex-box'>
+                    <div className='violation-detalist-order-mo flex-box' onClick={handleShowD}>
                         <svg width="22" height="19" viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M16.9966 18.877H4.58153C3.13554 18.877 1.84056 18.129 1.11754 16.877C0.394577 15.625 0.394577 14.129 1.11656 12.877L7.32457 2.125C8.04753 0.873016 9.34258 0.125 10.7875 0.125H10.7886C12.2345 0.125 13.5295 0.872009 14.2535 2.125L20.4606 12.877C21.1836 14.129 21.1846 15.624 20.4606 16.876C19.7375 18.129 18.4426 18.877 16.9966 18.877ZM10.7886 2.125C10.0655 2.125 9.41856 2.49902 9.05754 3.125L2.84953 13.877C2.48753 14.503 2.48753 15.251 2.84953 15.877C3.21056 16.503 3.85857 16.877 4.58153 16.877H16.9966C17.7206 16.877 18.3675 16.503 18.7286 15.877C19.0906 15.251 19.0906 14.503 18.7286 13.877L12.5206 3.125C12.1595 2.49802 11.5115 2.125 10.7886 2.125Z" fill="black"/>
                         <rect x="9.68262" y="5.89062" width="2" height="5.2124" fill="black"/>
@@ -460,14 +531,6 @@ const Order = () => {
                         </svg>
 
                         <span>گزارش تخلف</span>
-                    </div>
-
-                    <div className='menu-detalist-order-mo flex-box'>
-                        <div className='flex-box flex-justify-space'>
-                            <button onClick={handleShowB}>اطلاعات تماس</button>
-                        
-                            <button onClick={starttran}>معامله آنلاین</button>
-                        </div>
                     </div>
 
                      {/* <!-- Modal --> */}
@@ -543,6 +606,36 @@ const Order = () => {
 
                 {Datamobile}
             </section>
+
+            {/* <!-- Modal --> */}
+            <Modal className='modal-send-offend-order-mo' show={showD} onHide={handleCloseD} centered>
+                <Modal.Body>
+                    <Modal.Header  className='modal-header-send-offend-order-mo width-max flex-box flex-justify-space' closeButton>
+                        <Modal.Title>گزارش تخلف</Modal.Title>
+                    </Modal.Header>
+
+                    <div className='flex-box flex-column'>
+                        <div className='box-send-offend-modal width-max'>
+                            <div>
+                                <label htmlFor='name'>عنوان تخلف</label>
+                                <span id='rr-subject-offend' className='err-tiket-add'></span>
+                                <input type='text' id='subject' onChange={(e) => setInOffendSub(e.target.value)} />
+                            </div>
+
+                            <div>
+                                <label htmlFor='description'>توضیحات</label>
+                                <span id='rr-description-offend' className='err-tiket-add'></span>
+                                <textarea type='text' id='description' onChange={(e) => setInOffendDes(e.target.value)} />
+                            </div>
+
+                            <div>
+                                <button onClick={SendOffend}>ارسال تخلف</button>
+                                <span id='sucsend' className='sucsess-tiket-add'></span>
+                            </div>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };
