@@ -5,6 +5,8 @@ import { useState,useEffect,useRef } from 'react';
 
 const DashProfile = () => {
     const usertoken = localStorage.getItem("user-login");
+    const userName = localStorage.getItem("user-name");
+    const userImage = localStorage.getItem("user-profile");
     const [userdata, setuserdata] = useState()
     const [userdatas, setuserdatas] = useState()
     const [imageprofile, setimageprofile] = useState();
@@ -13,6 +15,8 @@ const DashProfile = () => {
     const [usernameprofile, setusernameprofile] = useState();
     const [nameprofile, setnameprofile] = useState();
     const [passprofile, setpassprofile] = useState();
+    const [province, setprovince] = useState("Tehran");
+    const [city, setcity] = useState("Tehran");
 
     useEffect(() => {
         window.addEventListener('resize', setWindow);
@@ -51,6 +55,8 @@ const DashProfile = () => {
                             setemailprofile(response.data.user_data.user.email);
                             setusernameprofile(response.data.user_data.user.user_name);
                             setnameprofile(response.data.user_data.user.name);
+                            localStorage.setItem('user-name', response.data.user_data.user.name);
+                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
                         }
                     })
                     .catch(err => {
@@ -71,17 +77,17 @@ const DashProfile = () => {
 
     var sidbardashboard;
 
-    if(userdata != undefined)
+    if(userName != undefined)
     {
         sidbardashboard = (
             <div id='sidbar-dashboard'>
                 <div className='show-sidbar-dashboard flex-box flex-column'>
                     <div className='logo-sidbar-dashboard'>
-                        <img src={userdata.profile_image} />
+                        <img src={userImage} />
                     </div>
 
                     <div className='name-sidbar-dashboard'>
-                        <span>{userdata.name}</span>
+                        <span>{userName}</span>
                     </div>
 
                     <Link to={"/Order/add"} className='ad-sidbar-dashboard flex-box'>
@@ -201,9 +207,6 @@ const DashProfile = () => {
     const chengeimage = (e) => {
         setimageprofile(e);
     }
-
-    const [province, setprovince] = useState("Tehran");
-    const [city, setcity] = useState("Tehran");
 
     var dataprovince;
 

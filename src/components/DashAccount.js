@@ -7,6 +7,8 @@ import ImgBac from './../imags/Group 516.png';
 const DahAccount = () => {
     const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
     const usertoken = localStorage.getItem("user-login");
+    const userName = localStorage.getItem("user-name");
+    const userImage = localStorage.getItem("user-profile");
     const [userdata, setuserdata] = useState()
 
     useEffect(() => {
@@ -42,6 +44,8 @@ const DahAccount = () => {
                             window.location = "/Login";
                         }else{
                             setuserdata(response);
+                            localStorage.setItem('user-name', response.data.user_data.user.name);
+                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
                         }
                     })
                     .catch(err => {
@@ -57,17 +61,17 @@ const DahAccount = () => {
 
     var sidbardashboard;
 
-    if(userdata != undefined)
+    if(userName != undefined)
     {
         sidbardashboard = (
             <div id='sidbar-dashboard'>
                 <div className='show-sidbar-dashboard flex-box flex-column'>
                     <div className='logo-sidbar-dashboard'>
-                        <img src={userdata.data.user_data.user.profile_image} />
+                        <img src={userImage} />
                     </div>
 
                     <div className='name-sidbar-dashboard'>
-                        <span>{userdata.data.user_data.user.name}</span>
+                        <span>{userName}</span>
                     </div>
 
                     <Link to={"/Order/add"} className='ad-sidbar-dashboard flex-box'>
@@ -126,7 +130,7 @@ const DahAccount = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashAccount"}>
+                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Account"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M18.04 13.55C17.62 13.96 17.38 14.55 17.44 15.18C17.53 16.26 18.52 17.05 19.6 17.05H21.5V18.24C21.5 20.31 19.81 22 17.74 22H6.26C4.19 22 2.5 20.31 2.5 18.24V11.51C2.5 9.44001 4.19 7.75 6.26 7.75H17.74C19.81 7.75 21.5 9.44001 21.5 11.51V12.95H19.48C18.92 12.95 18.41 13.17 18.04 13.55Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M2.5 12.4101V7.8401C2.5 6.6501 3.23 5.59006 4.34 5.17006L12.28 2.17006C13.52 1.70006 14.85 2.62009 14.85 3.95009V7.75008" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

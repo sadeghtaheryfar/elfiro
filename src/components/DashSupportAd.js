@@ -5,6 +5,8 @@ import { useState,useEffect,useRef } from 'react';
 
 const DashSupportAd = () => {
     const usertoken = localStorage.getItem("user-login");
+    const userName = localStorage.getItem("user-name");
+    const userImage = localStorage.getItem("user-profile");
     const [userdata, setuserdata] = useState();
     const [ticketsdata, setticketsdata] = useState();
     useEffect(() => {
@@ -25,6 +27,8 @@ const DashSupportAd = () => {
                             window.location = "/Login";
                         }else{
                             setuserdata(response);
+                            localStorage.setItem('user-name', response.data.user_data.user.name);
+                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
                         }
                     })
                     .catch(err => {

@@ -168,6 +168,22 @@ const OrderAdd = () => {
             }
         })
     }
+    
+    const [inputValue, setInputValue] = useState('0');
+    const [formattedValue, setFormattedValue] = useState('');
+
+    useEffect(() => {
+        const number = parseFloat(inputValue);
+        if (!isNaN(number)) {
+            const formattedNumber = number.toLocaleString();
+            setFormattedValue(formattedNumber);
+        }
+    }, [inputValue]);
+
+    const handleInputChange = (event) => {
+        setpriceOr(event.target.value);
+        setInputValue(event.target.value);
+    };
 
     return (
         <>
@@ -263,7 +279,12 @@ const OrderAdd = () => {
                             <label htmlFor='price'>قیمت</label>
                             <br />
                             <span id='errprice' className='err-tiket-add'></span>
-                            <input type='number' id='price' onChange={(e) => setpriceOr(e.target.value)} />
+                            <input type='number' id='price' onChange={(e) => handleInputChange(e)} />
+                        </div>
+
+                        
+                        <div>
+                            <p>{formattedValue} تومان</p>
                         </div>
 
                         <div className='box-from-orderAd'>

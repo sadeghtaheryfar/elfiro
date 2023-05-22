@@ -7,8 +7,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import ImgBac from './../imags/Group 516.png';
 
 const Dashboard = () => {
-    const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
     const usertoken = localStorage.getItem("user-login");
+    const userName = localStorage.getItem("user-name");
+    const userImage = localStorage.getItem("user-profile");
     const [userTran, setuserTran] = useState();
     const [userdata, setuserdata] = useState();
     const [dashboarddata, setdashboarddata] = useState()
@@ -56,6 +57,8 @@ const Dashboard = () => {
                         {
                             window.location = "/Login";
                         }else{
+                            localStorage.setItem('user-name', response.data.user_data.user.name);
+                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
                             setuserdata(response.data.user_data.user);
                             setdescriptionprofile(response.data.user_data.user.description);
                             setemailprofile(response.data.user_data.user.email);
@@ -108,17 +111,17 @@ const Dashboard = () => {
     var sidbardashboardmo;
     var dashboarddatacl;
 
-    if(userdata != undefined)
+    if(userName != undefined)
     {
         sidbardashboard = (
             <div id='sidbar-dashboard'>
                 <div className='show-sidbar-dashboard flex-box flex-column'>
                     <div className='logo-sidbar-dashboard'>
-                        <img src={userdata.profile_image} />
+                        <img src={userImage} />
                     </div>
 
                     <div className='name-sidbar-dashboard'>
-                        <span>{userdata.name}</span>
+                        <span>{userName}</span>
                     </div>
 
                     <Link to={"/Order/add"} className='ad-sidbar-dashboard flex-box'>
@@ -234,11 +237,11 @@ const Dashboard = () => {
             <div id='sidbar-dashboard-mo'>
                 <div className='show-sidbar-dashboard flex-box flex-column'>
                     <div className='logo-sidbar-dashboard'>
-                        <img src={userdata.profile_image} />
+                        <img src={userImage} />
                     </div>
 
                     <div className='name-sidbar-dashboard'>
-                        <span>{userdata.name}</span>
+                        <span>{userName}</span>
                     </div>
 
                     <Link to={"/Order/add"} className='ad-sidbar-dashboard flex-box'>

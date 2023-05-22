@@ -106,12 +106,7 @@ const Sidbar = () => {
         );
     }else{
         var iconuser;
-        if(DataUser.data.user_data.user.profile_image === "http://server.elfiro.com/")
-        {
-            iconuser = <img src={LogoUser} />;
-        }else{
-            iconuser = <img src={DataUser.data.user_data.user.profile_image} />;
-        }
+        iconuser = <img src={DataUser.data.user_data.user.profile_image} />;
         UserLogoSidebar = (
             <div>
                 <div className='box-user-logo-sidbar'>
@@ -192,7 +187,7 @@ const Sidbar = () => {
                             </li>
 
                             <li>
-                                <Link>قوانین</Link>
+                                <Link to={"/Rules"}>قوانین</Link>
                             </li>
 
                             <li>

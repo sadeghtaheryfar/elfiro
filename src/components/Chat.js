@@ -6,8 +6,8 @@ import ChatPage from './ChatPage';
 const Chat = () => {
     const [Data, setData] = useState();
     const [Datauser, setDatauser] = useState();
-    const [first, setfirst] = useState(1);
     const [datalistchat, setdatalistchat] = useState();
+    
     useEffect(() => {
         const usertoken = localStorage.getItem("user-login");
         if(localStorage.getItem("user-login") != undefined)
@@ -61,7 +61,6 @@ const Chat = () => {
 
     if(Data != undefined && datalistchat != undefined && Datauser != undefined)
     {
-        console.log(Data);
         ChatsList = (
             <div className='box-item-chat-sidbar'>
                 {datalistchat.map((item)=> 
@@ -130,7 +129,7 @@ const Chat = () => {
     
     return (
         <div>
-            <Header style="1rem 2rem" />
+            <Header style="1rem 2rem" hide="none" />
 
             <section id='main-chat' className='flex-box flex-aling-right'>
                 <section id='sidbar-chat'>

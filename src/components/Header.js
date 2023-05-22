@@ -275,7 +275,7 @@ const Header = (props) => {
                 </Modal.Body>
             </Modal>
 
-            <div className='box-navbar-mobile'>
+            <div className='box-navbar-mobile' style={{display: styleH.hide}}>
                 <div className='show-navbar-mobile flex-box width-max'>
                     <Link to={"/Dashboard/Order"} className='item-navbar-mobile flex-box flex-column'>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

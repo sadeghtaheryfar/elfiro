@@ -105,9 +105,9 @@ const Login = () => {
 
     const sendpass = () => {
         const options = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: `{"phone": "${DataLogin}","password": "${PassLogin}"}`,
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: `{"phone": "${DataLogin}","password": "${PassLogin}"}`,
         };
 
         fetch('https://server.elfiro.com/api/v1/auth/login', options)
@@ -116,6 +116,8 @@ const Login = () => {
             if(response.status === "success")
             {
                 localStorage.setItem('user-login', response.data.login.user.token);
+                localStorage.setItem('user-name', response.data.login.user.name);
+                localStorage.setItem('user-profile', response.data.login.user.profile_image);
                 window.location = "/";
             }else{
                 console.log(response);

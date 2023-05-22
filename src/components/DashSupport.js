@@ -6,6 +6,8 @@ import { useState,useEffect } from 'react';
 const DashSupport = () => {
     const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
     const usertoken = localStorage.getItem("user-login");
+    const userName = localStorage.getItem("user-name");
+    const userImage = localStorage.getItem("user-profile");
     const [userdata, setuserdata] = useState();
     const [supdata, setsupdata] = useState();
 
@@ -42,6 +44,8 @@ const DashSupport = () => {
                             window.location = "/Login";
                         }else{
                             setuserdata(response);
+                            localStorage.setItem('user-name', response.data.user_data.user.name);
+                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
                         }
                     })
                     .catch(err => {
@@ -62,17 +66,17 @@ const DashSupport = () => {
 
     var sidbardashboard;
 
-    if(userdata != undefined)
+    if(userName != undefined)
     {
         sidbardashboard = (
             <div id='sidbar-dashboard'>
                 <div className='show-sidbar-dashboard flex-box flex-column'>
                     <div className='logo-sidbar-dashboard'>
-                        <img src={userdata.data.user_data.user.profile_image} />
+                        <img src={userImage} />
                     </div>
 
                     <div className='name-sidbar-dashboard'>
-                        <span>{userdata.data.user_data.user.name}</span>
+                        <span>{userName}</span>
                     </div>
 
                     <Link to={"/Order/add"} className='ad-sidbar-dashboard flex-box'>
@@ -116,7 +120,7 @@ const DashSupport = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashTransaction"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Transaction"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 5.56006H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M14.22 2H19.78C21.56 2 22 2.44 22 4.2V8.31C22 10.07 21.56 10.51 19.78 10.51H14.22C12.44 10.51 12 10.07 12 8.31V4.2C12 2.44 12.44 2 14.22 2Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

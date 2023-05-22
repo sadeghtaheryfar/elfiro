@@ -21,6 +21,9 @@ import DashProfileAuth from "./components/DashProfileAuth";
 import OrderAdd from "./components/OrderAdd";
 import Transactions from "./components/Transactions";
 import Chat from "./components/Chat";
+import Rules from "./components/Rules";
+import Profile from "./components/Profile";
+import Search from "./components/Search";
 
 function App() {
   
@@ -28,6 +31,7 @@ function App() {
     <div>
       <Routes>
         <Route path="/"  element={<Home/>}/>
+        <Route path="/Search"  element={<Search/>}/>
         <Route path="/Login"  element={<Login/>}/>
         <Route path="/Register"  element={<Register/>}/>
         <Route path="/Dashboard"  element={<Dashboard/>}/>
@@ -44,7 +48,9 @@ function App() {
         <Route path="/Dashboard/Transaction"  element={<DashTransaction/>}/>
         <Route path="/Dashboard/Account"  element={<DashAccount/>}/>
         <Route path="/chats"  element={<Chat/>}/>
+        <Route path="/Rules"  element={<Rules/>}/>
         <Route path="/orders/:productId" element={<Order/>} />
+        <Route path="/users/:username" element={<Profile/>} />
         <Route path="/transactions/:productId" element={<Transactions/>} />
         <Route path="*"  element={<NoPage/>}/>
       </Routes>

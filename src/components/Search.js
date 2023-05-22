@@ -8,28 +8,14 @@ import Modal from 'react-bootstrap/Modal';
 import SliderRange from './SliderRange';
 import { Link } from 'react-router-dom';
 
-const Home = () => {
+const Search = (props) => {
     const [DataCategory, SetDataCategory] = useState();
     const [DataPrudect, SetDataPrudect] = useState();
-    const [DataPrudectSe, SetDataPrudectSe] = useState();
-    const [DataSearch, SetDataSearch] = useState();
     const [show, setShow] = useState(false);
     var page = 1;
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-    function handleScroll() {
-        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-            page++;
-            const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
-            fetch(`https://server.elfiro.com/api/v1/home?page=${page}`, options)
-                .then(response => response.json())
-                .then(result => {
-                    SetDataPrudect((prevData) => [...prevData, ...result.data.orders.records]);
-                })
-        }
-    }
 
 
     useEffect(() => {
@@ -45,6 +31,21 @@ const Home = () => {
             .then(response => response.json())
             .then(result => {
                 SetDataPrudect(result.data.orders.records);
+                function handleScroll() {
+                    if (
+                        window.innerHeight + document.documentElement.scrollTop ===
+                        document.documentElement.offsetHeight
+                    ) {
+                        page++;
+                        const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
+                        fetch(`https://server.elfiro.com/api/v1/home?page=${page}`, options)
+                            .then(response => response.json())
+                            .then(result => {
+                                SetDataPrudect((prevData) => [...prevData, ...result.data.orders.records]);
+                            })
+                    }
+                }
+
                 window.addEventListener('scroll', handleScroll);
             })
     },[])
@@ -52,7 +53,8 @@ const Home = () => {
     var ConDataCategory;
     var ConDataCategoryMobile;
     var ConDataPrudect;
-    var SeaDataPrudect;
+
+    console.log(props);
 
 
     if(DataCategory != undefined)
@@ -101,7 +103,7 @@ const Home = () => {
     if(DataPrudect != undefined)
     {
         ConDataPrudect = (
-            <div id='prudect-home' className='flex-box flex-right flex-wrap'>
+            <div className='flex-box flex-right flex-wrap'>
                 {DataPrudect.map((item,index)=> 
                     <div className='item-prudect-home' key={item.id}>
                         <Link to={`orders/${item.id}`}>
@@ -165,75 +167,6 @@ const Home = () => {
             </div>
         );
     }
-
-    if(DataPrudectSe != undefined)
-    {
-        SeaDataPrudect = (
-            <div id='prudect-search' className='flex-box flex-right flex-wrap'>
-                {DataPrudectSe.map((item,index)=> 
-                    <div className='item-prudect-home' key={item.id}>
-                        <Link to={`orders/${item.id}`}>
-                            <div className='show-item-prudect-home'>
-                                <div className='top-item-prudect-home flex-box flex-justify-space'>
-                                    <div className='flex-box flex-right'>
-                                        <div>
-                                            <img src={item.category.default_image}></img>
-
-                                            {item.status_label === "تایید شده" && 
-                                                <div>
-                                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M10.0001 18.3334C14.5834 18.3334 18.3334 14.5834 18.3334 10.0001C18.3334 5.41675 14.5834 1.66675 10.0001 1.66675C5.41675 1.66675 1.66675 5.41675 1.66675 10.0001C1.66675 14.5834 5.41675 18.3334 10.0001 18.3334Z" fill="#0094FF"/>
-                                                        <path d="M6.45825 9.99993L8.81659 12.3583L13.5416 7.6416" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                                    </svg>
-                                                </div>
-                                            }
-                                        </div>
-
-                                        <div className='flex-box flex-column flex-aling-right'>
-                                            <span>{item.category.slug}</span>
-
-                                            <div>
-                                                <span>{item.created_at}</span>
-
-                                                <span> در </span>
-
-                                                <span>{item.city}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="img-item-prudect-home">
-                                    <img src={item.image} />
-
-                                    <div>
-                                        <span>{item.category.title}</span>
-                                    </div>
-                                </div>
-
-                                <div className="name-item-prudect-home">
-                                    <span>{item.name}</span>
-                                </div>
-
-                                <div className='price-item-prudect-home flex-box flex-justify-space'>
-                                    <div className='flex-box'>
-                                        <span>{item.platforms}</span>
-                                    </div>
-
-                                    <div className='flex-box flex-aling-left flex-column'>
-                                        <span>تومان</span>
-
-                                        <span>{item.price}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </Link>
-                    </div>
-                )}
-            </div>
-        );
-    }
-
     const detalistheadermenuh = document.getElementsByClassName("detalist-header-menuh");
     const svgboxheadermenuh = document.getElementsByClassName("svg-box-header-menuh");
 
@@ -242,25 +175,13 @@ const Home = () => {
         svgboxheadermenuh[index].classList.toggle("rotate-filter-menu-item");
     }
 
-    const startSearch = (item) => {
-        document.getElementById("most-categories-home").classList.add("hide-item");
-        document.getElementById("prudect-home").classList.add("hide-item");
-        document.getElementById("show-search-box").classList.remove("hide-item");
-        document.getElementById("show-search-text").innerHTML = DataSearch;
-
-        const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
-        fetch(`https://server.elfiro.com/api/v1/home?q=${DataSearch}`, options)
-            .then(response => response.json())
-            .then(result => SetDataPrudectSe(result.data.orders.records))
-    }
-
     return (
         <div>
             <Sidebar/>
             <Header />
 
             <section className='padding-main-sidbar'>
-                <div className='box-search-home width-max flex-box flex-right'>
+                <div className='box-search-home width-max'>
                     <div className='show-box-search-home flex-box width-50'>
                         <div>
                             <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -270,22 +191,16 @@ const Home = () => {
                         </div>
 
                         <div>
-                            <input type={"search"} placeholder={"جستجو در همه اکانت ها"} onChange={(e) => SetDataSearch(e.target.value)} />
+                            <input type={"search"} placeholder={"جستجو در همه اکانت ها"} />
                         </div>
                         
                         <div>
-                            <input type={"submit"} value={"submit"} onClick={startSearch} />
+                            <input type={"submit"} value={"submit"} />
                         </div>
-                    </div>
-
-                    <div id='show-search-box' className='width-50 margin-horizontal-1 hide-item'>
-                        <span>سرچ برای </span>
-
-                        <span id='show-search-text'></span>
                     </div>
                 </div>
 
-                <div id='most-categories-home' className='most-categories-home'>
+                <div className='most-categories-home'>
                     <div>
                         <span>بیشترین معامله</span>
                     </div>
@@ -308,7 +223,6 @@ const Home = () => {
                     </button>
 
                     {ConDataPrudect}
-                    {SeaDataPrudect}
                 </div>
             </section>
 
@@ -360,4 +274,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Search;

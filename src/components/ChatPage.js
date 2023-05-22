@@ -55,7 +55,7 @@ const ChatPage = (props) => {
         const options = {
             method: 'POST',
             headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
-            body : `{"phone":"${DataUser.data.user_data.user.phone}","subject":"${InOffendSub}","content":"${InOffendDes}"}`
+            body : `{"phone":"${DataUser.phone}","subject":"${InOffendSub}","content":"${InOffendDes}"}`
         };
 
         fetch(`https://server.elfiro.com/api/v1/users/offend/${Data.user.user_name}`, options)
@@ -151,7 +151,7 @@ const ChatPage = (props) => {
                 </div>
 
                 <div className='flex-box flex-left'>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={setShowD}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 3C10.9 3 10 3.9 10 5C10 6.1 10.9 7 12 7C13.1 7 14 6.1 14 5C14 3.9 13.1 3 12 3Z" stroke="#292D32" strokeWidth="1.5"/>
                     <path d="M12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z" stroke="#292D32" strokeWidth="1.5"/>
                     <path d="M12 17C10.9 17 10 17.9 10 19C10 20.1 10.9 21 12 21C13.1 21 14 20.1 14 19C14 17.9 13.1 17 12 17Z" stroke="#292D32" strokeWidth="1.5"/>
@@ -231,7 +231,7 @@ const ChatPage = (props) => {
                 </div>
 
                 {DataRuils.map((e) => 
-                    <div className='item flex-box flex-right'>
+                    <div className='item flex-box flex-right' key={Math.random()}>
                         <span>{e.order}</span>
                         <span> . </span>
 
@@ -289,7 +289,7 @@ const ChatPage = (props) => {
             </div>
 
             <div id='footer-page-chat' className='width-max flex-box'>
-                <div className='send cursor-pointer' onClick={SendMassage}>
+                <div className='send cursor-pointer' onClick={SendMassage} accessKey='j'>
                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18.5708 29.493L13.7404 20.4534L21.1825 13.0113C21.8799 12.3139 21.8799 11.173 21.1826 10.4756C20.4853 9.77834 19.3443 9.77836 18.647 10.4757L11.2049 17.9178L2.17783 13.1C-0.49719 11.6674 -0.040812 7.68635 2.88792 6.88774L27.1541 0.396444C29.6516 -0.27551 31.9338 2.00662 31.2618 4.50417L24.7705 28.7703C23.9845 31.7117 20.0035 32.168 18.5708 29.493Z" fill="#7007FA"/>
                     </svg>
@@ -314,7 +314,6 @@ const ChatPage = (props) => {
                         
                         <div className='flex-box flex-column'>
                             <div className='box-send-offend-modal width-max'>
-                                <span>گزارش تخلف</span>
                                 <div>
                                     <label htmlFor='name'>عنوان تخلف</label>
                                     <span id='rr-subject-offend' className='err-tiket-add'></span>
@@ -328,7 +327,7 @@ const ChatPage = (props) => {
                                 </div>
 
                                 <div>
-                                    <button onClick={SendOffend}>ارسال تخلف</button>
+                                    <button>ارسال تخلف</button>
                                     <span id='sucsend' className='sucsess-tiket-add'></span>
                                 </div>
                             </div>

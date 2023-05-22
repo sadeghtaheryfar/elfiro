@@ -6,6 +6,8 @@ import { useState,useEffect } from 'react';
 const DashOrder = () => {
     const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
     const usertoken = localStorage.getItem("user-login");
+    const userName = localStorage.getItem("user-name");
+    const userImage = localStorage.getItem("user-profile");
     const [userdata, setuserdata] = useState()
 
     useEffect(() => {
@@ -41,6 +43,8 @@ const DashOrder = () => {
                             window.location = "/Login";
                         }else{
                             setuserdata(response);
+                            localStorage.setItem('user-name', response.data.user_data.user.name);
+                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
                         }
                     })
                     .catch(err => {
@@ -58,17 +62,17 @@ const DashOrder = () => {
 
     var sidbardashboard;
 
-    if(userdata != undefined)
+    if(userName != undefined)
     {
         sidbardashboard = (
             <div id='sidbar-dashboard'>
                 <div className='show-sidbar-dashboard flex-box flex-column'>
                     <div className='logo-sidbar-dashboard'>
-                        <img src={userdata.data.user_data.user.profile_image} />
+                        <img src={userImage} />
                     </div>
 
                     <div className='name-sidbar-dashboard'>
-                        <span>{userdata.data.user_data.user.name}</span>
+                        <span>{userName}</span>
                     </div>
 
                     <Link to={"/Order/add"} className='ad-sidbar-dashboard flex-box'>

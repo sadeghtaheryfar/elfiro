@@ -9,6 +9,7 @@ import { Helmet } from "react-helmet";
 import Modal from 'react-bootstrap/Modal';
 import { Pagination } from "swiper";
 import "swiper/css/pagination";
+import { Link } from 'react-router-dom';
 
 
 const Order = () => {
@@ -28,40 +29,26 @@ const Order = () => {
     const [showD, setShowD] = useState(false);
     const handleCloseD = () => setShowD(false);
     const handleShowD = () => setShowD(true);
+    const usertoken = localStorage.getItem("user-login");
+
+    useEffect(() => {
+        const options = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
+        };
+
+        if(usertoken != undefined)
+        {
+            fetch('https://server.elfiro.com/api/v1/basic/user', options)
+                .then(response => response.json())
+                .then(response => setDatauser(response.data.user_data.user))
+                .catch(err => console.log(err));
+        }
+    },[])
 
     useEffect(() => {
         const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
         const usertoken = localStorage.getItem("user-login");
-
-        if(localStorage.getItem("user-login") != undefined)
-        {
-            if(usertoken != undefined)
-            {
-                const options = {
-                    method: 'GET',
-                    headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
-                };
-
-                fetch('https://server.elfiro.com/api/v1/basic/user', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if(response.status != "success")
-                        {
-                            window.location = "/Login"
-                        }else{
-                            setDatauser(response);
-                        }
-                    })
-                    .catch(err => {
-                        window.location = "/Login"
-                    });
-            }else{
-                window.location = "/Login";
-            }
-        }else{
-            window.location = "/Login";
-        }
-
         if(idorder != undefined)
         {
             fetch(`https://server.elfiro.com/api/v1${idorder}`, options)
@@ -137,7 +124,7 @@ const Order = () => {
         const options = {
             method: 'POST',
             headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
-            Body : `{"confirmLaw":true,"user_target":${Data.user.id}}`
+            body : `{"confirmLaw":true,"user_target":${Data.user.id}}`
         };
 
         fetch(`https://server.elfiro.com/api/v1/client/chat/send`, options)
@@ -153,7 +140,7 @@ const Order = () => {
         const options = {
             method: 'POST',
             headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
-            body : `{"phone":"${Datauser.data.user_data.user.phone}","subject":"${InOffendSub}","content":"${InOffendDes}"}`
+            body : `{"phone":"${Datauser.phone}","subject":"${InOffendSub}","content":"${InOffendDes}"}`
         };
 
         fetch(`https://server.elfiro.com/api/v1/users/offend/${Data.user.user_name}`, options)
@@ -201,7 +188,7 @@ const Order = () => {
                                 }
                             </div>
 
-                            <div className='name-detalist-header-order flex-box flex-column flex-aling-right'>
+                            <Link to={'/users/' + Data.user.user_name} className='name-detalist-header-order flex-box flex-column flex-aling-right'>
                                 <span>{Data.user.user_name}</span>
 
                                 {Data.status_label === "تایید شده" && 
@@ -211,7 +198,7 @@ const Order = () => {
                                 {Data.status_label === "تایید نشده" && 
                                     <span>فروشنده احراز هویت نشده</span>
                                 }
-                            </div>
+                            </Link>
                         </div>
 
                         <div className='flex-box'>
