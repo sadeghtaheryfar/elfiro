@@ -5016,6 +5016,48 @@ td{
     color: #808191;
 }
 
+
+#main-nopage{
+    min-height: 100vh;
+}
+
+
+#main-nopage .image{
+    width: 30%;
+}
+
+
+#main-nopage .image img{
+    width: 100%;
+}
+
+
+#main-nopage .text-no{
+    font-weight: 700;
+    font-size: 16px;
+    color: #A4A4A4;
+}
+
+
+#main-nopage .text-re{
+    font-weight: 700;
+    font-size: 16px;
+    color: #D9D9D9;
+}
+
+
+#main-nopage .text-re{
+    font-weight: 700;
+    font-size: 16px;
+    color: #D9D9D9;
+}
+
+
+#main-nopage .text-re #show-number{
+    color: #87D6F7;
+    margin: 0rem 0.5rem;
+}
+
 /* style mobile ................................................................. */
 
 @media screen and (max-width : 1400px){
@@ -5357,6 +5399,10 @@ td{
         width: 100% !important;
         margin: 1rem 1rem 0rem 1rem !important;
         box-sizing: border-box;
+    }
+    
+    #main-nopage .image {
+        width: 80%;
     }
 }
 
