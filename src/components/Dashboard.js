@@ -340,7 +340,6 @@ const Dashboard = () => {
             </div>
         )
     }
-
     
     if(dashboarddata != undefined)
     {
@@ -358,8 +357,20 @@ const Dashboard = () => {
 
                         <div className='box-item-notif-dashboard'>
                             {dashboarddata.notification.records.map((item)=> 
-                                <div className='item-notif-dashboard' dangerouslySetInnerHTML={{ __html: item.content}} key={Math.random()}>
+                                <div className='item-notif-dashboard' key={Math.random()}>
+                                    <div className='header flex-box flex-justify-space'>
+                                        <div className='date'>
+                                            {item.date}
+                                        </div>
 
+                                        <div className='category'>
+                                            {item.subject}
+                                        </div>
+                                    </div>
+
+                                    <div className='message' dangerouslySetInnerHTML={{ __html: item.content}}>
+
+                                    </div>
                                 </div>
                             )}
                         </div>

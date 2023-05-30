@@ -45,8 +45,6 @@ const Profile = () => {
         }
     },[])
 
-    console.log('>>>>>>>>>>>', Data)
-
     const chengeShow = (event) => {
         if(event === "prudects")
         {

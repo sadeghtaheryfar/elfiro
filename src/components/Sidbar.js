@@ -183,7 +183,7 @@ const Sidbar = () => {
                     <div className='box-ul-sidbar'>
                         <ul className="flex-box flex-wrap">
                             <li>
-                                <Link to={"http://localhost:3000/Dashboard/support"}>پشتیبانی</Link>
+                                <Link to={"/Dashboard/support"}>پشتیبانی</Link>
                             </li>
 
                             <li>

@@ -5,11 +5,12 @@ import { useState,useEffect } from 'react';
 import ImgBac from './../imags/Group 516.png';
 
 const DahAccount = () => {
-    const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
     const usertoken = localStorage.getItem("user-login");
     const userName = localStorage.getItem("user-name");
     const userImage = localStorage.getItem("user-profile");
-    const [userdata, setuserdata] = useState()
+    const [userdata, setuserdata] = useState();
+    const [DataWithList, setDataWithList] = useState();
+
 
     useEffect(() => {
         window.addEventListener('resize', setWindow);
@@ -51,6 +52,12 @@ const DahAccount = () => {
                     .catch(err => {
                         window.location = "/Login"
                     });
+
+
+                fetch('https://server.elfiro.com/api/v1/client/accounting', options)
+                    .then(response => response.json())
+                    .then(response => console.log(response))
+                    .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
             }

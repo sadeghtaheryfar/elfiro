@@ -9,6 +9,7 @@ const Header = (props) => {
     const [Logo, SetLogo] = useState();
     const [Tel, SetTel] = useState();
     const [DataUser, SetDataUser] = useState();
+    const [notifPr, SetnotifPr] = useState();
     const usertoken = localStorage.getItem("user-login");
     const [styleH, setstyleH] = useState(props);
     const [notifmod, setnotifmod] = useState(false);
@@ -40,6 +41,11 @@ const Header = (props) => {
         fetch('https://server.elfiro.com/api/v1/basic/base', options)
             .then(response => response.json())
             .then(result => SetDataHeader(result.data.base))
+
+        fetch('https://server.elfiro.com/api/v1/notifications/public', options)
+            .then(response => response.json())
+            .then(response => SetnotifPr(response))
+            .catch(err => console.error(err));
     },[])
     
     useEffect(() => {
@@ -161,36 +167,111 @@ const Header = (props) => {
     }
 
     var datanotif;
+    var datanotifm;
 
-    if(DataUser != undefined)
+    if(notifPr != undefined)
     {
-        if(DataUser.data.user_data.notifications.length > 0)
+        if(notifPr.data.length > 0)
         {
             datanotif = (
                 <div className='show-hover-notif-header'>
-                    {DataUser.data.user_data.notifications.map((item)=> 
-                        <div className='item-hover-notif-header' key={Math.random()}>
-                            <div dangerouslySetInnerHTML={{ __html: item.content}}>
+                    <div id='box-show-notif-public' className='public'>
+                        {notifPr.data.map((item)=> 
+                            <div className='item-hover-notif-header' key={Math.random()}>
+                                <div dangerouslySetInnerHTML={{ __html: item.content}}>
 
-                            </div>
+                                </div>
 
-                            <div className='flex-box flex-left'>
-                                <span>{item.date}</span>
+                                <div className='flex-box flex-left'>
+                                    <span>{item.date}</span>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </div>
-            )
-        }else{
-            datanotif = (
-                <div className='show-hover-notif-header'>
-                    <div className='item-hover-notif-header'>
-                        <div>
-                            <span>پیامی وجود ندارد</span>
-                        </div>
+                        )}
+                    </div>
+
+                    <div id='box-show-notif-private' className='private hide-item'>
+                        {DataUser != undefined && 
+                            DataUser.data.user_data.notifications.map((item)=> 
+                                <div className='item-hover-notif-header' key={Math.random()}>
+                                    <div dangerouslySetInnerHTML={{ __html: item.content}}>
+
+                                    </div>
+
+                                    <div className='flex-box flex-left'>
+                                        <span>{item.date}</span>
+                                    </div>
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             )
+
+            datanotifm = (
+                <div className='show-hover-notif-header'>
+                    <div id='box-show-notif-public-m' className='public'>
+                        {notifPr.data.map((item)=> 
+                            <div className='item-hover-notif-header' key={Math.random()}>
+                                <div dangerouslySetInnerHTML={{ __html: item.content}}>
+
+                                </div>
+
+                                <div className='flex-box flex-left'>
+                                    <span>{item.date}</span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div id='box-show-notif-private-m' className='private hide-item'>
+                        {DataUser != undefined && 
+                            DataUser.data.user_data.notifications.map((item)=> 
+                                <div className='item-hover-notif-header' key={Math.random()}>
+                                    <div dangerouslySetInnerHTML={{ __html: item.content}}>
+
+                                    </div>
+
+                                    <div className='flex-box flex-left'>
+                                        <span>{item.date}</span>
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+            )
+        }
+    }
+
+
+    const cheangeBoxNotif = (item) => {
+        if(item === "privet")
+        {
+            document.getElementById("private-nav-notif-modal").classList.add("active");
+            document.getElementById("public-nav-notif-modal").classList.remove("active");
+            document.getElementById("box-show-notif-public").classList.add("hide-item");
+            document.getElementById("box-show-notif-private").classList.remove("hide-item");
+        }else{
+            document.getElementById("private-nav-notif-modal").classList.remove("active");
+            document.getElementById("public-nav-notif-modal").classList.add("active");
+            document.getElementById("box-show-notif-public").classList.remove("hide-item");
+            document.getElementById("box-show-notif-private").classList.add("hide-item");
+        }
+    }
+
+
+    const cheangeBoxNotifMo = (item) => {
+        if(item === "privet")
+        {
+            document.getElementById("private-nav-notif-modal-m").classList.add("active");
+            document.getElementById("public-nav-notif-modal-m").classList.remove("active");
+            document.getElementById("box-show-notif-public-m").classList.add("hide-item");
+            document.getElementById("box-show-notif-private-m").classList.remove("hide-item");
+        }else{
+            document.getElementById("private-nav-notif-modal-m").classList.remove("active");
+            document.getElementById("public-nav-notif-modal-m").classList.add("active");
+            document.getElementById("box-show-notif-public-m").classList.remove("hide-item");
+            document.getElementById("box-show-notif-private-m").classList.add("hide-item");
         }
     }
 
@@ -247,6 +328,16 @@ const Header = (props) => {
                                 <span></span>
 
                                 <div id='box-hover-notif-header' className='box-hover-notif-header hide-item'>
+                                    <div className='navbar flex-box'>
+                                        <div id='public-nav-notif-modal' className='active flex-box' onClick={(e) => cheangeBoxNotif("public")}>
+                                            <span>اطلاعیه عمومی</span>
+                                        </div>
+
+                                        <div id='private-nav-notif-modal' className='flex-box' onClick={(e) => cheangeBoxNotif("privet")}>
+                                            <span>اطلاعیه شخصی</span>
+                                        </div>
+                                    </div>
+                                    
                                     {datanotif}
                                 </div>
 
@@ -270,8 +361,17 @@ const Header = (props) => {
                 <Modal.Header  className='modal-header-filter-mo width-max flex-box flex-justify-space' closeButton>
                     <Modal.Title>اعلان ها</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    {datanotif}
+                <Modal.Body className='box-hover-notif-header-m'>
+                    <div className='navbar flex-box'>
+                        <div id='public-nav-notif-modal-m' className='active flex-box' onClick={(e) => cheangeBoxNotifMo("public")}>
+                            <span>اطلاعیه عمومی</span>
+                        </div>
+
+                        <div id='private-nav-notif-modal-m' className='flex-box' onClick={(e) => cheangeBoxNotifMo("privet")}>
+                            <span>اطلاعیه شخصی</span>
+                        </div>
+                    </div>
+                    {datanotifm}
                 </Modal.Body>
             </Modal>
 

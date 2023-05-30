@@ -109,7 +109,7 @@ const Home = () => {
                                 <div className='top-item-prudect-home flex-box flex-justify-space'>
                                     <div className='flex-box flex-right'>
                                         <div>
-                                            <img src={item.category.default_image}></img>
+                                            <img src={item.user.user_profile}></img>
 
                                             {item.status_label === "تایید شده" && 
                                                 <div>
@@ -122,7 +122,7 @@ const Home = () => {
                                         </div>
 
                                         <div className='flex-box flex-column flex-aling-right'>
-                                            <span>{item.category.slug}</span>
+                                            <span>{item.user.user_name}</span>
 
                                             <div>
                                                 <span>{item.created_at}</span>
@@ -177,7 +177,7 @@ const Home = () => {
                                 <div className='top-item-prudect-home flex-box flex-justify-space'>
                                     <div className='flex-box flex-right'>
                                         <div>
-                                            <img src={item.category.default_image}></img>
+                                            <img src={item.user.user_profile}></img>
 
                                             {item.status_label === "تایید شده" && 
                                                 <div>
@@ -190,7 +190,7 @@ const Home = () => {
                                         </div>
 
                                         <div className='flex-box flex-column flex-aling-right'>
-                                            <span>{item.category.slug}</span>
+                                            <span>{item.user.user_name}</span>
 
                                             <div>
                                                 <span>{item.created_at}</span>

@@ -34,14 +34,12 @@ const ChatPage = (props) => {
                 .then(response => setDataUser(response.data.user_data.user))
                 .catch(err => console.log(err));
 
-            fetch('https://server.elfiro.com/api/v1/laws')
+            fetch('https://server.elfiro.com/api/v1/chat-laws')
                 .then(response => response.json())
                 .then(response => setDataRuils(response.data.laws.chat_laws))
                 .catch(err => console.log(err));
         }
     }, [props])
-
-    // console.log("sss",Data);
 
     const ExitChatM = () => {
         document.getElementById("sidbar-chat").classList.remove("hide-item-pc");
@@ -279,7 +277,7 @@ const ChatPage = (props) => {
     }
     
     return (
-        <div className='width-max height-max flex-box flex-column'>
+        <div className='box-main-chatpage width-max height-max flex-box flex-column'>
             {DataHeader}
 
             <div ref={containerRef} className='box-show-chatpage height-max width-max flex-box flex-column flex-right'>

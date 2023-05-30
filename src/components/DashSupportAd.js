@@ -193,7 +193,7 @@ const DashSupportAd = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: 'Bearer Bearer 146|a0bPxbB2WLgvW4Zgauk8hrL9w8s7ixJopFeMSP7X'
+                Authorization: `${usertoken}`
         },
             body: `{"subject":"${submitdataSub.current.value}","content":"${submitdataCon.current.value}}","priority":"${submitdataPri.current.value}"}`
         };

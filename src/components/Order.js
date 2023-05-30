@@ -16,6 +16,10 @@ const Order = () => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     var idorder = window.location.pathname;
     const [Data, setData] = useState();
+    const [LawStartTr, setLawStartTr] = useState();
+    const [LawStartTrAp, setLawStartTrAp] = useState(true);
+    const [LawNumber, setLawNumber] = useState();
+    const [LawNumberAp, setLawNumberAp] = useState(true);
     const [Datauser, setDatauser] = useState();
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -29,6 +33,12 @@ const Order = () => {
     const [showD, setShowD] = useState(false);
     const handleCloseD = () => setShowD(false);
     const handleShowD = () => setShowD(true);
+    const [showE, setShowE] = useState(false);
+    const handleCloseE = () => setShowE(false);
+    const handleShowE = () => setShowE(true);
+    const [showF, setShowF] = useState(false);
+    const handleCloseF = () => setShowF(false);
+    const handleShowF = () => setShowF(true);
     const usertoken = localStorage.getItem("user-login");
 
     useEffect(() => {
@@ -48,7 +58,6 @@ const Order = () => {
 
     useEffect(() => {
         const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
-        const usertoken = localStorage.getItem("user-login");
         if(idorder != undefined)
         {
             fetch(`https://server.elfiro.com/api/v1${idorder}`, options)
@@ -61,6 +70,16 @@ const Order = () => {
                         setData(response.data.order.record);
                     }
                     })
+                .catch(err => console.error(err));
+
+            fetch(`https://server.elfiro.com/api/v1/transaction-laws`, options)
+                .then(response => response.json())
+                .then(response => setLawStartTr(response.data.laws.transaction_laws))
+                .catch(err => console.error(err));
+
+            fetch(`https://server.elfiro.com/api/v1/phone-laws`, options)
+                .then(response => response.json())
+                .then(response => setLawNumber(response.data.laws.phone_laws))
                 .catch(err => console.error(err));
         }
     }, [])
@@ -88,36 +107,67 @@ const Order = () => {
     const [callnumber, Setcallnumber] = useState();
 
     const showcallnumber = () => {
+        handleCloseE();
         Setcallnumber(Data.user.phone);
         document.getElementById("btn-call-number-order").classList.add("hide-item");
         document.getElementById("show-call-number-order").classList.remove("hide-item");
     }
 
+    const [number, Setnumber] = useState(3);
+
     const starttran = () => {
         const usertoken = localStorage.getItem("user-login");
-        setShowC(true)
-        const options = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
-            body: '{"confirmLaw":true}'
-        };
+        if(usertoken != undefined)
+        {
+            setShowC(true);
+            handleCloseF();
+            const options = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
+                body: '{"confirmLaw":true}'
+            };
 
-        fetch(`https://server.elfiro.com/api/v1/orders/start-transaction/${Data.id}`, options)
-            .then(response => response.json())
-            .then(response =>  {
-                if(response.status === "success")
-                {
-                    document.getElementById("show-start-tran").innerHTML = response.data.message.transaction;
-                }else{
-                    if(response.data.message.user != undefined)
+            fetch(`https://server.elfiro.com/api/v1/orders/start-transaction/${Data.id}`, options)
+                .then(response => response.json())
+                .then(response =>  {
+                    if(response.status === "success")
                     {
-                        document.getElementById("show-start-tran").innerHTML = response.data.message.user;
-                    }
-                }
+                        document.getElementById("show-start-tran").innerHTML = response.data.message.transaction;
+                        const handle = setInterval(() => {
+                            Setnumber((prev) => {
+                                if(prev > 0)
+                                {
+                                    return prev-1
+                                }else{
+                                    return 0
+                                }
+                            })
+                        }, 1000);
+                    }else{
+                        if(response.data.message.user != undefined)
+                        {
+                            document.getElementById("show-start-tran").innerHTML = response.data.message.user[0];
+                        }
 
-            })
-            .catch(err => console.log('>>>>>>>>>>>', err))
+                        if(response.data.message.transaction != undefined)
+                        {
+                            document.getElementById("show-start-tran").innerHTML = response.data.message.transaction[0];
+                        }
+                    }
+
+                })
+                .catch(err => console.log('>>>>>>>>>>>', err))
+        }else{
+            window.location = "/login"
+        }
     }
+
+    useEffect(() => {
+        if(number === 0)
+        {
+            window.location = "/Dashboard/Transaction";
+        }
+    }, [number])
 
     const StartChatOnile = () => {
         const usertoken = localStorage.getItem("user-login");
@@ -127,45 +177,61 @@ const Order = () => {
             body : `{"confirmLaw":true,"user_target":${Data.user.id}}`
         };
 
-        fetch(`https://server.elfiro.com/api/v1/client/chat/send`, options)
-            .then(response => response.json())
-            .then(response =>  console.log('>>>>>>>>>>>', response))
-            .catch(err => console.log('>>>>>>>>>>>', err))
+        if(usertoken != undefined)
+        {
+            fetch(`https://server.elfiro.com/api/v1/client/chat/new`, options)
+                .then(response => response.json())
+                .then(response => {
+                    if(response.status === "success")
+                    {
+                        window.location = "/chats";
+                    }
+                })
+                .catch(err => console.log('>>>>>>>>>>>', err))
+        }else{
+            window.location = "/login";
+        }
     }
 
     const [InOffendSub, setInOffendSub] = useState();
     const [InOffendDes, setInOffendDes] = useState();
     const SendOffend = () => {
         const usertoken = localStorage.getItem("user-login");
-        const options = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
-            body : `{"phone":"${Datauser.phone}","subject":"${InOffendSub}","content":"${InOffendDes}"}`
-        };
-
-        fetch(`https://server.elfiro.com/api/v1/users/offend/${Data.user.user_name}`, options)
-            .then(response => response.json())
-            .then(response =>  {
-                if(response.status === "success")
-                {
-                    document.getElementById("sucsend").innerHTML = response.data.message.content;
-                }else{
-                    console.log(response);
-                    if(response.data.message.subject != undefined)
+        
+        if(Datauser != undefined)
+        {
+            const options = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
+                body : `{"phone":"${Datauser.phone}","subject":"${InOffendSub}","content":"${InOffendDes}"}`
+            };
+    
+            fetch(`https://server.elfiro.com/api/v1/users/offend/${Data.user.user_name}`, options)
+                .then(response => response.json())
+                .then(response =>  {
+                    if(response.status === "success")
                     {
-                        document.getElementById("rr-subject-offend").innerHTML = response.data.message.subject;
+                        document.getElementById("sucsend").innerHTML = response.data.message.content;
+                    }else{
+                        console.log(response);
+                        if(response.data.message.subject != undefined)
+                        {
+                            document.getElementById("rr-subject-offend").innerHTML = response.data.message.subject;
+                        }
+                        if(response.data.message.content != undefined)
+                        {
+                            document.getElementById("rr-description-offend").innerHTML = response.data.message.content;
+                        }
+                        if(response.data.message.user != undefined)
+                        {
+                            document.getElementById("rr-description-offend").innerHTML = response.data.message.user;
+                        }
                     }
-                    if(response.data.message.content != undefined)
-                    {
-                        document.getElementById("rr-description-offend").innerHTML = response.data.message.content;
-                    }
-                    if(response.data.message.user != undefined)
-                    {
-                        document.getElementById("rr-description-offend").innerHTML = response.data.message.user;
-                    }
-                }
-            })
-            .catch(err => console.log('>>>>>>>>>>>', err))
+                })
+                .catch(err => console.log('>>>>>>>>>>>', err))
+        }else{
+            window.location = "/login";
+        }
     }
 
     if(Data != undefined)
@@ -254,13 +320,13 @@ const Order = () => {
                         <span>چت آنلاین</span>
                     </button>
 
-                    <button id='btn-call-number-order' onClick={showcallnumber}>شماره تماس</button>
+                    <button id='btn-call-number-order' onClick={handleShowE}>شماره تماس</button>
 
                     <div id='show-call-number-order' className='flex-box hide-item'>
-                        <span>{callnumber}</span>
+                        <a href={"tel:" + callnumber}>{callnumber}</a>
                     </div>
 
-                    <button onClick={starttran}>معامله آنلاین</button>
+                    <button onClick={handleShowF}>معامله آنلاین</button>
                 </div>
 
                 <div className='header-message-order'>
@@ -268,14 +334,16 @@ const Order = () => {
                         <h1>توضیحات</h1>
                     </div>
 
-                    <span>{Data.content}</span>
+                    <div  dangerouslySetInnerHTML={{ __html: Data.content}}>
+
+                    </div>
                 </div>
             </div>
         )
     }
 
     const handelnumberordermo = () =>{
-        navigator.clipboard.writeText(document.getElementById("text-number-order-mo").innerHTML);
+        navigator.clipboard.writeText(Data.user.phone);
     }
 
     var GaleryOrder;
@@ -292,13 +360,13 @@ const Order = () => {
                         <img src={Data.image} />
                     </div>
 
-                    {
+                    {/* {
                         Data.gallery.map((item,index) =>
                             <div className='item-item-main-order flex-box'  key={Math.random()}>
                                 <img src={item} />
                             </div>
                         )
-                    }
+                    } */}
 
                     <div className='item-item-main-order flex-box cursor-pointer' onClick={handleShow}>
                         <svg width="67" height="9" viewBox="0 0 67 9" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -326,13 +394,13 @@ const Order = () => {
                                     <img src={Data.image} />
                                 </SwiperSlide>
 
-                                {
+                                {/* {
                                     Data.gallery.map((item) =>
                                         <SwiperSlide className='slide-main-order' key={Math.random()}>
                                             <img src={item} />
                                         </SwiperSlide>
                                     )
-                                }
+                                } */}
                             </Swiper>
 
                             <Swiper
@@ -348,13 +416,13 @@ const Order = () => {
                                     <img src={Data.image} />
                                 </SwiperSlide>
                                 
-                                {
+                                {/* {
                                     Data.gallery.map((item) =>
                                         <SwiperSlide className='slide-main-order flex-box' key={Math.random()}>
                                             <img src={item} />
                                         </SwiperSlide>
                                     )
-                                }
+                                } */}
                             </Swiper>
                         </div>
                     </Modal.Body>
@@ -371,13 +439,13 @@ const Order = () => {
                             <img src={Data.image} />
                         </SwiperSlide>
 
-                        {
+                        {/* {
                             Data.gallery.map((item) =>
                                 <SwiperSlide className='slide-main-order flex-box' key={Math.random()}>
                                     <img src={item} />
                                 </SwiperSlide>
                             )
-                        }
+                        } */}
                     </Swiper>
                 </div>
 
@@ -454,13 +522,13 @@ const Order = () => {
                             <img src={Data.image} />
                         </SwiperSlide>
                         
-                        {
+                        {/* {
                             Data.gallery.map((item) =>
                                 <SwiperSlide className='flex-box' key={Math.random()}>
-                                    <img src={item} />
+                                    <img src={item} />`
                                 </SwiperSlide>
                             )
-                        }
+                        } */}
                     </Swiper>
                 </div>
 
@@ -490,13 +558,13 @@ const Order = () => {
 
                     <div className='menu-detalist-order-mo flex-box'>
                         <div className='flex-box flex-justify-space'>
-                            <button onClick={handleShowB}>اطلاعات تماس</button>
+                            <button onClick={handleShowE}>اطلاعات تماس</button>
                         
-                            <button onClick={starttran}>معامله آنلاین</button>
+                            <button onClick={handleShowF}>معامله آنلاین</button>
                         </div>
                     </div>
 
-                    <div className='chat-detalist-order-mo flex-box'>
+                    <div className='chat-detalist-order-mo flex-box' onClick={StartChatOnile}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 19H8C4 19 2 18 2 13V8C2 4 4 2 8 2H16C20 2 22 4 22 8V13C22 17 20 19 16 19H15.5C15.19 19 14.89 19.15 14.7 19.4L13.2 21.4C12.54 22.28 11.46 22.28 10.8 21.4L9.3 19.4C9.14 19.18 8.77 19 8.5 19Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"></path><path d="M15.9965 11H16.0054" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M11.9955 11H12.0045" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path><path d="M7.99451 11H8.00349" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
 
                         <span>چت آنلاین</span>
@@ -520,7 +588,7 @@ const Order = () => {
                         <span>گزارش تخلف</span>
                     </div>
 
-                     {/* <!-- Modal --> */}
+                    {/* <!-- Modal --> */}
                     <Modal className='modal-detalist-tran' show={showC} onHide={handleCloseC} centered>
                         <Modal.Body>
                             <div className='flex-box flex-column'>
@@ -541,16 +609,16 @@ const Order = () => {
                                     </div>
 
                                     <div className='flex-box'>
-                                        <span id='text-number-order-mo'>{Data.user.phone}</span>
+                                        <a href={"tel:" + Data.user.phone} id='text-number-order-mo'>{Data.user.phone}</a>
                                     </div>
 
                                     <div>
-                                        <button className='flex-box'>
+                                        <button className='flex-box' onClick={handelnumberordermo}>
                                             <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M11.8867 3.11932C11.4574 1.30804 9.82056 0 7.92216 0H4.64189C2.38795 0 0.556641 1.8313 0.556641 4.07855V9.47186C0.556641 11.2093 1.63664 12.7253 3.23318 13.3022C3.6625 15.1067 5.29929 16.4215 7.19769 16.4215H10.478C12.7319 16.4215 14.5632 14.5902 14.5632 12.3362V6.94287C14.5632 5.20551 13.4765 3.68274 11.8867 3.11932ZM3.11243 6.94287V11.7526C2.36783 11.2562 1.89826 10.411 1.89826 9.47186V4.07855C1.89826 2.56921 3.12585 1.34161 4.64189 1.34161H7.92216C8.98875 1.34161 9.93461 1.95874 10.3773 2.86438H7.19769C4.94376 2.86438 3.11243 4.69568 3.11243 6.94287ZM13.2216 12.3362C13.2216 13.8523 11.994 15.0798 10.478 15.0798H7.19769C5.90972 15.0798 4.80289 14.181 4.52114 12.9131C4.50102 12.8326 4.48761 12.7454 4.47419 12.6583C4.45406 12.5509 4.45406 12.4435 4.45406 12.3362V6.94287C4.45406 5.43353 5.68166 4.20599 7.19769 4.20599H10.478C10.7127 4.20599 10.9274 4.23285 11.1421 4.29321C12.3697 4.58838 13.2216 5.68176 13.2216 6.94287V12.3362Z" fill="#7007FA"/>
                                             </svg>
 
-                                            <span onClick={handelnumberordermo}>کپی</span>
+                                            <span>کپی</span>
                                         </button>
                                     </div>
                                 </div>
@@ -573,10 +641,112 @@ const Order = () => {
             </Helmet>
         )
     }
+
+    var modalLawsTR;
+    var modalLawsNum;
+
+    if(LawNumber != undefined && LawStartTr != undefined)
+    {
+        modalLawsTR = (
+            <Modal className='modal-send-offend-order-mo' show={showE} onHide={handleCloseE} centered>
+                <Modal.Body>
+                    <Modal.Header  className='modal-header-send-offend-order-mo width-max flex-box flex-justify-space' closeButton>
+                        <Modal.Title>قوانین</Modal.Title>
+                    </Modal.Header>
+
+                    <div className='flex-box flex-column'>
+                        <div className='box-send-offend-modal width-max'>
+                            <div className='box-item-rules-order'>
+                                {
+                                    Object.keys(LawStartTr).map(key => {
+                                        var item = LawStartTr[key];
+                                        return (
+                                            <div key={key} className='item-rules flex-box flex-aling-right'>
+                                                <div className='count flex-box'>
+                                                    <span>{Number(key) + 1}</span>
+                                                </div>
+
+                                                <div className='message width-max text-right' dangerouslySetInnerHTML={{ __html: item.content}}>
+
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+
+                            <div>
+                                <div className='box-approval-rules-laws-nu flex-box flex-right'>
+                                    <input id='approval-rules-laws-nu' type='checkbox' onChange={(e) => setLawStartTrAp(!LawStartTrAp)} />
+
+                                    <label htmlFor='approval-rules-laws-nu'>قوانین را خوانده ام و با آن موافقم</label>
+                                </div>
+
+                                <div className='flex-box margin-vetical-1'>
+                                    <button className='hide-item-pc' id='btn-approval-rules-laws-nu' disabled={LawStartTrAp} onClick={showcallnumber}>مشاهده شماره تماس</button>
+
+                                    <button className='hide-item-mobile' id='btn-approval-rules-laws-nu' disabled={LawStartTrAp} onClick={function myfunc(){
+                                        handleCloseE(); 
+                                        handleShowB();
+                                    }}>مشاهده شماره تماس</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+        )
+
+        modalLawsNum = (
+            <Modal className='modal-send-offend-order-mo' show={showF} onHide={handleCloseF} centered>
+                <Modal.Body>
+                    <Modal.Header  className='modal-header-send-offend-order-mo width-max flex-box flex-justify-space' closeButton>
+                        <Modal.Title>قوانین</Modal.Title>
+                    </Modal.Header>
+
+                    <div className='flex-box flex-column'>
+                        <div className='box-send-offend-modal width-max'>
+                            <div className='box-item-rules-order'>
+                                {
+                                    Object.keys(LawNumber).map(key => {
+                                        var item = LawNumber[key];
+                                        return (
+                                            <div key={key} className='item-rules flex-box flex-aling-right'>
+                                                <div className='count flex-box'>
+                                                    <span>{Number(key) + 1}</span>
+                                                </div>
+
+                                                <div className='message width-max text-right' dangerouslySetInnerHTML={{ __html: item.content}}>
+
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+
+                            <div>
+                                <div className='box-approval-rules-laws-nu flex-box flex-right'>
+                                    <input id='approval-rules-laws-nu' type='checkbox' onChange={(e) => setLawNumberAp(!LawNumberAp)} />
+
+                                    <label htmlFor='approval-rules-laws-nu'>قوانین را خوانده ام و با آن موافقم</label>
+                                </div>
+
+                                <div>
+                                    <button id='btn-approval-rules-laws-nu' disabled={LawNumberAp} onClick={starttran}>درخواست معامله</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+        )
+    }
     
     return (
         <div>
             {PageDetalist}
+            {modalLawsNum}
 
             <Header style="1rem 2rem" />
 
@@ -623,6 +793,8 @@ const Order = () => {
                     </div>
                 </Modal.Body>
             </Modal>
+
+            {modalLawsTR}
         </div>
     );
 };

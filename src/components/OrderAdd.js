@@ -40,9 +40,9 @@ const OrderAdd = () => {
                         window.location = "/Login"
                     });
 
-                fetch('https://server.elfiro.com/api/v1/basic/sidebar', options)
+                fetch('https://server.elfiro.com/api/v1/client/orders/details', options)
                     .then(response => response.json())
-                    .then(result => SetDataCategory(result.data.sidebar.categories))
+                    .then(result => SetDataCategory(result.data.details.categories.digital))
             }else{
                 window.location = "/Login";
             }

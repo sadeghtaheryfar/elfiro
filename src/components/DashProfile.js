@@ -251,7 +251,7 @@ const DashProfile = () => {
                         
                         <label htmlFor="city">شهر</label>
 
-                        <select value={city} onChange={(e) => setcity(e.target.value)}>
+                        <select value={"Qods"} onChange={(e) => setcity(e.target.value)}>
                             {formattedCitis.map((item) => (
                                 <option key={item?.value} value={item?.value}>
                                     {item?.label}

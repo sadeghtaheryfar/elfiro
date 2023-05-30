@@ -24,6 +24,7 @@ import Chat from "./components/Chat";
 import Rules from "./components/Rules";
 import Profile from "./components/Profile";
 import Search from "./components/Search";
+import Tickets from "./components/Tickets";
 
 function App() {
   
@@ -52,6 +53,7 @@ function App() {
         <Route path="/orders/:productId" element={<Order/>} />
         <Route path="/users/:username" element={<Profile/>} />
         <Route path="/transactions/:productId" element={<Transactions/>} />
+        <Route path="/tickets/:TicketId" element={<Tickets/>} />
         <Route path="*"  element={<NoPage/>}/>
       </Routes>
     </div>

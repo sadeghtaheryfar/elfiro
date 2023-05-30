@@ -1,38 +1,15 @@
 import React from 'react';
+import { useEffect,useState } from 'react';
 import Header from './Header';
 import { Link } from 'react-router-dom';
-import { useState,useEffect } from 'react';
-import Modal from 'react-bootstrap/Modal';
 
-
-const DashOrder = () => {
-    const [number, setNumber] = useState();
+const Tickets = () => {
+    var idticket = window.location.pathname;
     const usertoken = localStorage.getItem("user-login");
     const userName = localStorage.getItem("user-name");
     const userImage = localStorage.getItem("user-profile");
     const [userdata, setuserdata] = useState();
     const [data, setdata] = useState();
-    const [showB, setShowB] = useState(false);
-    const handleCloseB = () => setShowB(false);
-    const handleShowB = (e) => {
-        setShowB(true);
-        setNumber(e);
-    };
-
-    useEffect(() => {
-        window.addEventListener('resize', setWindow);
-        if(window.innerWidth < 1024)
-        {
-            window.location = "/Dashboard";
-        }
-    }, [])
-    
-    const setWindow = () => {
-        if(window.innerWidth < 1024)
-        {
-            window.location = "/Dashboard";
-        }
-    }
 
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
@@ -60,9 +37,9 @@ const DashOrder = () => {
                         window.location = "/Login"
                     });
 
-                fetch('https://server.elfiro.com/api/v1/client/orders', options)
+                fetch(`https://server.elfiro.com/api/v1/client${idticket}`, options)
                     .then(response => response.json())
-                    .then(response => setdata(response.data.orders.records))
+                    .then(response => console.log(response))
                     .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
@@ -71,22 +48,6 @@ const DashOrder = () => {
             window.location = "/Login";
         }
     }, [])
-
-    const deleteAc = () => {
-        handleCloseB();
-
-        const options = {
-            method: 'DELETE',
-            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
-        };
-
-        fetch(`https://server.elfiro.com/api/v1/client/orders/${number}`, options)
-            .then(response => response.json())
-            .then(response => console.log(response))
-            .catch(err => console.log(err));
-    }
-
-    
 
     var sidbardashboard;
 
@@ -132,7 +93,7 @@ const DashOrder = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                         <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -213,192 +174,6 @@ const DashOrder = () => {
         )
     }
 
-    
-    var DataOrders;
-
-
-    if(data != undefined)
-    {
-        DataOrders = (
-            data.map((item) => {
-                if(item.status_label === "تایید شده")
-                {
-                    return (
-                        <div className='box-item-order-dashboard' key={item.id}>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src={item.image} />
-
-                                    <div>
-                                        <span>{item.status_label}</span>
-                                    </div>
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>{item.name}</span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
-
-                                    <button className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                }
-
-                if(item.status_label === "تایید نشده")
-                {
-                    return (
-                        <div className='box-item-order-dashboard' key={item.id}>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src={item.image} />
-
-                                    <div>
-                                        <span>{item.status_label}</span>
-                                    </div>
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>{item.name}</span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
-
-                                    <button id='disabled' className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button id='disabled' className='flex-box'>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                }
-
-                if(item.status_label === "رد شده")
-                {
-                    return (
-                        <div className='box-item-order-dashboard' key={item.id}>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src={item.image} />
-
-                                    <div>
-                                        <span>{item.status_label}</span>
-                                    </div>
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>{item.name}</span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
-
-                                    <button id='disabled' className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button id='disabled' className='flex-box'>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                }
-
-                if(item.status_label === "معامله شده")
-                {
-                    return (
-                        <div className='box-item-order-dashboard' key={item.id}>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src={item.image} />
-
-                                    <div>
-                                        <span>{item.status_label}</span>
-                                    </div>
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>{item.name}</span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link id='disabled' className='flex-box'>ویرایش</Link>
-
-                                    <button id='disabled' className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button id='disabled' className='flex-box'>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                }
-
-                if(item.status_label === "  جدید")
-                {
-                    return (
-                        <div className='box-item-order-dashboard' key={item.id}>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src={item.image} />
-
-                                    <div>
-                                        <span>{item.status_label}</span>
-                                    </div>
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>{item.name}</span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link id='disabled' className='flex-box'>ویرایش</Link>
-
-                                    <button id='disabled' className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                }
-            })
-        )
-    }
-
     return (
         <>
             <Header style="1rem 2rem" />
@@ -411,38 +186,15 @@ const DashOrder = () => {
                         <div>
                             <span>آگهی ها</span>
                         </div>
-
-                        <div className='nav-detalist-order-dashboard flex-box flex-right'>
-                            <Link className='active' to={"/Dashboard/Order"}>
-                                <span>همه آگهی ها</span>
-                            </Link>
-                        </div>
                     </div>
 
-                    <div className='flex-box flex-aling-right flex-wrap flex-right width-max'>
-                        {DataOrders}
+                    <div>
+                        ss
                     </div>
                 </section>
             </section>
-
-            {/* <!-- Modal --> */}
-                <Modal className='modal-detalist-tran' show={showB} onHide={handleCloseB} centered>
-                    <Modal.Body>
-                        <div className='flex-box flex-column'>
-                            <div className='message'>
-                                <span>آیا از حذف این اگهی اطمینان دارید؟</span>
-                            </div>
-
-                            <div className='btns flex-box'>
-                                <button onClick={deleteAc}>تایید</button>
-                                
-                                <button onClick={handleCloseB}>لغو</button>
-                            </div>
-                        </div>
-                    </Modal.Body>
-                </Modal>
         </>
     );
 };
 
-export default DashOrder;
+export default Tickets;
