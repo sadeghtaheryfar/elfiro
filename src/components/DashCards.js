@@ -3,10 +3,29 @@ import Header from './Header';
 import { Link } from 'react-router-dom';
 import { useState,useEffect } from 'react';
 
-const DashOrderAccepted = () => {
+const DashCards = () => {
     const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
     const usertoken = localStorage.getItem("user-login");
-    const [userdata, setuserdata] = useState()
+    const userName = localStorage.getItem("user-name");
+    const userImage = localStorage.getItem("user-profile");
+    const [userdata, setuserdata] = useState();
+    const [data, setdata] = useState();
+
+    useEffect(() => {
+        window.addEventListener('resize', setWindow);
+        if(window.innerWidth < 1024)
+        {
+            window.location = "/Dashboard";
+        }
+    }, [])
+    
+    const setWindow = () => {
+        if(window.innerWidth < 1024)
+        {
+            window.location = "/Dashboard";
+        }
+    }
+    
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
         {
@@ -25,11 +44,18 @@ const DashOrderAccepted = () => {
                             window.location = "/Login";
                         }else{
                             setuserdata(response);
+                            localStorage.setItem('user-name', response.data.user_data.user.name);
+                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
                         }
                     })
                     .catch(err => {
                         window.location = "/Login"
                     });
+
+                fetch('https://server.elfiro.com/api/v1/client/cards', options)
+                    .then(response => response.json())
+                    .then(response => setdata(response.data.cards.records))
+                    .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
             }
@@ -40,17 +66,17 @@ const DashOrderAccepted = () => {
 
     var sidbardashboard;
 
-    if(userdata != undefined)
+    if(userName != undefined)
     {
         sidbardashboard = (
             <div id='sidbar-dashboard'>
                 <div className='show-sidbar-dashboard flex-box flex-column'>
                     <div className='logo-sidbar-dashboard'>
-                        <img src={userdata.data.user_data.user.profile_image} />
+                        <img src={userImage} />
                     </div>
 
                     <div className='name-sidbar-dashboard'>
-                        <span>{userdata.data.user_data.user.name}</span>
+                        <span>{userName}</span>
                     </div>
 
                     <Link to={"/Order/add"} className='ad-sidbar-dashboard flex-box'>
@@ -82,7 +108,7 @@ const DashOrderAccepted = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                         <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -122,7 +148,7 @@ const DashOrderAccepted = () => {
                             </li>
 
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Cards"}>
+                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Cards"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.50488H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M6 16.5049H8" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
@@ -146,7 +172,7 @@ const DashOrderAccepted = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right'  to={"/Dashboard/support"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Support"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5H7" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
@@ -159,7 +185,7 @@ const DashOrderAccepted = () => {
                             </li>
                             
                             <li>
-                                <Link onClick={() => {localStorage.removeItem("user-login");window.location = "/";}} className='item-menu-sidbar-dashboard last-item-menu-sidbar-dashboard flex-box flex-right'>
+                                <Link className='item-menu-sidbar-dashboard last-item-menu-sidbar-dashboard flex-box flex-right'>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M2 12H14.88" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -176,6 +202,55 @@ const DashOrderAccepted = () => {
         )
     }
 
+    var datasupport;
+
+    if(userdata != undefined && data.length != 0)
+    {
+        datasupport = (
+            <div className='box-table-support-dashboard flex-box flex-aling-right width-max'>
+                <table className='table-support-dashboard'>
+                    <thead>
+                        <tr>
+                            <th>شناسه</th>
+
+                            <th>نام بانک</th>
+
+                            <th>شماره کارت</th>
+
+                            <th>شماره شبا</th>
+
+                            <th>وضعیت</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {data.map((item) => 
+                            <tr key={Math.random()}>
+                                <td>{item.id}</td>
+
+                                <td>{item.bank_label}</td>
+
+                                <td>{item.card_number}</td>
+
+                                <td>{item.card_sheba}</td>
+
+                                <td className='color-blue'>{item.status_label}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+        )
+    }else{
+        datasupport = (
+            <div className='box-empity-supporddash flex-box flex-column'>
+                <img src='https://server.elfiro.com/storage/photos/support.png'></img>
+
+                <span>کارتی وجود ندارد</span>
+            </div>
+        )
+    }
+
     return (
         <>
             <Header style="1rem 2rem" />
@@ -184,65 +259,21 @@ const DashOrderAccepted = () => {
                 {sidbardashboard}
 
                 <section id='detalist-dashboard' className='width-max flex-box flex-column'>
-                    <div className='header-detalist-order-dashboard width-max'>
+                    <div className='header-detalist-dashboard flex-box flex-justify-space width-max'>
                         <div>
-                            <span>آگهی ها</span>
+                            <span>کارت ها</span>
                         </div>
 
-                        <div className='nav-detalist-order-dashboard flex-box flex-right'>
-                            <Link to={"/Dashboard/Order"}>
-                                <span>همه آگهی ها</span>
-                            </Link>
-
-                            <Link className='active' to={"/Dashboard/Order/Accepted"}>
-                                <span>تایید شده</span>
-                            </Link>
-
-                            <Link to={"/Dashboard/Order/Coming"}>
-                                <span>در انتظار تایید</span>
-                            </Link>
-
-                            <Link to={"/Dashboard/Order/Failed"}>
-                                <span>رد شده</span>
-                            </Link>
-
-                            <Link to={"/Dashboard/Order/Sold"}>
-                                <span>فروخته شده</span>
-                            </Link>
-                        </div>
+                        <Link to={"/Dashboard/Cards/ad"}>
+                            <span>افزودن کارت</span>
+                        </Link>
                     </div>
 
-                    <div className='flex-box flex-aling-right flex-wrap flex-right width-max'>
-                        <div className='box-item-order-dashboard'>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
-
-                                    <button className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button className='flex-box'>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {datasupport}
                 </section>
             </section>
         </>
     );
 };
 
-export default DashOrderAccepted;
+export default DashCards;

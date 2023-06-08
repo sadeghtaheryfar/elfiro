@@ -46,6 +46,8 @@ const ChatPage = (props) => {
         document.getElementById("box-chat-main").classList.add("hide-item-pc-f");
     }
 
+    console.log(Data);
+
     const [InOffendSub, setInOffendSub] = useState();
     const [InOffendDes, setInOffendDes] = useState();
     const SendOffend = () => {

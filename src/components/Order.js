@@ -334,7 +334,7 @@ const Order = () => {
                         <h1>توضیحات</h1>
                     </div>
 
-                    <div  dangerouslySetInnerHTML={{ __html: Data.content}}>
+                    <div dangerouslySetInnerHTML={{ __html: Data.content}}>
 
                     </div>
                 </div>

@@ -174,7 +174,7 @@ const Login = () => {
                             <br></br>
                             <span id='error-phone-pass'></span>
                             <div className='recent-code-login flex-box flex-justify-space'>
-                                <Link to='/login'>تصحیح شماره</Link>
+                                <a href='/login'>تصحیح شماره</a>
 
                                 <div className="countdown-text">
                                     <button

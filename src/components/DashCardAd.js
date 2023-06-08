@@ -1,12 +1,14 @@
 import React from 'react';
 import Header from './Header';
 import { Link } from 'react-router-dom';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useRef } from 'react';
 
-const DashOrderAccepted = () => {
-    const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
+const DashCardAd = () => {
     const usertoken = localStorage.getItem("user-login");
-    const [userdata, setuserdata] = useState()
+    const userName = localStorage.getItem("user-name");
+    const userImage = localStorage.getItem("user-profile");
+    const [userdata, setuserdata] = useState();
+    const [ticketsdata, setticketsdata] = useState();
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
         {
@@ -25,11 +27,28 @@ const DashOrderAccepted = () => {
                             window.location = "/Login";
                         }else{
                             setuserdata(response);
+                            localStorage.setItem('user-name', response.data.user_data.user.name);
+                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
                         }
                     })
                     .catch(err => {
                         window.location = "/Login"
                     });
+
+                fetch('https://server.elfiro.com/api/v1/client/tickets/details', options)
+                    .then(response => response.json())
+                    .then(response => setticketsdata(response.data.details))
+                    .catch(err => console.log(err));
+
+                fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status === "success")
+                        {
+                            window.location = "/Dashboard/Profile/Authentication"
+                        }
+                    })
+                    .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
             }
@@ -82,7 +101,7 @@ const DashOrderAccepted = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Order"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22 10V15C22 20 20 22 15 22H9C4 22 2 20 2 15V9C2 4 4 2 9 2H14" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                                         <path d="M22 10H18C15 10 14 9 14 6V2L22 10Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
@@ -94,7 +113,7 @@ const DashOrderAccepted = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Transaction"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/DashTransaction"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 5.56006H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M14.22 2H19.78C21.56 2 22 2.44 22 4.2V8.31C22 10.07 21.56 10.51 19.78 10.51H14.22C12.44 10.51 12 10.07 12 8.31V4.2C12 2.44 12.44 2 14.22 2Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -122,7 +141,7 @@ const DashOrderAccepted = () => {
                             </li>
 
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Cards"}>
+                                <Link className='item-menu-sidbar-dashboard active-item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Cards"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.50488H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M6 16.5049H8" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
@@ -146,7 +165,7 @@ const DashOrderAccepted = () => {
                             </li>
                             
                             <li>
-                                <Link className='item-menu-sidbar-dashboard flex-box flex-right'  to={"/Dashboard/support"}>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Support"}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 8.5C2 5 4 3.5 7 3.5H17C20 3.5 22 5 22 8.5V15.5C22 19 20 20.5 17 20.5H7" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
@@ -159,7 +178,7 @@ const DashOrderAccepted = () => {
                             </li>
                             
                             <li>
-                                <Link onClick={() => {localStorage.removeItem("user-login");window.location = "/";}} className='item-menu-sidbar-dashboard last-item-menu-sidbar-dashboard flex-box flex-right'>
+                                <Link className='item-menu-sidbar-dashboard last-item-menu-sidbar-dashboard flex-box flex-right'>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8.90002 7.55999C9.21002 3.95999 11.06 2.48999 15.11 2.48999H15.24C19.71 2.48999 21.5 4.27999 21.5 8.74999V15.27C21.5 19.74 19.71 21.53 15.24 21.53H15.11C11.09 21.53 9.24002 20.08 8.91002 16.54" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                     <path d="M2 12H14.88" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -176,6 +195,88 @@ const DashOrderAccepted = () => {
         )
     }
 
+    const CardNumber = React.useRef();
+    const ShabaNumber = React.useRef();
+
+    const [submitdataRes, setsubmitdataRes] = useState();
+
+    const submitform = (event) => {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${usertoken}`
+        },
+            body: `{"card_number":"${CardNumber.current.value}","card_sheba":"${ShabaNumber.current.value}"}`
+        };
+
+        event.preventDefault();
+        fetch('https://server.elfiro.com/api/v1/client/cards', options)
+            .then(response => response.json())
+            .then(response => setsubmitdataRes(response))
+            .catch(err => console.log(err));
+    }
+
+    var submitadddata;
+
+    if(userdata != undefined && ticketsdata != undefined)
+    {
+        submitadddata = (
+            <form onSubmit={submitform}>
+                <div className='item-suppurt-add'>
+                    <div className='err-tiket-add'>
+                        <span id='err-cardnumb-dashcard' className='err-tiket-add'></span>
+                    </div>
+
+                    <label htmlFor='cardnumb-dashcard-ad'>شماره کارت خود را وارد کنید : </label>
+
+                    <input placeholder='16 رقم' ref={CardNumber} id='cardnumb-dashcard-ad' type='text' className='text-box-style' />
+                </div>
+
+                <div className='item-suppurt-add'>
+                    <div className='err-tiket-add'>
+                        <span id='err-shabanumb-dashcard' className='err-tiket-add'></span>
+                    </div>
+
+                    <label htmlFor='cardnumb-dashcard-ad'>شماره شبای کارت خود را وارد کنید : </label>
+
+                    <input placeholder='با IR وارد کنید' ref={ShabaNumber} id='cardnumb-dashcard-ad' type='text' className='text-box-style' />
+                </div>
+
+                <div className='item-suppurt-add flex-box'>
+                    <input type='submit' value={"ارسال درخواست"} />
+                </div>
+            </form>
+        )
+    }
+
+    if(submitdataRes != undefined)
+    {
+        if(submitdataRes.status === "success")
+        {
+            document.getElementById("sucsess-tiket-add").innerHTML = submitdataRes.data.message.card;
+            document.getElementById("status-tiket-add").innerHTML = "";
+            document.getElementById("err-shabanumb-dashcard").innerHTML = "";
+            document.getElementById("err-cardnumb-dashcard").innerHTML = "";
+        }else
+        {
+            if(submitdataRes.data.message.user != undefined)
+            {
+                document.getElementById("status-tiket-add").innerHTML = submitdataRes.data.message.user;
+            }
+
+            if(submitdataRes.data.message.card_sheba != undefined)
+            {
+                document.getElementById("err-shabanumb-dashcard").innerHTML = submitdataRes.data.message.card_sheba;
+            }
+
+            if(submitdataRes.data.message.card_number != undefined)
+            {
+                document.getElementById("err-cardnumb-dashcard").innerHTML = submitdataRes.data.message.card_number;
+            }
+        }
+    }
+
     return (
         <>
             <Header style="1rem 2rem" />
@@ -183,61 +284,20 @@ const DashOrderAccepted = () => {
             <section id='main-dashboard' className='flex-box flex-justify-space flex-aling-right'>
                 {sidbardashboard}
 
-                <section id='detalist-dashboard' className='width-max flex-box flex-column'>
-                    <div className='header-detalist-order-dashboard width-max'>
+                <section id='detalist-dashboard' className='detalist-dashboard-support-add width-max flex-box flex-column'>
+                    <div className='header-detalist-dashboard flex-box flex-justify-space width-max'>
                         <div>
-                            <span>آگهی ها</span>
-                        </div>
-
-                        <div className='nav-detalist-order-dashboard flex-box flex-right'>
-                            <Link to={"/Dashboard/Order"}>
-                                <span>همه آگهی ها</span>
-                            </Link>
-
-                            <Link className='active' to={"/Dashboard/Order/Accepted"}>
-                                <span>تایید شده</span>
-                            </Link>
-
-                            <Link to={"/Dashboard/Order/Coming"}>
-                                <span>در انتظار تایید</span>
-                            </Link>
-
-                            <Link to={"/Dashboard/Order/Failed"}>
-                                <span>رد شده</span>
-                            </Link>
-
-                            <Link to={"/Dashboard/Order/Sold"}>
-                                <span>فروخته شده</span>
-                            </Link>
+                            <span>افزودن کارت</span>
                         </div>
                     </div>
 
-                    <div className='flex-box flex-aling-right flex-wrap flex-right width-max'>
-                        <div className='box-item-order-dashboard'>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
-
-                                    <button className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button className='flex-box'>حذف</button>
-                                </div>
-                            </div>
+                    <div className='box-suppurt-add'>
+                        <div className='flex-box flex-column'>
+                            <span id='status-tiket-add'></span>
+                            <span id='sucsess-tiket-add'></span>
                         </div>
+
+                        {submitadddata}
                     </div>
                 </section>
             </section>
@@ -245,4 +305,4 @@ const DashOrderAccepted = () => {
     );
 };
 
-export default DashOrderAccepted;
+export default DashCardAd;

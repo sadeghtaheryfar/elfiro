@@ -25,6 +25,8 @@ import Rules from "./components/Rules";
 import Profile from "./components/Profile";
 import Search from "./components/Search";
 import Tickets from "./components/Tickets";
+import DashCards from "./components/DashCards";
+import DashCardAd from "./components/DashCardAd";
 
 function App() {
   
@@ -46,7 +48,9 @@ function App() {
         <Route path="/Dashboard/Profile/Authentication"  element={<DashProfileAuth/>}/>
         <Route path="/Dashboard/Support"  element={<DashSupport/>}/>
         <Route path="/Dashboard/Support/ad"  element={<DashSupportAd/>}/>
+        <Route path="/Dashboard/Cards/ad"  element={<DashCardAd/>}/>
         <Route path="/Dashboard/Transaction"  element={<DashTransaction/>}/>
+        <Route path="/Dashboard/Cards"  element={<DashCards/>}/>
         <Route path="/Dashboard/Account"  element={<DashAccount/>}/>
         <Route path="/chats"  element={<Chat/>}/>
         <Route path="/Rules"  element={<Rules/>}/>

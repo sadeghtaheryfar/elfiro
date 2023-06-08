@@ -3,13 +3,18 @@ import Header from './Header';
 import { Link } from 'react-router-dom';
 import { useState,useEffect } from 'react';
 import ImgBac from './../imags/Group 516.png';
+import Modal from 'react-bootstrap/Modal';
 
 const DahAccount = () => {
     const usertoken = localStorage.getItem("user-login");
     const userName = localStorage.getItem("user-name");
     const userImage = localStorage.getItem("user-profile");
     const [userdata, setuserdata] = useState();
-    const [DataWithList, setDataWithList] = useState();
+    const [data, setdata] = useState();
+    const [usercards, setusercards] = useState();
+    const [showE, setShowE] = useState(false);
+    const handleCloseE = () => setShowE(false);
+    const handleShowE = () => setShowE(true);
 
 
     useEffect(() => {
@@ -54,9 +59,14 @@ const DahAccount = () => {
                     });
 
 
+                fetch('https://server.elfiro.com/api/v1/client/cards', options)
+                    .then(response => response.json())
+                    .then(response => setusercards(response.data.cards.records))
+                    .catch(err => console.log(err));
+
                 fetch('https://server.elfiro.com/api/v1/client/accounting', options)
                     .then(response => response.json())
-                    .then(response => console.log(response))
+                    .then(response => setdata(response.data.requests.records))
                     .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
@@ -148,6 +158,19 @@ const DahAccount = () => {
                                     <span>حسابداری</span>
                                 </Link>
                             </li>
+
+                            <li>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Cards"}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 8.50488H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M6 16.5049H8" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M10.5 16.5049H14.5" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M6.44 3.50488H17.55C21.11 3.50488 22 4.38488 22 7.89488V16.1049C22 19.6149 21.11 20.4949 17.56 20.4949H6.44C2.89 20.5049 2 19.6249 2 16.1149V7.89488C2 4.38488 2.89 3.50488 6.44 3.50488Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+
+                                    <span>کارت ها</span>
+                                </Link>
+                            </li>
                             
                             <li>
                                 <Link className='item-menu-sidbar-dashboard flex-box flex-right'  to={"/Dashboard/Profile"}>
@@ -224,6 +247,108 @@ const DahAccount = () => {
             .catch(err => console.log(err));
     }
 
+    const PayNumber = React.useRef();
+    const Paycard = React.useRef();
+
+    const submitform = (event) => {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${usertoken}`
+        },
+            body: `{"price":"${PayNumber.current.value}","card":"${Paycard.current.value}"}`
+        };
+
+        event.preventDefault();
+        fetch('https://server.elfiro.com/api/v1/client/accounting', options)
+            .then(response => response.json())
+            .then(response => {
+                if(response.status === "success")
+                {
+                    window.location = "/Dashboard/Account"
+                }else{
+                    console.log(response);
+                    if(response.data.message.price != undefined)
+                    {
+                        document.getElementById("err-cardnumb-dashcard").innerHTML = response.data.message.price;
+                    }
+
+                    if(response.data.message.user != undefined)
+                    {
+                        document.getElementById("status-tiket-add").innerHTML = response.data.message.user;
+                    }
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
+    var withdrawrequestdata;
+
+    if(userdata != undefined && usercards != undefined && usercards != 0)
+    {
+        withdrawrequestdata = (
+            <Modal className='modal-send-offend-order-mo' show={showE} onHide={handleCloseE} centered>
+                <Modal.Body>
+                    <Modal.Header  className='modal-header-send-offend-order-mo width-max flex-box flex-justify-space' closeButton>
+                        <Modal.Title>برداشت وجه</Modal.Title>
+                    </Modal.Header>
+
+                    <div className='flex-box flex-column'>
+                        <div className='box-removable-dashAc-modal flex-box flex-justify-space width-max'>
+                            <div>
+                                <span>قابل برداشت</span>
+                            </div>
+
+                            <div>
+                                <span>{userdata.data.user_data.user.wallet}</span>
+
+                                <span>تومان</span>
+                            </div>
+                        </div>
+
+                        <div className='width-max'>
+                            <form onSubmit={submitform}>
+                                <div className='item-suppurt-add'>
+                                    <div className='err-tiket-add'>
+                                        <span id='err-cardnumb-dashcard' className='err-tiket-add'></span>
+                                    </div>
+
+                                    <label htmlFor='cardnumb-dashcard-ad' className='flex-box flex-right'>مبلغ مورد نظر را وارد کنید : </label>
+
+                                    <input ref={PayNumber} id='cardnumb-dashcard-ad' type='text' className='text-box-style' />
+                                </div>
+
+                                <div className='item-suppurt-add'>
+                                    <div className='err-tiket-add'>
+                                        <span id='err-shabanumb-dashcard' className='err-tiket-add'></span>
+                                    </div>
+
+                                    <label htmlFor='cardnumb-dashcard-ad' className='flex-box flex-right'>شماره شبای کارت خود را وارد کنید : </label>
+
+                                    <select ref={Paycard} id='cardnumb-dashcard-ad'>
+                                        {usercards.map((item) => (
+                                            <option value={item.id} key={item.id}>
+                                                {item.card_number}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className='item-suppurt-add flex-box'>
+                                    <input type='submit' value={"ارسال درخواست"} />
+                                </div>
+
+                                
+                                <span id='status-tiket-add'></span>
+                            </form>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+        )
+    }
+
     
     if(userdata != undefined)
     {
@@ -266,7 +391,7 @@ const DahAccount = () => {
                 </div>
 
                 <div>
-                    <button>برداشت وجه</button>
+                    <button onClick={handleShowE}>برداشت وجه</button>
                 </div>
 
                 <div>
@@ -308,19 +433,21 @@ const DahAccount = () => {
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>1400/10/10</td>
+                                {data.map((item) => (
+                                    <tr key={item.id}>
+                                        <td>{item.date}</td>
 
-                                    <td className='color-blue'>برداشت وجه</td>
+                                        <td className='color-blue'>{item.status_label}</td>
 
-                                    <td>12385858585</td>
-                                    
-                                    <td>
-                                        <span>100,000</span>
+                                        <td>{item.id}</td>
+                                        
+                                        <td>
+                                            <span>{item.price}</span>
 
-                                        <span>تومان</span>
-                                    </td>
-                                </tr>
+                                            <span>تومان</span>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     </div>
@@ -339,6 +466,8 @@ const DahAccount = () => {
                 {paymentitem}
 
                 {paymentdetalist}
+
+                {withdrawrequestdata}
             </section>
         </>
     );

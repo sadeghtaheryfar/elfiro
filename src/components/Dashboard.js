@@ -28,6 +28,13 @@ const Dashboard = () => {
     const [supportmod, setsupportmod] = useState(false);
     const supportmodClose = () => setsupportmod(false);
     const supportmodShow = () => setsupportmod(true);
+    const [cardsmod, setcardsmod] = useState(false);
+    const cardsmodClose = () => setcardsmod(false);
+    const cardsmodShow = () => setcardsmod(true);
+    const [showE, setShowE] = useState(false);
+    const handleCloseE = () => setShowE(false);
+    const handleShowE = () => setShowE(true);
+
 
     const [userdatas, setuserdatas] = useState()
     const [imageprofile, setimageprofile] = useState();
@@ -39,6 +46,8 @@ const Dashboard = () => {
     const [nameprofile, setnameprofile] = useState();
     const [passprofile, setpassprofile] = useState();
     const [supdata, setsupdata] = useState();
+    const [usercards, setusercards] = useState();
+    const [userlistreq, setuserlistreq] = useState();
 
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
@@ -99,6 +108,16 @@ const Dashboard = () => {
                         .then(response => response.json())
                         .then(response => setsupdata(response.data.tickets.records))
                         .catch(err => console.log(err));
+
+                    fetch('https://server.elfiro.com/api/v1/client/cards', options)
+                        .then(response => response.json())
+                        .then(response => setusercards(response.data.cards.records))
+                        .catch(err => console.log(err));
+
+                    fetch('https://server.elfiro.com/api/v1/client/accounting', options)
+                        .then(response => response.json())
+                        .then(response => setuserlistreq(response.data.requests.records))
+                        .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
             }
@@ -106,6 +125,108 @@ const Dashboard = () => {
             window.location = "/Login";
         }
     }, [])
+
+    const PayNumber = React.useRef();
+    const Paycard = React.useRef();
+
+    const submitform = (event) => {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `${usertoken}`
+        },
+            body: `{"price":"${PayNumber.current.value}","card":"${Paycard.current.value}"}`
+        };
+
+        event.preventDefault();
+        fetch('https://server.elfiro.com/api/v1/client/accounting', options)
+            .then(response => response.json())
+            .then(response => {
+                if(response.status === "success")
+                {
+                    window.location = "/Dashboard/Account"
+                }else{
+                    console.log(response);
+                    if(response.data.message.price != undefined)
+                    {
+                        document.getElementById("err-cardnumb-dashcard").innerHTML = response.data.message.price;
+                    }
+
+                    if(response.data.message.user != undefined)
+                    {
+                        document.getElementById("status-tiket-add").innerHTML = response.data.message.user;
+                    }
+                }
+            })
+            .catch(err => console.log(err));
+    }
+
+    var withdrawrequestdata;
+
+    if(userdata != undefined && usercards != undefined && usercards != 0)
+    {
+        withdrawrequestdata = (
+            <Modal className='modal-send-offend-order-mo' show={showE} onHide={handleCloseE} centered>
+                <Modal.Body>
+                    <Modal.Header  className='modal-header-send-offend-order-mo width-max flex-box flex-justify-space' closeButton>
+                        <Modal.Title>برداشت وجه</Modal.Title>
+                    </Modal.Header>
+
+                    <div className='flex-box flex-column'>
+                        <div className='box-removable-dashAc-modal flex-box flex-justify-space width-max'>
+                            <div>
+                                <span>قابل برداشت</span>
+                            </div>
+
+                            <div>
+                                <span>{userdata.wallet}</span>
+
+                                <span>تومان</span>
+                            </div>
+                        </div>
+
+                        <div className='width-max'>
+                            <form onSubmit={submitform}>
+                                <div className='item-suppurt-add'>
+                                    <div className='err-tiket-add'>
+                                        <span id='err-cardnumb-dashcard' className='err-tiket-add'></span>
+                                    </div>
+
+                                    <label htmlFor='cardnumb-dashcard-ad' className='flex-box flex-right'>مبلغ مورد نظر را وارد کنید : </label>
+
+                                    <input ref={PayNumber} id='cardnumb-dashcard-ad' type='text' className='text-box-style' />
+                                </div>
+
+                                <div className='item-suppurt-add'>
+                                    <div className='err-tiket-add'>
+                                        <span id='err-shabanumb-dashcard' className='err-tiket-add'></span>
+                                    </div>
+
+                                    <label htmlFor='cardnumb-dashcard-ad' className='flex-box flex-right'>شماره شبای کارت خود را وارد کنید : </label>
+
+                                    <select ref={Paycard} id='cardnumb-dashcard-ad'>
+                                        {usercards.map((item) => (
+                                            <option value={item.id} key={item.id}>
+                                                {item.card_number}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className='item-suppurt-add flex-box'>
+                                    <input type='submit' value={"ارسال درخواست"} />
+                                </div>
+
+                                
+                                <span id='status-tiket-add'></span>
+                            </form>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+        )
+    }
     
     var sidbardashboard;
     var sidbardashboardmo;
@@ -189,6 +310,19 @@ const Dashboard = () => {
                                     </svg>
 
                                     <span>حسابداری</span>
+                                </Link>
+                            </li>
+
+                            <li>
+                                <Link className='item-menu-sidbar-dashboard flex-box flex-right' to={"/Dashboard/Cards"}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 8.50488H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M6 16.5049H8" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M10.5 16.5049H14.5" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M6.44 3.50488H17.55C21.11 3.50488 22 4.38488 22 7.89488V16.1049C22 19.6149 21.11 20.4949 17.56 20.4949H6.44C2.89 20.5049 2 19.6249 2 16.1149V7.89488C2 4.38488 2.89 3.50488 6.44 3.50488Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+
+                                    <span>کارت ها</span>
                                 </Link>
                             </li>
                             
@@ -296,6 +430,19 @@ const Dashboard = () => {
                                     </svg>
 
                                     <span>حسابداری</span>
+                                </Link>
+                            </li>
+
+                            <li>
+                                <Link onClick={cardsmodShow} className='item-menu-sidbar-dashboard flex-box flex-right'>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 8.50488H22" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M6 16.5049H8" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M10.5 16.5049H14.5" stroke="#808191" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M6.44 3.50488H17.55C21.11 3.50488 22 4.38488 22 7.89488V16.1049C22 19.6149 21.11 20.4949 17.56 20.4949H6.44C2.89 20.5049 2 19.6249 2 16.1149V7.89488C2 4.38488 2.89 3.50488 6.44 3.50488Z" stroke="#808191" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+
+                                    <span>کارت ها</span>
                                 </Link>
                             </li>
                             
@@ -576,7 +723,7 @@ const Dashboard = () => {
                     <span>در حال معامله</span>
 
                     <div className='flex-box'>
-                        <span>0</span>
+                        <span>1</span>
 
                         <span>تومان</span>
 
@@ -585,7 +732,7 @@ const Dashboard = () => {
                 </div>
 
                 <div>
-                    <button>برداشت وجه</button>
+                    <button onClick={handleShowE}>برداشت وجه</button>
                 </div>
 
                 <div>
@@ -622,7 +769,7 @@ const Dashboard = () => {
         formData.append('description', descriptionprofile);
         formData.append('province', "Tehran");
         formData.append('city', "Tehran");
-        formData.append('image', imageprofile);
+        formData.append('profile_image', imageprofile);
 
         fetch('https://server.elfiro.com/api/v1/client/profile', {
             method: 'POST',
@@ -849,6 +996,100 @@ const Dashboard = () => {
                 </Link>
             )
         }
+    }
+
+    var reqlistdata;
+
+    if(userlistreq != undefined)
+    {
+        reqlistdata = (
+            <div className='box-show-item-payment'>
+                {userlistreq.map((item)=>(
+                    <div className='box-item-payment' key={item.id}>
+                        <div className='detalist-box-item-payment flex-box flex-justify-space'>
+                            <div className='flex-box'>
+                                <div className='li'></div>
+
+                                <div>
+                                    <span>تاریخ : </span>
+
+                                    <span>{item.date}</span>
+                                </div>
+                            </div>
+
+                            <div className='flex-box'>
+                                <div className='li'></div>
+
+                                <div>
+                                    <span>کد پیگیری : </span>
+
+                                    <span>{item.id}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='status-box-item-payment flex-box flex-justify-space'>
+                            <span>وضعیت</span>
+
+                            <span className='color-blue'>{item.status_label}</span>
+                        </div>
+
+                        <div className='price-box-item-payment flex-box flex-justify-space'>
+                            <span>مبلغ</span>
+
+                            <div className='color-blue'>
+                                <span>{item.price}</span>
+
+                                <span>تومان</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        )
+    }
+
+    var datacards;
+
+    if(userdata != undefined && supdata != undefined)
+    {
+        datacards = (
+            <div className='box-show-item-ticket'>
+                {usercards.map((item) => 
+                    <div className='box-item-ticket' key={Math.random()}>
+                        <div className='item-box-item-ticket flex-box flex-justify-space'>
+                            <span>شناسه</span>
+
+                            <span>{item.id}</span>
+                        </div>
+
+                        <div className='item-box-item-ticket flex-box flex-justify-space'>
+                            <span>نام بانک</span>
+
+                            <span>{item.bank_label}</span>
+                        </div>
+
+                        <div className='item-box-item-ticket flex-box flex-justify-space'>
+                            <span>شماره کارت</span>
+
+                            <span>{item.card_number}</span>
+                        </div>
+
+                        <div className='item-box-item-ticket flex-box flex-justify-space'>
+                            <span>شماره شبا</span>
+
+                            <span>{item.card_sheba}</span>
+                        </div>
+
+                        <div className='item-box-item-ticket flex-box flex-justify-space'>
+                            <span>وضعیت</span>
+
+                            <span className='color-blue'>{item.status_label}</span>
+                        </div>
+                    </div>
+                )}
+            </div>
+        )
     }
     
     var datasupport;
@@ -1096,87 +1337,7 @@ const Dashboard = () => {
                 <Modal.Body>
                     {DashAccount}
 
-                    <div className='box-show-item-payment'>
-                        <div className='box-item-payment'>
-                            <div className='detalist-box-item-payment flex-box flex-justify-space'>
-                                <div className='flex-box'>
-                                    <div className='li'></div>
-
-                                    <div>
-                                        <span>تاریخ : </span>
-
-                                        <span>1400/10/10</span>
-                                    </div>
-                                </div>
-
-                                <div className='flex-box'>
-                                    <div className='li'></div>
-
-                                    <div>
-                                        <span>کد پیگیری : </span>
-
-                                        <span>1234567859</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='status-box-item-payment flex-box flex-justify-space'>
-                                <span>وضعیت</span>
-
-                                <span className='color-blue'>برداشت وجه </span>
-                            </div>
-
-                            <div className='price-box-item-payment flex-box flex-justify-space'>
-                                <span>مبلغ</span>
-
-                                <div className='color-blue'>
-                                    <span>100,000</span>
-
-                                    <span>تومان</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className='box-item-payment'>
-                            <div className='detalist-box-item-payment flex-box flex-justify-space'>
-                                <div className='flex-box'>
-                                    <div className='li'></div>
-
-                                    <div>
-                                        <span>تاریخ : </span>
-
-                                        <span>1400/10/10</span>
-                                    </div>
-                                </div>
-
-                                <div className='flex-box'>
-                                    <div className='li'></div>
-
-                                    <div>
-                                        <span>کد پیگیری : </span>
-
-                                        <span>1234567859</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='status-box-item-payment flex-box flex-justify-space'>
-                                <span>وضعیت</span>
-
-                                <span className='color-green'>برداشت وجه </span>
-                            </div>
-
-                            <div className='price-box-item-payment flex-box flex-justify-space'>
-                                <span>مبلغ</span>
-
-                                <div className='color-blue'>
-                                    <span>100,000</span>
-
-                                    <span>تومان</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {reqlistdata}
                 </Modal.Body>
             </Modal>
 
@@ -1205,6 +1366,23 @@ const Dashboard = () => {
                     {datasupport}
                 </Modal.Body>
             </Modal>
+
+            <Modal className='modal-filter-home' show={cardsmod} onHide={cardsmodClose}>
+                <Modal.Header  className='modal-header-filter-mo width-max flex-box flex-justify-space' closeButton>
+                    <Modal.Title>کارت ها</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div>
+                        <Link className='btn-add-support-mob' to={"/Dashboard/Cards/ad"}>
+                            <span>افزودن کارت</span>
+                        </Link>
+                    </div>
+
+                    {datacards}
+                </Modal.Body>
+            </Modal>
+
+            {withdrawrequestdata}
         </>
     );
 };

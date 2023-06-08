@@ -3465,6 +3465,20 @@ td{
 }
 
 
+.text-box-style{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0rem 1rem;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin-bottom: 1rem;
+}
+
+
 .box-profile-edit {
     width: 50%;
 }
@@ -5180,6 +5194,165 @@ td{
     margin-right: 0.5rem;
 }
 
+
+#main-ticket-page{
+    padding: 2rem;
+    width: 70%;
+    box-sizing: border-box;
+    border: 1px solid #E9E9E9;
+    border-radius: 8px;
+}
+
+
+.box-header-ticketPage{
+    font-weight: 400;
+    font-size: 22px;
+    color: #000000;
+    padding-bottom: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #E9E9E9;
+}
+
+
+.box-answer-ticketPage label{
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin-bottom: 0.4rem;
+    text-align: right;
+    width: 100%;
+}
+
+
+.box-answer-ticketPage textarea{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 10rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin-bottom: 1rem;
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+
+.box-answer-ticketPage button{
+    font-weight: 400;
+    font-size: 16px;
+    color: #7007FA;
+    background: #FFFFFF;
+    border: 1px solid #7007FA;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+
+.box-item-ticketPage{
+    margin-top: 3rem;
+}
+
+
+.box-item-ticketPage .item{
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+
+.box-item-ticketPage .send{
+    color: white;
+    background: #7007fa;
+    border-radius: 20px 0px 20px 20px;
+}
+
+
+
+.box-item-ticketPage .send .time{
+    font-size: 12px;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: white;
+    border-bottom: 1px solid #ffffff70;
+}
+
+
+.box-item-ticketPage .recive{
+    color: #7007FA;
+    background: #7171713d;
+    border-radius: 0px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: left;
+}
+
+
+.box-item-ticketPage .recive .time{
+    text-align: left;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 100%;
+    border-bottom: 1px solid #7007FA;
+}
+
+
+.box-item-ticketPage .recive .file {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+
+
+.box-item-ticketPage .recive a {
+    color: #7007FA !important;
+    border: 1px solid #7007FA;
+}
+
+
+.box-item-ticketPage a{
+    color: white !important;
+    border: 1px solid white;
+    padding: 0.3rem 0.9rem;
+    border-radius: 100px;
+}
+
+
+.box-item-ticketPage .file{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: left;
+}
+
+
+.box-removable-dashAc-modal{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 3rem;
+    position: relative;
+    padding: 1rem;
+    box-sizing: border-box;
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+
+.box-removable-dashAc-modal::before{
+    content: "";
+    width: 5px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #0DD400;
+    border-radius: 8px 0px 0px 8px;
+}
+
 /* style mobile ................................................................. */
 
 @media screen and (max-width : 1450px) {
@@ -5560,6 +5733,25 @@ td{
     .box-item-rules-order{
         overflow: auto;
         max-height: none;
+    }
+
+    #main-ticket-page{
+        width: 100%;
+    }
+
+    .box-send-btn{
+        flex-direction: column;
+        justify-content: right;
+        align-items: flex-start;
+    }
+
+    .box-send-btn > div{
+        width: 100%;
+    }
+
+    .box-send-btn button{
+        margin-top: 1rem;
+        width: 100%;
     }
 }
 
