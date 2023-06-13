@@ -11,6 +11,7 @@ const DahAccount = () => {
     const userImage = localStorage.getItem("user-profile");
     const [userdata, setuserdata] = useState();
     const [data, setdata] = useState();
+    const [dataAc, setdataAc] = useState();
     const [usercards, setusercards] = useState();
     const [showE, setShowE] = useState(false);
     const handleCloseE = () => setShowE(false);
@@ -42,6 +43,16 @@ const DahAccount = () => {
                     headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
                 };
 
+                fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status === "success")
+                        {
+                            window.location = "/Dashboard/Profile/Authentication"
+                        }
+                    })
+                    .catch(err => console.log(err));
+
                 fetch('https://server.elfiro.com/api/v1/basic/user', options)
                     .then(response => response.json())
                     .then(response => {
@@ -68,6 +79,11 @@ const DahAccount = () => {
                     .then(response => response.json())
                     .then(response => setdata(response.data.requests.records))
                     .catch(err => console.log(err));
+
+                fetch('https://server.elfiro.com/api/v1/client/accounting/details', options)
+                    .then(response => response.json())
+                    .then(response => setdataAc(response.data.details))
+                    .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
             }
@@ -77,6 +93,8 @@ const DahAccount = () => {
     }, [])
 
     var sidbardashboard;
+    
+    console.log(dataAc);
 
     if(userName != undefined)
     {
@@ -278,6 +296,11 @@ const DahAccount = () => {
                     {
                         document.getElementById("status-tiket-add").innerHTML = response.data.message.user;
                     }
+
+                    if(response.data.message.card != undefined)
+                    {
+                        document.getElementById("status-tiket-add").innerHTML = response.data.message.card;
+                    }
                 }
             })
             .catch(err => console.log(err));
@@ -382,7 +405,13 @@ const DahAccount = () => {
                     <span>در حال معامله</span>
 
                     <div className='flex-box'>
-                        <span>0</span>
+                        {dataAc != undefined && 
+                            <span>{dataAc.inventory_being_traded}</span>
+                        }
+
+                        {dataAc === undefined && 
+                            <span>0</span>
+                        }
 
                         <span>تومان</span>
 
@@ -433,7 +462,7 @@ const DahAccount = () => {
                             </thead>
 
                             <tbody>
-                                {data.map((item) => (
+                                {data != undefined && data.map((item) => (
                                     <tr key={item.id}>
                                         <td>{item.date}</td>
 

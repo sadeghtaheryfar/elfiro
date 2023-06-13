@@ -55,8 +55,8 @@ const DashProfile = () => {
                             setemailprofile(response.data.user_data.user.email);
                             setusernameprofile(response.data.user_data.user.user_name);
                             setnameprofile(response.data.user_data.user.name);
-                            setcity(response.data.user_data.user.city);
-                            setprovince(response.data.user_data.user.province);
+                            // setcity(response.data.user_data.user.city);
+                            // setprovince(response.data.user_data.user.province);
                             localStorage.setItem('user-name', response.data.user_data.user.name);
                             localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
                         }
@@ -227,7 +227,7 @@ const DashProfile = () => {
 
     var dataprovince;
 
-    if(userdatas != undefined)
+    if(userdatas != undefined && userdatas.provinces != undefined && userdatas.cities != undefined)
     {
         const formattedProvinces = Object.keys(userdatas.provinces).map((item) => ({
             value : item,
@@ -286,11 +286,18 @@ const DashProfile = () => {
         formData.append('name', nameprofile);
         formData.append('user_name', usernameprofile);
         formData.append('email', emailprofile);
-        formData.append('password', passprofile);
         formData.append('description', descriptionprofile);
         formData.append('province', province);
         formData.append('city', city);
-        formData.append('profile_image', imageprofile);
+        if(imageprofile != undefined)
+        {
+            formData.append('profile_image', imageprofile);
+        } 
+        
+        if(passprofile != undefined)
+        {
+            formData.append('password', passprofile);
+        }
 
         fetch('https://server.elfiro.com/api/v1/client/profile', {
             method: 'POST',
@@ -302,6 +309,7 @@ const DashProfile = () => {
             .then((res) => res.json())
             .then((res) => 
             {
+                console.log(res);
                 if(res.status === "success")
                 {
                     document.getElementById("sucsess-tiket-add").innerHTML = res.data.message.profile;

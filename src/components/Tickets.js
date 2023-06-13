@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect,useState } from 'react';
+import { useEffect,useState,useRef } from 'react';
 import Header from './Header';
 import { Link } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ const Tickets = () => {
     const [userdata, setuserdata] = useState();
     const [data, setdata] = useState();
     const [messageForm, setmessageForm] = useState();
-    const [fileForm, setfileForm] = useState(["farsgamer.com"]);
+    const [fileForm, setfileForm] = useState();
 
 
     useEffect(() => {
@@ -23,6 +23,16 @@ const Tickets = () => {
                     method: 'GET',
                     headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
                 };
+
+                fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status === "success")
+                        {
+                            window.location = "/Dashboard/Profile/Authentication"
+                        }
+                    })
+                    .catch(err => console.log(err));
 
                 fetch('https://server.elfiro.com/api/v1/basic/user', options)
                     .then(response => response.json())
@@ -62,20 +72,25 @@ const Tickets = () => {
     var headerticket;
     var datachat;
 
-    const array = ['http://server.elfiro.com/storage/photos/Vector.png'];
+    console.log(data);
+
+    const [formdata, setFormData] = useState();
 
     const sendAnswer = () => {
-        var formdata = new FormData();
-        formdata.append("content", "yrdy");
-        formdata.append("file[0]", "/C:/Users/GS/Downloads/Untitled design.png");
+        const array = [`${fileForm}`];
 
+        setFormData({
+            content: 'test 2',
+            file: array,
+        });
+        
         const options = {
-            method: 'PUT',
-            body: formdata,
+            method: 'POST',
+            body: JSON.stringify(formdata),
             headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
         };
 
-        console.log(options);
+        console.log(formdata);
 
         fetch(`https://server.elfiro.com/api/v1/client/tickets/${data.id}?_method=PUT`, options)
             .then(response => response.json())

@@ -316,12 +316,12 @@ const DashSupportAd = () => {
                     </div>
 
                     <div className='box-suppurt-add'>
+                        {submitadddata}
+                        
                         <div className='flex-box flex-column'>
                             <span id='status-tiket-add'></span>
                             <span id='sucsess-tiket-add'></span>
                         </div>
-
-                        {submitadddata}
                     </div>
                 </section>
             </section>

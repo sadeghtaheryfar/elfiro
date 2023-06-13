@@ -36,6 +36,16 @@ const DashCards = () => {
                     headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
                 };
 
+                fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status === "success")
+                        {
+                            window.location = "/Dashboard/Profile/Authentication"
+                        }
+                    })
+                    .catch(err => console.log(err));
+
                 fetch('https://server.elfiro.com/api/v1/basic/user', options)
                     .then(response => response.json())
                     .then(response => {
@@ -204,7 +214,7 @@ const DashCards = () => {
 
     var datasupport;
 
-    if(userdata != undefined && data.length != 0)
+    if(userdata != undefined && data != undefined)
     {
         datasupport = (
             <div className='box-table-support-dashboard flex-box flex-aling-right width-max'>

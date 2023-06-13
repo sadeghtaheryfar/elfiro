@@ -7,8 +7,11 @@ import { useState,useEffect,useRef } from 'react';
 const DashProfileAuth = () => {
     const usertoken = localStorage.getItem("user-login");
     const [userdata, setuserdata] = useState()
+    const [data, setdata] = useState()
     const [userdatas, setuserdatas] = useState()
     const [imageprofile, setimageprofile] = useState();
+    const [province, setprovince] = useState("Tehran");
+    const [city, setcity] = useState("Tehran");
 
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
@@ -45,6 +48,8 @@ const DashProfileAuth = () => {
                         if(response.status === "error")
                         {
                             window.location = "/Dashboard/Profile"
+                        }else{
+                            setdata(response)
                         }
                     })
                     .catch(err => console.log(err));
@@ -55,6 +60,65 @@ const DashProfileAuth = () => {
             window.location = "/Login";
         }
     }, [])
+
+
+    var dataprovince;
+
+    if(data != undefined)
+    {
+        console.log(data.data.details.provinces);
+
+        const formattedProvinces = Object.keys(data.data.details.provinces).map((item) => ({
+            value : item,
+            label : data.data.details.provinces[item],
+        }))
+
+        const formattedCitis = Object.keys(data.data.details.cities[province])?.map((item) => ({
+            value : item,
+            label : data.data.details.cities[province][item],
+        }))
+
+        if(formattedCitis != undefined)
+        {
+            dataprovince = (
+                <div className='flex-box width-max'>
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errprovince' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="province">استان</label>
+
+                        <select defaultValue={province} onChange={(e) => setprovince(e.target.value)}>
+                            {formattedProvinces.map((item) => (
+                                <option key={item?.value} value={item?.value}>
+                                    {item?.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className='margin-horizontal-1'></div>
+
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errcity' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="city">شهر</label>
+
+                        <select defaultValue={city} onChange={(e) => setcity(e.target.value)}>
+                            {formattedCitis.map((item) => (
+                                <option key={item?.value} value={item?.value}>
+                                    {item?.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+            )
+        }
+    }
 
     var sidbardashboard;
 
@@ -269,6 +333,46 @@ const DashProfileAuth = () => {
                     </div>
 
                     <input ref={imageprofiler} onChange={(e) => chengeimage(e.target.files[0])} type='file' hidden />
+                </div>
+            
+                <div className='flex-box width-max'>
+                    <div className='item-profile-edit flex-box flex-column width-max'>
+                        <div className='err-tiket-add'>
+                            <span id='errusername' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="username">کد ملی</label>
+
+                        <input defaultValue={userdata.user_name} type='text' id='username' />
+                    </div>
+                </div>
+
+                <div className='flex-box width-max'>
+                    <div className='item-profile-edit flex-box flex-column width-max'>
+                        <div className='err-tiket-add'>
+                            <span id='errusername' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="username">کد ملی</label>
+
+                        <input defaultValue={userdata.user_name} type='text' id='username' />
+                    </div>
+                </div>
+
+                <div className='flex-box width-max'>
+                    <div className='item-profile-edit flex-box flex-column width-max'>
+                        <div className='err-tiket-add'>
+                            <span id='errusername' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="username">کد ملی</label>
+
+                        <input defaultValue={userdata.user_name} type='text' id='username' />
+                    </div>
+                </div>
+
+                <div className='width-max'>
+                    {dataprovince}
                 </div>
 
                 <div className='item-profile-edit width-max flex-box flex-right'>

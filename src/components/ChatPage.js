@@ -46,8 +46,6 @@ const ChatPage = (props) => {
         document.getElementById("box-chat-main").classList.add("hide-item-pc-f");
     }
 
-    console.log(Data);
-
     const [InOffendSub, setInOffendSub] = useState();
     const [InOffendDes, setInOffendDes] = useState();
     const SendOffend = () => {
@@ -186,7 +184,7 @@ const ChatPage = (props) => {
                                         </svg>
                                     ) : (
                                         <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11.9997 1.5L4.81004 8.6897L1.54199 5.42165" stroke="#BFBFBF" strokWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M11.9997 1.5L4.81004 8.6897L1.54199 5.42165" stroke="#BFBFBF" strokwidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                         </svg>
                                     )}
                                 </div>
@@ -214,7 +212,7 @@ const ChatPage = (props) => {
                                         </svg>
                                     ) : (
                                         <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11.9997 1.5L4.81004 8.6897L1.54199 5.42165" stroke="#BFBFBF" strokWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M11.9997 1.5L4.81004 8.6897L1.54199 5.42165" stroke="#BFBFBF" strokwidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                         </svg>
                                     )}
                                 </div>

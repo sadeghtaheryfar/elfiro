@@ -35,6 +35,16 @@ const DashTransaction = () => {
                     headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
                 };
 
+                fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status === "success")
+                        {
+                            window.location = "/Dashboard/Profile/Authentication"
+                        }
+                    })
+                    .catch(err => console.log(err));
+
                 fetch('https://server.elfiro.com/api/v1/basic/user', options)
                     .then(response => response.json())
                     .then(response => {
