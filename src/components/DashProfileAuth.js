@@ -12,6 +12,11 @@ const DashProfileAuth = () => {
     const [imageprofile, setimageprofile] = useState();
     const [province, setprovince] = useState("Tehran");
     const [city, setcity] = useState("Tehran");
+    const [imageOr, setimageOr] = useState();
+    const imageOrF = useRef();
+    const code_id = useRef();
+    const card_number = useRef();
+    const card_sheba = useRef();
 
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
@@ -66,8 +71,6 @@ const DashProfileAuth = () => {
 
     if(data != undefined)
     {
-        console.log(data.data.details.provinces);
-
         const formattedProvinces = Object.keys(data.data.details.provinces).map((item) => ({
             value : item,
             label : data.data.details.provinces[item],
@@ -84,7 +87,7 @@ const DashProfileAuth = () => {
                 <div className='flex-box width-max'>
                     <div className='item-profile-edit flex-box flex-column'>
                         <div className='err-tiket-add'>
-                            <span id='errprovince' className='err-tiket-add'></span>
+                            <span id='err-province' className='err-tiket-add'></span>
                         </div>
                         
                         <label htmlFor="province">استان</label>
@@ -102,12 +105,13 @@ const DashProfileAuth = () => {
 
                     <div className='item-profile-edit flex-box flex-column'>
                         <div className='err-tiket-add'>
-                            <span id='errcity' className='err-tiket-add'></span>
+                            <span id='err-city' className='err-tiket-add'></span>
                         </div>
                         
                         <label htmlFor="city">شهر</label>
 
-                        <select defaultValue={city} onChange={(e) => setcity(e.target.value)}>
+                        <select onChange={(e) => setcity(e.target.value)}>
+                            <option>انتخاب کنید</option>
                             {formattedCitis.map((item) => (
                                 <option key={item?.value} value={item?.value}>
                                     {item?.label}
@@ -268,32 +272,94 @@ const DashProfileAuth = () => {
 
     const onSend = async () => {
         const formData = new FormData();
-        formData.append('image', imageprofile);
+        formData.append('province', province);
+        formData.append('city', city);
+        formData.append('auth_image', imageOr);
+        formData.append('code_id', code_id.current.value);
+        formData.append('card_number', card_number.current.value);
+        formData.append('card_sheba', card_sheba.current.value);
+        
+        console.log('>>>>>>>>>>>', ...formData);
 
-        fetch('https://server.elfiro.com/api/v1/client/profile', {
+        fetch('https://server.elfiro.com/api/v1/client/auth', {
             method: 'POST',
             body: formData,
             headers: {
-                Authorization: 'Bearer 138|g73u5vgzwQAivpWF8jIzUELOC3HioutEV1etSBxc',
+                Authorization: `${usertoken}`,
             },
         })
             .then((res) => res.json())
-            .then((res) => 
-            {
+            .then((res) => {
+                console.log('>>>>>>>>>>>', res)
                 if(res.status === "success")
                 {
-                    // document.getElementById("sucsess-tiket-add").innerHTML = res.data.message.profile;
-                    console.log(res);
+                    document.getElementById("sucsess-tiket-add").innerHTML = res.data.message.auth;
+                    document.getElementById("err-city").innerHTML = "";
+                    document.getElementById("err-province").innerHTML = "";
+                    document.getElementById("err-code-id").innerHTML = "";
+                    document.getElementById("err-card-number").innerHTML = "";
+                    document.getElementById("err-card-shaba").innerHTML = "";
+                    document.getElementById("err-image").innerHTML = "";
+                    document.getElementById("status-tiket-add").innerHTML = "";
                 }else{
-                    if(res.data.message.profile_image != undefined)
+                    if(res.data.message.card_sheba != undefined)
                     {
-                        // document.getElementById("errimage").innerHTML = res.data.message.profile_image;
+                        document.getElementById("err-card-shaba").innerHTML = res.data.message.card_sheba;
                     }
-                    console.log(res);
+                    
+                    if(res.data.message.card_number != undefined)
+                    {
+                        document.getElementById("err-card-number").innerHTML = res.data.message.card_number;
+                    }
+                    
+                    if(res.data.message.code_id != undefined)
+                    {
+                        document.getElementById("err-code-id").innerHTML = res.data.message.code_id;
+                    }
+                    
+                    if(res.data.message.auth_image != undefined)
+                    {
+                        document.getElementById("err-image").innerHTML = res.data.message.auth_image;
+                    }
+                    
+                    if(res.data.message.city != undefined)
+                    {
+                        document.getElementById("err-city").innerHTML = res.data.message.city;
+                    }
+                    
+                    if(res.data.message.province != undefined)
+                    {
+                        document.getElementById("err-province").innerHTML = res.data.message.province;
+                    }
+
+                    if(res.data.message.user != undefined)
+                    {
+                        document.getElementById("status-tiket-add").innerHTML = res.data.message.user;
+                    }
+
+                    if(res.data.message.auth != undefined)
+                    {
+                        document.getElementById("status-tiket-add").innerHTML = res.data.message.auth;
+                    }
                 }
             })
             .catch((error) => console.error(error))
     };
+
+    const [selectedImage, setSelectedImage] = useState();
+
+    const imageChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setSelectedImage(e.target.files[0]);
+            document.getElementById("inputimagebox").classList.add("hide-item");
+        }
+    };
+
+    const removeSelectedImage = () => {
+        setSelectedImage();
+        document.getElementById("inputimagebox").classList.remove("hide-item");
+    };
+
     
 
     if(userdata != undefined && userdatas != undefined)
@@ -308,66 +374,82 @@ const DashProfileAuth = () => {
                     <img src='http://server.elfiro.com/storage/photos/6206baafe335e.png' />
                 </div>
 
-                <div className='flex-box width-max'>
-                    <div className='box-upload-btn' onClick={() => imageprofiler.current?.click()}>
-                        <div className='show-upload-btn flex-box flex-column'>
-                            <div>
-                                <svg width="66" height="52" viewBox="0 0 66 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M56.5093 44.9292C54.611 45.7545 52.8226 46.1947 51.007 46.1947C49.0811 46.2223 47.1552 46.2223 45.2019 46.2223H41.3502V39.5919H45.477C47.0452 39.6194 48.6409 39.6194 50.209 39.5919C54.2533 39.5644 57.4172 37.1708 58.4351 33.2916C59.0128 31.1457 58.6277 28.8072 57.3896 26.8538C56.1791 24.928 54.2258 23.6074 52.0523 23.2223C50.1815 22.8921 49.0811 21.8192 48.6133 19.9759C47.2928 14.446 43.9639 10.6219 38.7641 8.61349C33.4543 6.60507 28.3371 7.26541 23.605 10.6219C20.3586 12.9328 18.2678 16.1517 17.4149 20.1685C17.2223 20.9663 17.1672 21.8192 17.1122 22.6996L17.0573 23.4149C16.8646 25.6158 15.6816 26.7438 13.4807 26.8814C13.2881 26.9089 13.0955 26.9364 12.9304 26.9364C9.73907 27.3216 7.37305 30.1278 7.37305 33.2366C7.37305 36.373 9.73907 39.1792 12.6553 39.4818C13.5908 39.5919 14.5261 39.5919 15.4615 39.5919C17.4149 39.6194 19.2582 39.6194 21.1015 39.5919H24.733V46.1121L23.4399 46.1947C23.1374 46.2223 22.9998 46.2223 22.8622 46.2223H13.2881C7.01538 46.1672 1.51306 41.2151 0.770203 34.9423L0.660156 34.4472L0.715149 31.5308C0.797668 31.2282 0.880249 30.9256 0.935242 30.623C1.12787 29.8526 1.32043 29.1098 1.62305 28.3945C3.2738 24.3502 6.27258 21.7642 10.5094 20.6637C10.9771 16.3993 12.5728 12.5477 15.269 9.19119C18.7905 4.81686 23.3574 2.09317 28.8048 1.07522C35.215 -0.107822 41.1301 1.24026 46.4399 5.09195C50.5392 8.09073 53.3179 12.1074 54.7209 17.0321C60.2233 18.5728 64.5152 23.6624 65.2305 29.4124C66.0284 35.9053 62.4518 42.288 56.5093 44.9292Z" fill="#7007FA"/>
-                                <path d="M44.184 33.5116L39.3419 38.3812L36.3982 35.4375V51.9996H29.7127V35.63L26.9341 38.5188L22.0645 33.7042L25.1733 30.5954C27.0166 28.752 28.8599 26.9088 30.7307 25.0655C31.9688 23.8274 33.8121 23.7724 35.1877 24.9279C35.3802 25.0655 35.5452 25.2305 35.7104 25.3956L42.9459 32.5762L44.184 33.5116Z" fill="#7007FA"/>
-                                </svg>
-                            </div>
+                <div className='width-max'>
+                    <span id='err-image' className='err-tiket-add'></span>
+                    <br></br>
 
-                            <div>
-                                <span>اپلود عکس آگهی</span>
-                            </div>
+                    <div id='inputimagebox' onClick={() => imageOrF.current?.click()} className='show-upload-btn flex-box flex-column margin-vetical-1'>
+                        <div>
+                            <svg width="66" height="52" viewBox="0 0 66 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M56.5093 44.9292C54.611 45.7545 52.8226 46.1947 51.007 46.1947C49.0811 46.2223 47.1552 46.2223 45.2019 46.2223H41.3502V39.5919H45.477C47.0452 39.6194 48.6409 39.6194 50.209 39.5919C54.2533 39.5644 57.4172 37.1708 58.4351 33.2916C59.0128 31.1457 58.6277 28.8072 57.3896 26.8538C56.1791 24.928 54.2258 23.6074 52.0523 23.2223C50.1815 22.8921 49.0811 21.8192 48.6133 19.9759C47.2928 14.446 43.9639 10.6219 38.7641 8.61349C33.4543 6.60507 28.3371 7.26541 23.605 10.6219C20.3586 12.9328 18.2678 16.1517 17.4149 20.1685C17.2223 20.9663 17.1672 21.8192 17.1122 22.6996L17.0573 23.4149C16.8646 25.6158 15.6816 26.7438 13.4807 26.8814C13.2881 26.9089 13.0955 26.9364 12.9304 26.9364C9.73907 27.3216 7.37305 30.1278 7.37305 33.2366C7.37305 36.373 9.73907 39.1792 12.6553 39.4818C13.5908 39.5919 14.5261 39.5919 15.4615 39.5919C17.4149 39.6194 19.2582 39.6194 21.1015 39.5919H24.733V46.1121L23.4399 46.1947C23.1374 46.2223 22.9998 46.2223 22.8622 46.2223H13.2881C7.01538 46.1672 1.51306 41.2151 0.770203 34.9423L0.660156 34.4472L0.715149 31.5308C0.797668 31.2282 0.880249 30.9256 0.935242 30.623C1.12787 29.8526 1.32043 29.1098 1.62305 28.3945C3.2738 24.3502 6.27258 21.7642 10.5094 20.6637C10.9771 16.3993 12.5728 12.5477 15.269 9.19119C18.7905 4.81686 23.3574 2.09317 28.8048 1.07522C35.215 -0.107822 41.1301 1.24026 46.4399 5.09195C50.5392 8.09073 53.3179 12.1074 54.7209 17.0321C60.2233 18.5728 64.5152 23.6624 65.2305 29.4124C66.0284 35.9053 62.4518 42.288 56.5093 44.9292Z" fill="#7007FA"/>
+                            <path d="M44.184 33.5116L39.3419 38.3812L36.3982 35.4375V51.9996H29.7127V35.63L26.9341 38.5188L22.0645 33.7042L25.1733 30.5954C27.0166 28.752 28.8599 26.9088 30.7307 25.0655C31.9688 23.8274 33.8121 23.7724 35.1877 24.9279C35.3802 25.0655 35.5452 25.2305 35.7104 25.3956L42.9459 32.5762L44.184 33.5116Z" fill="#7007FA"/>
+                            </svg>
+                        </div>
 
-                            <div>
-                                <span>حداکثر حجم آپلود عکس 3 مگابایت</span>
-                            </div>
+                        <div>
+                            <span>اپلود عکس آگهی</span>
+                        </div>
 
-                            <div>
-                                <span>انتخاب فایل</span>
-                            </div>
+                        <div>
+                            <span>حداکثر حجم آپلود عکس 3 مگابایت</span>
+                        </div>
+
+                        <div>
+                            <span>بارگزاری</span>
                         </div>
                     </div>
 
-                    <input ref={imageprofiler} onChange={(e) => chengeimage(e.target.files[0])} type='file' hidden />
+                    <input ref={imageOrF} type='file' hidden onChange={(e) => {
+                        setimageOr(e.target.files[0]);
+                        imageChange(e);
+                    }} />
+
+                    {selectedImage && (
+                        <div id='showimagebox' className='show-upload-btn flex-box flex-column margin-vetical-1'>
+                            <div>
+                                <img src={URL.createObjectURL(selectedImage)} />
+                            </div>
+
+                            <div>
+                                <button onClick={removeSelectedImage}>حذف</button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             
                 <div className='flex-box width-max'>
                     <div className='item-profile-edit flex-box flex-column width-max'>
                         <div className='err-tiket-add'>
-                            <span id='errusername' className='err-tiket-add'></span>
+                            <span id='err-code-id' className='err-tiket-add'></span>
                         </div>
                         
                         <label htmlFor="username">کد ملی</label>
 
-                        <input defaultValue={userdata.user_name} type='text' id='username' />
+                        <input ref={code_id} type='number' id='code-id' />
                     </div>
                 </div>
 
                 <div className='flex-box width-max'>
                     <div className='item-profile-edit flex-box flex-column width-max'>
                         <div className='err-tiket-add'>
-                            <span id='errusername' className='err-tiket-add'></span>
+                            <span id='err-card-number' className='err-tiket-add'></span>
                         </div>
                         
-                        <label htmlFor="username">کد ملی</label>
+                        <label htmlFor="username">شماره کارت</label>
 
-                        <input defaultValue={userdata.user_name} type='text' id='username' />
+                        <input ref={card_number} type='number' id='card-number' />
                     </div>
                 </div>
 
                 <div className='flex-box width-max'>
                     <div className='item-profile-edit flex-box flex-column width-max'>
                         <div className='err-tiket-add'>
-                            <span id='errusername' className='err-tiket-add'></span>
+                            <span id='err-card-shaba' className='err-tiket-add'></span>
                         </div>
                         
-                        <label htmlFor="username">کد ملی</label>
+                        <label htmlFor="username">شماره شبا</label>
 
-                        <input defaultValue={userdata.user_name} type='text' id='username' />
+                        <input ref={card_sheba} type='text' id='card-shaba' />
                     </div>
                 </div>
 

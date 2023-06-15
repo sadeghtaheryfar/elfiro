@@ -215,6 +215,8 @@ const DashTransaction = () => {
     
     var transactions;
 
+    console.log('>>>>>>>>>>>', userTran)
+
     if(userTran != undefined && userdata != undefined)
     {
         transactions=(
@@ -285,13 +287,15 @@ const DashTransaction = () => {
                             </div>
 
                             <div className='morebtn-item-transaction-dashboard flex-box flex-left width-max'>
-                                <Link to={"/transactions/" + item.id} className='flex-box'>
-                                    <span>مشاهده معامله</span>
+                                {item.status_label != "لغو شده" && 
+                                    <Link to={"/transactions/" + item.id} className='flex-box'>
+                                        <span>مشاهده معامله</span>
 
-                                    <svg width="10" height="15" viewBox="0 0 10 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8.11328 1.5L2 7.61279L8.11328 13.7261" stroke="#7007FA" strokeWidth="2" strokeLinecap="round"/>
-                                    </svg>
-                                </Link>
+                                        <svg width="10" height="15" viewBox="0 0 10 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.11328 1.5L2 7.61279L8.11328 13.7261" stroke="#7007FA" strokeWidth="2" strokeLinecap="round"/>
+                                        </svg>
+                                    </Link>
+                                }
                             </div>
                         </div>
                     </div>

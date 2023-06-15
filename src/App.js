@@ -27,6 +27,7 @@ import Search from "./components/Search";
 import Tickets from "./components/Tickets";
 import DashCards from "./components/DashCards";
 import DashCardAd from "./components/DashCardAd";
+import Bookmarks from "./components/Bookmarks";
 
 function App() {
   
@@ -54,6 +55,7 @@ function App() {
         <Route path="/Dashboard/Account"  element={<DashAccount/>}/>
         <Route path="/chats"  element={<Chat/>}/>
         <Route path="/Rules"  element={<Rules/>}/>
+        <Route path="/Bookmarks"  element={<Bookmarks/>}/>
         <Route path="/orders/:productId" element={<Order/>} />
         <Route path="/users/:username" element={<Profile/>} />
         <Route path="/transactions/:productId" element={<Transactions/>} />

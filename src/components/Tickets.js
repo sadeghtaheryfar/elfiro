@@ -72,21 +72,16 @@ const Tickets = () => {
     var headerticket;
     var datachat;
 
-    console.log(data);
-
-    const [formdata, setFormData] = useState();
+    const [Formdata, setFormData] = useState();
 
     const sendAnswer = () => {
-        const array = [`${fileForm}`];
-
-        setFormData({
-            content: 'test 2',
-            file: array,
-        });
+        const formdata = new FormData();
+        formdata.append("content","test 4");
+        setFormData(Formdata);
         
         const options = {
             method: 'POST',
-            body: JSON.stringify(formdata),
+            body: Formdata,
             headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
         };
 

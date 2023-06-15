@@ -3289,6 +3289,21 @@ td{
 }
 
 
+.item-profile-edit [type=number]{
+    background: #E4E4E4;
+    border-radius: 8px;
+    height: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0rem 1rem;
+    font-weight: 400;
+    font-size: 14px;
+    color: #808191;
+    margin-bottom: 1rem;
+    border: none;
+}
+
+
 .item-profile-edit label{
     font-weight: 400;
     font-size: 12px;

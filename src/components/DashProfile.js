@@ -309,7 +309,6 @@ const DashProfile = () => {
             .then((res) => res.json())
             .then((res) => 
             {
-                console.log(res);
                 if(res.status === "success")
                 {
                     document.getElementById("sucsess-tiket-add").innerHTML = res.data.message.profile;

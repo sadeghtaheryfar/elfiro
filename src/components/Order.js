@@ -102,6 +102,31 @@ const Order = () => {
         )
     }
 
+    const saveOrder = () => {
+        const options = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
+            body : `{"order_id" : ${Data.id}}`,
+        };
+
+        if(usertoken != undefined)
+        {
+            fetch('https://server.elfiro.com/api/v1/client/bookmarks', options)
+                .then(response => response.json())
+                .then(response => {
+                    if(response.status === "error")
+                    {
+                        console.log(response);
+                    }else{
+                        window.location = "/Bookmarks"
+                    }
+                    })
+                .catch(err => console.log(err));
+        }else{
+            window.location = "/login";
+        }
+    }
+
     var detalistOrder;
 
     const [callnumber, Setcallnumber] = useState();
@@ -282,7 +307,7 @@ const Order = () => {
                                     <img src={Data.platforms} />
                                 </div>
 
-                                <div className='flex-box'>
+                                <div onClick={saveOrder} className='flex-box'>
                                     <svg width="15" height="21" viewBox="0 0 15 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M13.117 3.48515V18.8752C13.117 19.3342 12.699 19.6161 12.374 19.3762L7.563 15.8142C7.407 15.6982 7.21001 15.6982 7.05299 15.8142L2.242 19.3762C1.918 19.6161 1.5 19.3342 1.5 18.8752V3.48515C1.5 2.41316 2.228 1.53516 3.118 1.53516H11.499C12.389 1.53516 13.117 2.41316 13.117 3.48515Z" stroke="#7007FA" strokeWidth="2"/>
                                     </svg>
@@ -508,7 +533,7 @@ const Order = () => {
                             <img src={Data.platforms} />
                         </div>
 
-                        <div className='flex-box'>
+                        <div onClick={saveOrder} className='flex-box'>
                             <svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.71207 1.55405V9.87297C7.71207 10.1211 7.48613 10.2735 7.31046 10.1438L4.7099 8.21838C4.62558 8.15567 4.5191 8.15567 4.43423 8.21838L1.83369 10.1438C1.65855 10.2735 1.43262 10.1211 1.43262 9.87297V1.55405C1.43262 0.974594 1.82613 0.5 2.30721 0.5H6.83746C7.31856 0.5 7.71207 0.974594 7.71207 1.55405Z" stroke="#7007FA"/>
                             </svg>

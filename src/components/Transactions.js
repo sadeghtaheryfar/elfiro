@@ -12,6 +12,9 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
     const [showB, setShowB] = useState(false);
     const handleCloseB = () => setShowB(false);
     const handleShowB = () => setShowB(true);
+    const [showC, setShowC] = useState(false);
+    const handleCloseC = () => setShowC(false);
+    const handleShowC = () => setShowC(true);
     const [retrntPruDeta, setretrntPruDeta] = useState();
     const [CoTextTran, setCoTextTran] = useState();
     const [CoSroceTran, setCoSroceTran] = useState();
@@ -127,6 +130,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                 if(response.status === "success")
                 {
                     document.getElementById("sucsend2").innerHTML = response.data.message.transaction;
+                    window.location = "/Dashboard/Transaction"
                 }else{
                     if(response.data.message != undefined)
                     {
@@ -746,8 +750,19 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
         }
     }
 
+    console.log('>>>>>>>>>>>', userdata)
+
     if(Data != undefined && userdata != undefined && Data.status === "wait_for_pay")
     {
+        var price;
+
+        if(Data.order.price - userdata.wallet < 0)
+        {
+            price = 0;
+        }else{
+            price = Data.order.price - userdata.wallet;
+        }
+
         if(Data.customer.phone === userdata.phone)
         {
             waitConfirm = (
@@ -861,19 +876,19 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                             <div className='inventory'>
                                 <span>موجودی کیف پول : </span>
 
-                                <span className='color-blue'>500000</span>
+                                <span className='color-blue'>{userdata.wallet}</span>
 
                                 <span className='color-blue'>تومان</span>
                             </div>
 
-                            <div className='use-wallet'>
+                            {/* <div className='use-wallet'>
                                 <Checkbox>استفاده از کیف پول</Checkbox>
-                            </div>
+                            </div> */}
 
                             <div className='payment flex-box'>
                                 <span>مبلغ قابل پرداخت</span>
 
-                                <span> 10000 </span>
+                                <span className='margin-horizontal-0-5'>{price}</span>
 
                                 <span>تومان</span>
                             </div>
@@ -881,7 +896,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                             <div className='btns'>
                                 <button onClick={startPay}>درگاه پرداخت</button>
 
-                                <button onClick={cancelPay}>لغو معامله</button>
+                                <button onClick={handleShowC}>لغو معامله</button>
                             </div>
                         </div>
 
@@ -1689,7 +1704,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                     <div className='btns flex-box'>
                                         <button onClick={startPay}>ارسال اطلاعات</button>
 
-                                        <button onClick={cancelPay}>لغو معامله</button>
+                                        <button onClick={handleShowB}>لغو معامله</button>
                                     </div>
                                     
                                     <div className='flex-box'>
@@ -2771,6 +2786,26 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
             <Header style="1rem 2rem" />
 
             {waitConfirm}
+
+            {/* <!-- Modal --> */}
+            <Modal className='modal-detalist-tran' show={showC} onHide={handleCloseC} centered>
+                <Modal.Body>
+                    <div className='flex-box flex-column'>
+                        <div className='message'>
+                            <span>آیا از پایان دادن به معامله مطمئن هستید ؟</span>
+                        </div>
+
+                        <div className='btns flex-box'>
+                            <button onClick={(e) => {
+                                cancelPay();
+                                handleCloseC();
+                            }}>تایید</button>
+                            
+                            <button onClick={handleCloseC}>لغو</button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };
