@@ -278,8 +278,6 @@ const DashProfileAuth = () => {
         formData.append('code_id', code_id.current.value);
         formData.append('card_number', card_number.current.value);
         formData.append('card_sheba', card_sheba.current.value);
-        
-        console.log('>>>>>>>>>>>', ...formData);
 
         fetch('https://server.elfiro.com/api/v1/client/auth', {
             method: 'POST',
@@ -290,7 +288,15 @@ const DashProfileAuth = () => {
         })
             .then((res) => res.json())
             .then((res) => {
-                console.log('>>>>>>>>>>>', res)
+                document.getElementById("sucsess-tiket-add").innerHTML = "";
+                document.getElementById("err-city").innerHTML = "";
+                document.getElementById("err-province").innerHTML = "";
+                document.getElementById("err-code-id").innerHTML = "";
+                document.getElementById("err-card-number").innerHTML = "";
+                document.getElementById("err-card-shaba").innerHTML = "";
+                document.getElementById("err-image").innerHTML = "";
+                document.getElementById("status-tiket-add").innerHTML = "";
+
                 if(res.status === "success")
                 {
                     document.getElementById("sucsess-tiket-add").innerHTML = res.data.message.auth;

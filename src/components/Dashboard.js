@@ -34,8 +34,12 @@ const Dashboard = () => {
     const [showE, setShowE] = useState(false);
     const handleCloseE = () => setShowE(false);
     const handleShowE = () => setShowE(true);
-
-
+    const [showAuth, setShowAuth] = useState(false);
+    const handleCloseAuth = () => setShowAuth(false);
+    const handleShowAuth = () => setShowAuth(true);
+    const [province, setprovince] = useState("Tehran");
+    const [city, setcity] = useState("Tehran");
+    const [image_profile, setimage_profile] = useState();
     const [userdatas, setuserdatas] = useState()
     const [imageprofile, setimageprofile] = useState();
     const [descriptionprofile, setdescriptionprofile] = useState();
@@ -72,7 +76,13 @@ const Dashboard = () => {
                             setdescriptionprofile(response.data.user_data.user.description);
                             setemailprofile(response.data.user_data.user.email);
                             setusernameprofile(response.data.user_data.user.user_name);
+                            setimage_profile(response.data.user_data.user.profile_image);
                             setnameprofile(response.data.user_data.user.name);
+                            if(response.data.user_data.user.province != undefined)
+                            {
+                                setcity(response.data.user_data.user.city);
+                                setprovince(response.data.user_data.user.province);
+                            }
                         }
                     })
                     .catch(err => {
@@ -83,6 +93,16 @@ const Dashboard = () => {
                     .then(response => response.json())
                     .then(response => {
                         setuserTran(response.data.transactions.records)
+                    })
+                    .catch(err => console.log(err));
+
+                fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status == "success")
+                        {
+                            handleShowAuth();
+                        }
                     })
                     .catch(err => console.log(err));
 
@@ -145,9 +165,8 @@ const Dashboard = () => {
             .then(response => {
                 if(response.status === "success")
                 {
-                    window.location = "/Dashboard/Account"
+                    window.location.reload(false);
                 }else{
-                    console.log(response);
                     if(response.data.message.price != undefined)
                     {
                         document.getElementById("err-cardnumb-dashcard").innerHTML = response.data.message.price;
@@ -643,13 +662,15 @@ const Dashboard = () => {
                             </div>
 
                             <div className='morebtn-item-transaction-dashboard flex-box flex-left width-max'>
-                                <Link to={"/transactions/" + item.id} className='flex-box'>
-                                    <span>مشاهده معامله</span>
+                                {item.status_label != "لغو شده" && 
+                                    <Link to={"/transactions/" + item.id} className='flex-box'>
+                                        <span>مشاهده معامله</span>
 
-                                    <svg width="10" height="15" viewBox="0 0 10 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8.11328 1.5L2 7.61279L8.11328 13.7261" stroke="#7007FA" strokeWidth="2" strokeLinecap="round"/>
-                                    </svg>
-                                </Link>
+                                        <svg width="10" height="15" viewBox="0 0 10 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.11328 1.5L2 7.61279L8.11328 13.7261" stroke="#7007FA" strokeWidth="2" strokeLinecap="round"/>
+                                        </svg>
+                                    </Link>
+                                }
                             </div>
                         </div>
                     </div>
@@ -668,13 +689,15 @@ const Dashboard = () => {
     }
 
     const fusendchargenum = () => {
+        let url = window.location.href;
+
         const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `${usertoken}`
             },
-            body: `{"price":${chargenum},"gateway":"payir","call_back_address":"http://localhost:3000/Dashboard/Account"}`
+            body: `{"price":${chargenum},"gateway":"zarinpal","call_back_address":"${url}"}`
         };
 
         fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
@@ -748,16 +771,68 @@ const Dashboard = () => {
 
     var dataprofile;
 
-    const [datacity, setdatacity] = useState();
-
-    const chengecity = (e) => {
-
-    }
-
     const imageprofiler = useRef();
 
     const chengeimage = (e) => {
         setimageprofile(e);
+        setimage_profile(URL.createObjectURL(e))
+    }
+
+    var dataprovince;
+
+    if(userdatas != undefined && userdatas.provinces != undefined && userdatas.cities != undefined)
+    {
+        const formattedProvinces = Object.keys(userdatas.provinces).map((item) => ({
+            value : item,
+            label : userdatas.provinces[item],
+        }))
+
+        const formattedCitis = Object.keys(userdatas.cities[province])?.map((item) => ({
+            value : item,
+            label : userdatas.cities[province][item],
+        }))
+
+        if(formattedProvinces != undefined)
+        {
+            dataprovince = (
+                <div className='flex-box width-max'>
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errprovince' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="province">استان</label>
+
+                        <select defaultValue={province} onChange={(e) => setprovince(e.target.value)}>
+                            {formattedProvinces.map((item) => (
+                                <option key={item?.value} value={item?.value}>
+                                    {item?.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className='margin-horizontal-1'></div>
+
+                    <div className='item-profile-edit flex-box flex-column'>
+                        <div className='err-tiket-add'>
+                            <span id='errcity' className='err-tiket-add'></span>
+                        </div>
+                        
+                        <label htmlFor="city">شهر</label>
+
+                        <select defaultValue={city} onChange={(e) => setcity(e.target.value)}>
+                            <option>انتخاب کنید</option>
+                            {formattedCitis.map((item) => (
+                                <option key={item?.value} value={item?.value}>
+                                    {item?.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+            )
+        }
     }
 
     const onSend = async () => {
@@ -765,17 +840,24 @@ const Dashboard = () => {
         formData.append('name', nameprofile);
         formData.append('user_name', usernameprofile);
         formData.append('email', emailprofile);
-        formData.append('password', passprofile);
         formData.append('description', descriptionprofile);
         formData.append('province', "Tehran");
         formData.append('city', "Tehran");
-        formData.append('profile_image', imageprofile);
+        if(imageprofile != undefined)
+        {
+            formData.append('profile_image', imageprofile);
+        } 
+        
+        if(passprofile != undefined)
+        {
+            formData.append('password', passprofile);
+        }
 
         fetch('https://server.elfiro.com/api/v1/client/profile', {
             method: 'POST',
             body: formData,
             headers: {
-                Authorization: 'Bearer 138|g73u5vgzwQAivpWF8jIzUELOC3HioutEV1etSBxc',
+                Authorization: `${usertoken}`,
             },
         })
             .then((res) => res.json())
@@ -846,7 +928,7 @@ const Dashboard = () => {
                     </div>
 
                     <button className='btn-upload-profile' onClick={() => imageprofiler.current?.click()}>
-                        <img src={userdata.profile_image} />
+                        <img src={image_profile} />
 
                         <div className='flex-box'>
                             <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -854,7 +936,6 @@ const Dashboard = () => {
                                 <path d="M6.61106 9.93359L5.96805 13.9376C5.93006 14.1776 6.12905 14.3896 6.37105 14.3656L10.629 13.9516L18.8461 5.73459C19.1531 5.42758 19.1531 4.92957 18.8461 4.62259L15.9401 1.71658C15.633 1.40958 15.135 1.40958 14.8281 1.71658L6.61106 9.93359Z" stroke="#161615" strokeWidth="2"/>
                                 <line x1="13.4508" y1="2.76457" x2="17.4242" y2="6.73798" stroke="#161615" strokeWidth="2"/>
                             </svg>
-
 
                             <span>برای آپلود کن</span>
                         </div>
@@ -921,36 +1002,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className='flex-box width-max'>
-                    <div className='item-profile-edit flex-box flex-column'>
-                        <div className='err-tiket-add'>
-                            <span id='errprovince' className='err-tiket-add'></span>
-                        </div>
-                        
-                        <label htmlFor="province">استان</label>
-
-                        <select id='province' defaultValue={"none"} onChange={(e) => chengecity(e.target.value)}>
-                            <option value={"none"} disabled hidden >انتخاب کنید</option>
-                            <option value="Alborz">البز</option><option value="Ardabil">ادربیل</option><option value="Azerbaijan East">اذربایجان شرقی</option><option value="Azerbaijan West">اذربایجان غربی</option><option value="Bushehr">بوشر</option><option value="Chahar Mahaal and Bakhtiari">چهار محال و بختیاری</option><option value="Fars">فارس</option><option value="Gilan">گیلان</option><option value="Golestan">گلستان</option><option value="Hamadan">گرگان</option><option value="Hormozgān">هرمزگان</option><option value="Ilam">ایلام</option><option value="Isfahan">اصفهان</option><option value="Kerman">کرمان</option><option value="Kermanshah">کرمانشاه</option><option value="Khorasan North">خراسان شمالی</option><option value="Khorasan Razavi">خراسان رضوی</option><option value="Khorasan South">خراسان جنوبی</option><option value="Khuzestan">خوزستان</option><option value="Kohgiluyeh and Boyer-Ahmad">کهگیلویه و بویر احمد</option><option value="Kurdistan">کردستان</option><option value="Lorestan">لرستان</option><option value="Markazi">مرکزی</option><option value="Mazandaran">مازندران</option><option value="Qazvin">قزوین</option><option value="Qom">قم</option><option value="Semnan">سمنان</option><option value="Sistan and Baluchestan">سیستان و بلوچستان</option><option value="Tehran">تهران</option><option value="Yazd">یزد</option><option value="Zanjan">زنجان</option>
-                        </select>
-                    </div>
-
-                    <div className='margin-horizontal-1'></div>
-
-                    <div className='item-profile-edit flex-box flex-column'>
-                        <div className='err-tiket-add'>
-                            <span id='errcity' className='err-tiket-add'></span>
-                        </div>
-                        
-                        <label htmlFor="city">شهر</label>
-
-                        <select id='city' defaultValue={"none"}>
-                            <option value={"none"} disabled hidden >انتخاب کنید</option>
-
-                            {datacity}
-                        </select>
-                    </div>
-                </div>
+                {dataprovince}
 
                 <div className='item-profile-edit width-max flex-box flex-right'>
                     <button onClick={onSend}>ثبت تغییرات</button>
@@ -1051,7 +1103,7 @@ const Dashboard = () => {
 
     var datacards;
 
-    if(userdata != undefined && supdata != undefined)
+    if(userdata != undefined && supdata != undefined && usercards != undefined)
     {
         datacards = (
             <div className='box-show-item-ticket'>
@@ -1131,7 +1183,7 @@ const Dashboard = () => {
                         </div>
 
                         <div className='item-box-item-ticket flex-box flex-left'>
-                            <Link className='color-blue'>مشاهده تیکت</Link>
+                            <Link to={"/tickets/" + item.id} className='color-blue'>مشاهده تیکت</Link>
                         </div>
                     </div>
                 )}
@@ -1379,6 +1431,23 @@ const Dashboard = () => {
                     </div>
 
                     {datacards}
+                </Modal.Body>
+            </Modal>
+
+            {/* <!-- Modal --> */}
+            <Modal className='modal-detalist-tran' show={showAuth} onHide={handleCloseAuth} centered>
+                <Modal.Body>
+                    <div className='flex-box flex-column'>
+                        <div className='message'>
+                            <span>برای ادامه فعالیت نیاز به احراز هویت دارید .</span>
+                        </div>
+
+                        <div className='btns flex-box'>
+                            <button onClick={(e) => {
+                                window.location = "/Dashboard/Profile/Authentication";
+                            }}>احراز هویت</button>
+                        </div>
+                    </div>
                 </Modal.Body>
             </Modal>
 

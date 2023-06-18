@@ -63,7 +63,6 @@ const ChatPage = (props) => {
                 {
                     document.getElementById("sucsend").innerHTML = response.data.message.content;
                 }else{
-                    console.log(response);
                     if(response.data.message.subject != undefined)
                     {
                         document.getElementById("rr-subject-offend").innerHTML = response.data.message.subject;

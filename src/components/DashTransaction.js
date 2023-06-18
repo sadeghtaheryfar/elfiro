@@ -41,30 +41,30 @@ const DashTransaction = () => {
                         if(response.status === "success")
                         {
                             window.location = "/Dashboard/Profile/Authentication"
-                        }
-                    })
-                    .catch(err => console.log(err));
-
-                fetch('https://server.elfiro.com/api/v1/basic/user', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if(response.status != "success")
-                        {
-                            window.location = "/Login";
                         }else{
-                            setuserdata(response);
-                            localStorage.setItem('user-name', response.data.user_data.user.name);
-                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
-                        }
-                    })
-                    .catch(err => {
-                        window.location = "/Login"
-                    });
+                            fetch('https://server.elfiro.com/api/v1/basic/user', options)
+                                .then(response => response.json())
+                                .then(response => {
+                                    if(response.status != "success")
+                                    {
+                                        window.location = "/Login";
+                                    }else{
+                                        setuserdata(response);
+                                        localStorage.setItem('user-name', response.data.user_data.user.name);
+                                        localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
+                                    }
+                                })
+                                .catch(err => {
+                                    window.location = "/Login"
+                                });
 
-                fetch('https://server.elfiro.com/api/v1/client/transactions', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        setuserTran(response.data.transactions.records)
+                            fetch('https://server.elfiro.com/api/v1/client/transactions', options)
+                                .then(response => response.json())
+                                .then(response => {
+                                    setuserTran(response.data.transactions.records)
+                                })
+                                .catch(err => console.log(err));
+                        }
                     })
                     .catch(err => console.log(err));
             }else{
@@ -215,8 +215,6 @@ const DashTransaction = () => {
     
     var transactions;
 
-    console.log('>>>>>>>>>>>', userTran)
-
     if(userTran != undefined && userdata != undefined)
     {
         transactions=(
@@ -318,7 +316,7 @@ const DashTransaction = () => {
                         </div>
 
                         <div className='nav-detalist-order-dashboard flex-box flex-right'>
-                            <Link className='active' to={"/Dashboard/Order"}>
+                            <Link className='active'>
                                 <span>همه معاملات </span>
                             </Link>
 

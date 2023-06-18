@@ -54,8 +54,6 @@ const Search = (props) => {
     var ConDataCategoryMobile;
     var ConDataPrudect;
 
-    console.log(props);
-
 
     if(DataCategory != undefined)
     {

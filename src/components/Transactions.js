@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect,useState } from 'react';
-import Link from 'antd/es/typography/Link';
+import { Link, json } from 'react-router-dom';
 import Header from './Header';
 import Checkbox from 'antd/es/checkbox/Checkbox';
 import Modal from 'react-bootstrap/Modal';
@@ -31,16 +31,6 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                     headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
                 };
 
-                fetch('https://server.elfiro.com/api/v1/client/auth', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if(response.status === "success")
-                        {
-                            window.location = "/Dashboard/Profile/Authentication"
-                        }
-                    })
-                    .catch(err => console.log(err));
-
                 fetch('https://server.elfiro.com/api/v1/basic/user', options)
                     .then(response => response.json())
                     .then(response => {
@@ -54,6 +44,16 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                     .catch(err => {
                         window.location = "/Login"
                     });
+
+                fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status === "success")
+                        {
+                            window.location = "/Dashboard/Profile/Authentication"
+                        }
+                    })
+                    .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
             }
@@ -92,6 +92,9 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                 if(response.status === "success")
                 {
                     document.getElementById("sucsend").innerHTML = response.data.message.transaction;
+                    var tID = setTimeout(function () {
+                        window.location.reload(false);
+                    }, 3000);
                 }else{
                     if(response.data.message != undefined)
                     {
@@ -102,17 +105,56 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
             .catch(err => console.log(err))
     }
 
+    // if(Data != undefined)
+    // {
+        
+    // }
+
+    console.log('>>>>>>>>>>>', Data)
+
+    const [DataForm, setDataForm] = useState([]);
+
+    const saveDataFrom = (value,index,name) => {
+        let temp = DataForm;
+        temp[index] = {id:name,value};
+        setDataForm(temp);
+    }
+
+    console.log('>>>>>>>>>>>', Data)
+
     const startPay = () => {
+        // let form = [{
+        //     id : "text-648c5a50d3eb4",
+        //     value : "test"
+        // }]
+
+        // let form2 = [["text-648c5a50d3eb4","test"]]
+
+        const formdata2 = new FormData();
+        // formdata2.append("parameters",DataForm);
+        DataForm.forEach((item) => formdata2.append("parameters[]",item))
+
         const usertoken = localStorage.getItem("user-login");
         const options = {
             method: 'POST',
-            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
-            body: `{"transaction_id":${Data.id}}`
+            headers: {'Content-Type': 'multipart/form-data', Authorization: `${usertoken}`},
+            body: formdata2
         };
+
+        console.log('>>>>>>>>formdata2>>>', options)
 
         fetch(`https://server.elfiro.com/api/v1/client/transactions/${Data.id}`, options)
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(response => {
+                if(response.status === "success")
+                {
+                    var tID = setTimeout(function () {
+                        window.location.reload(false);
+                    }, 2000);
+                }else{
+                    console.log(response);
+                }
+            })
             .catch(err => console.log(err))
     }
 
@@ -130,7 +172,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                 if(response.status === "success")
                 {
                     document.getElementById("sucsend2").innerHTML = response.data.message.transaction;
-                    window.location = "/Dashboard/Transaction"
+                    window.location = "/Dashboard/Transaction/";
                 }else{
                     if(response.data.message != undefined)
                     {
@@ -189,7 +231,6 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
             .then(response => {
                 if(response.status === "success")
                 {
-                    console.log('>>>>>>>>>>>', response)
                     document.getElementById("sucsend5").innerHTML = response.data.message.refund;
                 }else{
                     if(response.data.message != undefined)
@@ -216,7 +257,6 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
             .then(response => {
                 if(response.status === "success")
                 {
-                    console.log('>>>>>>>>>>>', response)
                     document.getElementById("sucsend6").innerHTML = response.data.message.transaction;
                 }else{
                     if(response.data.message != undefined)
@@ -321,7 +361,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.customer.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
 
@@ -361,7 +401,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.seller.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
                         </div>
@@ -549,7 +589,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.customer.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
 
@@ -589,7 +629,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.seller.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
                         </div>
@@ -750,11 +790,9 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
         }
     }
 
-    console.log('>>>>>>>>>>>', userdata)
-
     if(Data != undefined && userdata != undefined && Data.status === "wait_for_pay")
     {
-        var price;
+        let price;
 
         if(Data.order.price - userdata.wallet < 0)
         {
@@ -805,7 +843,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.customer.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
 
@@ -845,7 +883,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.seller.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
                         </div>
@@ -1059,7 +1097,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.customer.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
 
@@ -1099,7 +1137,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.seller.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
                         </div>
@@ -1287,7 +1325,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.customer.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
 
@@ -1327,7 +1365,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.seller.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
                         </div>
@@ -1513,7 +1551,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.customer.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
 
@@ -1553,7 +1591,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.seller.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
                         </div>
@@ -1696,15 +1734,24 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
 
                                 <div className='box-send-detalist-tran width-max'>
                                     <div className='inp'>
-                                        <label htmlFor='text-in-detalist-tran'>مشخصات محصول</label>
+                                        {/* <label htmlFor='text-in-detalist-tran'>مشخصات محصول</label>
                                         <br />
-                                        <textarea id='text-in-detalist-tran'></textarea>
+                                        <textarea id='text-in-detalist-tran'></textarea> */}
+
+                                        {Data.current_status_data.fields?.map((item,index) => {
+                                            if(item.type == "text")
+                                            {
+                                                return (
+                                                    <input className='input-style' onChange={(e) => saveDataFrom(e.target.value, index, item.name)} key={Math.random()} type='text' placeholder={item.placeholder} />
+                                                )
+                                            }
+                                        })}
                                     </div>
 
                                     <div className='btns flex-box'>
                                         <button onClick={startPay}>ارسال اطلاعات</button>
 
-                                        <button onClick={handleShowB}>لغو معامله</button>
+                                        <button onClick={handleShowC}>لغو معامله</button>
                                     </div>
                                     
                                     <div className='flex-box'>
@@ -1764,7 +1811,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.customer.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
 
@@ -1804,7 +1851,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.seller.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
                         </div>
@@ -2057,7 +2104,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.customer.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
 
@@ -2097,7 +2144,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.seller.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
                         </div>
@@ -2369,7 +2416,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.customer.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
 
@@ -2409,7 +2456,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.seller.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
                         </div>
@@ -2587,7 +2634,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.customer.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
 
@@ -2627,7 +2674,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 </div>
                                 
                                 <div>
-                                    <Link>مشاهده پروفایل</Link>
+                                    <Link to={`/users/${Data.seller.user_name}`}>مشاهده پروفایل</Link>
                                 </div>
                             </div>
                         </div>

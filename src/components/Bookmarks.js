@@ -65,14 +65,12 @@ const Bookmarks = () => {
         {
             fetch(`https://server.elfiro.com/api/v1/client/bookmarks/${id}`, options)
                 .then(response => response.json())
-                .then(response => console.log('>>>>>>>>>>>', response))
+                .then(response => window.location.reload(false))
                 .catch(err => console.log(err));
         }else{
             window.location = "/login";
         }
     }
-
-    console.log(data);
 
     var dataBookmarks;
 
@@ -125,7 +123,7 @@ const Bookmarks = () => {
                             </div>
 
                             <div className='price-item-prudect-home flex-box flex-justify-space'>
-                                <div className='flex-box' onClick={() => UNsaveOrder(item.order.id)}>
+                                <div className='flex-box' onClick={() => UNsaveOrder(item.id)}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22 2L2 22" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                         <path d="M20.68 8.70996V19.71C20.68 21.72 19.24 22.57 17.48 21.59L11 17.54" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

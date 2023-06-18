@@ -40,6 +40,7 @@ const Order = () => {
     const handleCloseF = () => setShowF(false);
     const handleShowF = () => setShowF(true);
     const usertoken = localStorage.getItem("user-login");
+    const [Auth, setAuth] = useState(false); 
 
     useEffect(() => {
         const options = {
@@ -52,6 +53,16 @@ const Order = () => {
             fetch('https://server.elfiro.com/api/v1/basic/user', options)
                 .then(response => response.json())
                 .then(response => setDatauser(response.data.user_data.user))
+                .catch(err => console.log(err));
+
+            fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                .then(response => response.json())
+                .then(response => {
+                    if(response.status === "success")
+                    {
+                        setAuth(true);
+                    }
+                })
                 .catch(err => console.log(err));
         }
     },[])
@@ -142,48 +153,53 @@ const Order = () => {
 
     const starttran = () => {
         const usertoken = localStorage.getItem("user-login");
-        if(usertoken != undefined)
-        {
-            setShowC(true);
-            handleCloseF();
-            const options = {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
-                body: '{"confirmLaw":true}'
-            };
+            if(Auth == false)
+            {
+                if(usertoken != undefined)
+            {
+                setShowC(true);
+                handleCloseF();
+                const options = {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
+                    body: '{"confirmLaw":true}'
+                };
 
-            fetch(`https://server.elfiro.com/api/v1/orders/start-transaction/${Data.id}`, options)
-                .then(response => response.json())
-                .then(response =>  {
-                    if(response.status === "success")
-                    {
-                        document.getElementById("show-start-tran").innerHTML = response.data.message.transaction;
-                        const handle = setInterval(() => {
-                            Setnumber((prev) => {
-                                if(prev > 0)
-                                {
-                                    return prev-1
-                                }else{
-                                    return 0
-                                }
-                            })
-                        }, 1000);
-                    }else{
-                        if(response.data.message.user != undefined)
+                fetch(`https://server.elfiro.com/api/v1/orders/start-transaction/${Data.id}`, options)
+                    .then(response => response.json())
+                    .then(response =>  {
+                        if(response.status === "success")
                         {
-                            document.getElementById("show-start-tran").innerHTML = response.data.message.user[0];
+                            document.getElementById("show-start-tran").innerHTML = response.data.message.transaction;
+                            const handle = setInterval(() => {
+                                Setnumber((prev) => {
+                                    if(prev > 0)
+                                    {
+                                        return prev-1
+                                    }else{
+                                        return 0
+                                    }
+                                })
+                            }, 1000);
+                        }else{
+                            if(response.data.message.user != undefined)
+                            {
+                                document.getElementById("show-start-tran").innerHTML = response.data.message.user[0];
+                            }
+
+                            if(response.data.message.transaction != undefined)
+                            {
+                                document.getElementById("show-start-tran").innerHTML = response.data.message.transaction[0];
+                            }
                         }
 
-                        if(response.data.message.transaction != undefined)
-                        {
-                            document.getElementById("show-start-tran").innerHTML = response.data.message.transaction[0];
-                        }
-                    }
-
-                })
-                .catch(err => console.log('>>>>>>>>>>>', err))
+                    })
+                    .catch(err => console.log('>>>>>>>>>>>', err))
+            }else{
+                window.location = "/login"
+            }
         }else{
-            window.location = "/login"
+            window.location = "/Dashboard/Profile/Authentication";
         }
     }
 
@@ -202,19 +218,24 @@ const Order = () => {
             body : `{"confirmLaw":true,"user_target":${Data.user.id}}`
         };
 
-        if(usertoken != undefined)
+        if(Auth == false)
         {
-            fetch(`https://server.elfiro.com/api/v1/client/chat/new`, options)
-                .then(response => response.json())
-                .then(response => {
-                    if(response.status === "success")
-                    {
-                        window.location = "/chats";
-                    }
-                })
-                .catch(err => console.log('>>>>>>>>>>>', err))
+            if(usertoken != undefined)
+            {
+                fetch(`https://server.elfiro.com/api/v1/client/chat/new`, options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status === "success")
+                        {
+                            window.location = "/chats";
+                        }
+                    })
+                    .catch(err => console.log('>>>>>>>>>>>', err))
+            }else{
+                window.location = "/login";
+            }
         }else{
-            window.location = "/login";
+            window.location = "/Dashboard/Profile/Authentication";
         }
     }
 
@@ -238,7 +259,6 @@ const Order = () => {
                     {
                         document.getElementById("sucsend").innerHTML = response.data.message.content;
                     }else{
-                        console.log(response);
                         if(response.data.message.subject != undefined)
                         {
                             document.getElementById("rr-subject-offend").innerHTML = response.data.message.subject;
@@ -638,12 +658,12 @@ const Order = () => {
                                     </div>
 
                                     <div>
-                                        <button className='flex-box' onClick={handelnumberordermo}>
+                                        <button className='flex-box' onClick={() => window.location=`tel:${Data.user.phone}`}>
                                             <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M11.8867 3.11932C11.4574 1.30804 9.82056 0 7.92216 0H4.64189C2.38795 0 0.556641 1.8313 0.556641 4.07855V9.47186C0.556641 11.2093 1.63664 12.7253 3.23318 13.3022C3.6625 15.1067 5.29929 16.4215 7.19769 16.4215H10.478C12.7319 16.4215 14.5632 14.5902 14.5632 12.3362V6.94287C14.5632 5.20551 13.4765 3.68274 11.8867 3.11932ZM3.11243 6.94287V11.7526C2.36783 11.2562 1.89826 10.411 1.89826 9.47186V4.07855C1.89826 2.56921 3.12585 1.34161 4.64189 1.34161H7.92216C8.98875 1.34161 9.93461 1.95874 10.3773 2.86438H7.19769C4.94376 2.86438 3.11243 4.69568 3.11243 6.94287ZM13.2216 12.3362C13.2216 13.8523 11.994 15.0798 10.478 15.0798H7.19769C5.90972 15.0798 4.80289 14.181 4.52114 12.9131C4.50102 12.8326 4.48761 12.7454 4.47419 12.6583C4.45406 12.5509 4.45406 12.4435 4.45406 12.3362V6.94287C4.45406 5.43353 5.68166 4.20599 7.19769 4.20599H10.478C10.7127 4.20599 10.9274 4.23285 11.1421 4.29321C12.3697 4.58838 13.2216 5.68176 13.2216 6.94287V12.3362Z" fill="#7007FA"/>
                                             </svg>
 
-                                            <span>کپی</span>
+                                            <span className='color-blue'>تماس</span>
                                         </button>
                                     </div>
                                 </div>

@@ -29,6 +29,16 @@ const Profile = () => {
                 .then(response => response.json())
                 .then(response => setDatauser(response.data.user_data.user))
                 .catch(err => console.log(err));
+
+            fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                .then(response => response.json())
+                .then(response => {
+                    if(response.status === "success")
+                    {
+                        window.location = "/Dashboard/Profile/Authentication"
+                    }
+                })
+                .catch(err => console.log(err));
         }
     },[])
 
@@ -65,35 +75,41 @@ const Profile = () => {
     const [InOffendDes, setInOffendDes] = useState();
     const SendOffend = () => {
         const usertoken = localStorage.getItem("user-login");
-        const options = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
-            body : `{"phone":"${Datauser.phone}","subject":"${InOffendSub}","content":"${InOffendDes}"}`
-        };
-
-        fetch(`https://server.elfiro.com/api/v1/users/offend/${Data.data.user.record.user_name}`, options)
-            .then(response => response.json())
-            .then(response =>  {
-                if(response.status === "success")
-                {
-                    document.getElementById("sucsend").innerHTML = response.data.message.content;
-                }else{
-                    console.log(response);
-                    if(response.data.message.subject != undefined)
+        
+        if(Datauser != undefined && usertoken != undefined)
+        {
+            const options = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
+                body : `{"phone":"${Datauser.phone}","subject":"${InOffendSub}","content":"${InOffendDes}"}`
+            };
+    
+            fetch(`https://server.elfiro.com/api/v1/users/offend/${Data.data.user.record.user_name}`, options)
+                .then(response => response.json())
+                .then(response =>  {
+                    if(response.status === "success")
                     {
-                        document.getElementById("rr-subject-offend").innerHTML = response.data.message.subject;
+                        document.getElementById("sucsend").innerHTML = response.data.message.content;
+                    }else{
+                        console.log(response);
+                        if(response.data.message.subject != undefined)
+                        {
+                            document.getElementById("rr-subject-offend").innerHTML = response.data.message.subject;
+                        }
+                        if(response.data.message.content != undefined)
+                        {
+                            document.getElementById("rr-description-offend").innerHTML = response.data.message.content;
+                        }
+                        if(response.data.message.user != undefined)
+                        {
+                            document.getElementById("rr-description-offend").innerHTML = response.data.message.user;
+                        }
                     }
-                    if(response.data.message.content != undefined)
-                    {
-                        document.getElementById("rr-description-offend").innerHTML = response.data.message.content;
-                    }
-                    if(response.data.message.user != undefined)
-                    {
-                        document.getElementById("rr-description-offend").innerHTML = response.data.message.user;
-                    }
-                }
-            })
-            .catch(err => console.log('>>>>>>>>>>>', err))
+                })
+                .catch(err => console.log('>>>>>>>>>>>', err))
+        }else{
+            window.location = "/login";
+        }
     }
 
     var ShowPrudect;

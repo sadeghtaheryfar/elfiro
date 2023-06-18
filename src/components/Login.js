@@ -120,7 +120,6 @@ const Login = () => {
                 localStorage.setItem('user-profile', response.data.login.user.profile_image);
                 window.location = "/";
             }else{
-                console.log(response);
                 if(response.data.message.user)
                 {
                     document.getElementById("error-phone-pass").innerHTML = response.data.message.user;
@@ -178,6 +177,7 @@ const Login = () => {
 
                                 <div className="countdown-text">
                                     <button
+                                        id='disable-defult'
                                         disabled={seconds > 0 || minutes > 0}
                                         onClick={resendOTP}
                                     >

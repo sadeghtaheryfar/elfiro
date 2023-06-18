@@ -2,9 +2,11 @@ import React from 'react';
 import { useEffect,useState,useRef } from 'react';
 import Header from './Header';
 import { Checkbox } from 'antd';
+import { useParams } from 'react-router-dom';
 
-const OrderAdd = () => {
+const OrderEdit = (props) => {
     const usertoken = localStorage.getItem("user-login");
+    const [data, setdata] = useState(1);
     const [categoryOr, setcategoryOr] = useState(1);
     const [nameOr, setnameOr] = useState();
     const [descriptionOr, setdescriptionOr] = useState();
@@ -16,7 +18,12 @@ const OrderAdd = () => {
     // const [galleryOr, setgalleryOr] = useState([]);
     const imageOrF = useRef();
     const galleryOr = [];
+    const [inputValue, setInputValue] = useState(0);
+    const [formattedValue, setFormattedValue] = useState(0);
 
+    let propsL = useParams();
+
+    console.log(propsL.id)
 
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
@@ -43,6 +50,26 @@ const OrderAdd = () => {
                 fetch('https://server.elfiro.com/api/v1/client/orders/details', options)
                     .then(response => response.json())
                     .then(result => SetDataCategory(result.data.details.categories.digital))
+
+                fetch(`https://server.elfiro.com/api/v1/client/orders`, options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status === "success")
+                        {
+                            response.data.orders.records.map((item) => {
+                                if(item.id == propsL.id)
+                                {
+                                    setdata(item);
+                                    setFormattedValue(item.price);
+                                    setInputValue(item.price);
+                                    setcategoryOr(item.category.id);
+                                }
+                            })
+                        }else{
+                            window.location = "/Login";
+                        }
+                    })
+                    .catch(err => console.error(err));
             }else{
                 window.location = "/Login";
             }
@@ -51,16 +78,7 @@ const OrderAdd = () => {
         }
     }, []);
 
-    const nextlevel = () => {
-        document.getElementById("section-one-orderAd").classList.add("hide-item");
-        document.getElementById("section-two-orderAd").classList.remove("hide-item");
-        Setdatahedaerbol(true);
-    }
-
-    const chengecategory = (e) => {
-        var x = e--;
-        setcategoryOr(x);
-    }
+    console.log(data);
 
     const chengegallety = (e) => {
         galleryOr.push(e);
@@ -90,23 +108,19 @@ const OrderAdd = () => {
         document.getElementById("inputimagebox").classList.remove("hide-item");
     };
 
-    console.log(DataCategory)
-
     const onSend = async () => {
         const formData = new FormData();
-        formData.append('category_id', categoryOr);
+        formData.append('category_id', 2);
         formData.append('name', nameOr);
         formData.append('content', descriptionOr);
         formData.append('price', priceOr);
         formData.append('image', imageOr);
         // formData.append('gallery', galleryOr);
 
-        fetch('https://server.elfiro.com/api/v1/client/orders', {
-            method: 'POST',
+        fetch(`https://server.elfiro.com/api/v1/client/orders/${data.id}`, {
+            method: 'PUT',
             body: formData,
-            headers: {
-                Authorization: `${usertoken}`,
-            },
+            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
         })
             .then((res) => res.json())
             .then((res) => {
@@ -145,34 +159,6 @@ const OrderAdd = () => {
             .catch((error) => console.error(error))
     };
 
-    var tagcategory;
-    var datacetogryheader;
-
-    if(DataCategory != undefined)
-    {
-        tagcategory = (
-            <select id='category' onChange={(e) => chengecategory(e.target.value)}>
-                {DataCategory.map((item)=> 
-                    <option key={item.id} value={item.id}>{item.title}</option>
-                )}
-            </select>
-        )
-    }
-
-    if(datahedaerbol)
-    {
-        DataCategory.map((item) => {
-            if(item.id === categoryOr)
-            {
-                datacetogryheader = (
-                    <span>{item.title}</span>
-                )
-            }
-        })
-    }
-    
-    const [inputValue, setInputValue] = useState('0');
-    const [formattedValue, setFormattedValue] = useState('');
 
     useEffect(() => {
         const number = parseFloat(inputValue);
@@ -194,22 +180,10 @@ const OrderAdd = () => {
             <section id='main-OrderAd' className='flex-box'>
                 <section id='section-OrderAd'>
                     <div className='header-OrderAd'>
-                        <span>ثبت آگهی</span>
-                    </div>
-                    
-                    <div id='section-one-orderAd'>
-                        <div className='box-from-orderAd'>
-                            <label htmlFor='category'>انتخاب  دسته بندی</label>
-                            <br />
-                            {tagcategory}
-                        </div>
-
-                        <div className='box-from-orderAd flex-box'>
-                            <button onClick={nextlevel}>ادامه</button>
-                        </div>
+                        <span>ویرایش آگهی </span>
                     </div>
 
-                    <div id='section-two-orderAd' className='hide-item'>
+                    <div id='section-two-orderAd'>
                         <div className='box-category-orderAd flex-box flex-right'>
                             <span>آگهی شما</span>
 
@@ -217,21 +191,21 @@ const OrderAdd = () => {
                                 <path d="M7 1.5L1 7.5L7 13.5" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
 
-                            {datacetogryheader}
+                            <span>{data.category?.title}</span>
                         </div>
 
                         <div className='box-from-orderAd'>
                             <label htmlFor='name'>نام آگهی شما</label>
                             <br />
                             <span id='errname' className='errinputs'></span>
-                            <input type='text' id='name' onChange={(e) => setnameOr(e.target.value)} />
+                            <input defaultValue={data?.name} type='text' id='name' onChange={(e) => setnameOr(e.target.value)} />
                         </div>
 
                         <div>
                             <span id='errimage' className='err-tiket-add'></span>
                             <br></br>
 
-                            <div id='inputimagebox' onClick={() => imageOrF.current?.click()} className='show-upload-btn flex-box flex-column margin-vetical-1'>
+                            <div id='inputimagebox' onClick={() => imageOrF.current?.click()} className='show-upload-btn flex-box flex-column margin-vetical-1 hide-item'>
                                 <div>
                                     <svg width="66" height="52" viewBox="0 0 66 52" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M56.5093 44.9292C54.611 45.7545 52.8226 46.1947 51.007 46.1947C49.0811 46.2223 47.1552 46.2223 45.2019 46.2223H41.3502V39.5919H45.477C47.0452 39.6194 48.6409 39.6194 50.209 39.5919C54.2533 39.5644 57.4172 37.1708 58.4351 33.2916C59.0128 31.1457 58.6277 28.8072 57.3896 26.8538C56.1791 24.928 54.2258 23.6074 52.0523 23.2223C50.1815 22.8921 49.0811 21.8192 48.6133 19.9759C47.2928 14.446 43.9639 10.6219 38.7641 8.61349C33.4543 6.60507 28.3371 7.26541 23.605 10.6219C20.3586 12.9328 18.2678 16.1517 17.4149 20.1685C17.2223 20.9663 17.1672 21.8192 17.1122 22.6996L17.0573 23.4149C16.8646 25.6158 15.6816 26.7438 13.4807 26.8814C13.2881 26.9089 13.0955 26.9364 12.9304 26.9364C9.73907 27.3216 7.37305 30.1278 7.37305 33.2366C7.37305 36.373 9.73907 39.1792 12.6553 39.4818C13.5908 39.5919 14.5261 39.5919 15.4615 39.5919C17.4149 39.6194 19.2582 39.6194 21.1015 39.5919H24.733V46.1121L23.4399 46.1947C23.1374 46.2223 22.9998 46.2223 22.8622 46.2223H13.2881C7.01538 46.1672 1.51306 41.2151 0.770203 34.9423L0.660156 34.4472L0.715149 31.5308C0.797668 31.2282 0.880249 30.9256 0.935242 30.623C1.12787 29.8526 1.32043 29.1098 1.62305 28.3945C3.2738 24.3502 6.27258 21.7642 10.5094 20.6637C10.9771 16.3993 12.5728 12.5477 15.269 9.19119C18.7905 4.81686 23.3574 2.09317 28.8048 1.07522C35.215 -0.107822 41.1301 1.24026 46.4399 5.09195C50.5392 8.09073 53.3179 12.1074 54.7209 17.0321C60.2233 18.5728 64.5152 23.6624 65.2305 29.4124C66.0284 35.9053 62.4518 42.288 56.5093 44.9292Z" fill="#7007FA"/>
@@ -268,6 +242,19 @@ const OrderAdd = () => {
                                     </div>
                                 </div>
                             )}
+
+                            <div id='showimageboxNew' className='show-upload-btn flex-box flex-column margin-vetical-1'>
+                                <div>
+                                    <img src={data?.image} />
+                                </div>
+
+                                <div>
+                                    <button onClick={() => {
+                                        document.getElementById("inputimagebox").classList.remove("hide-item");
+                                        document.getElementById("showimageboxNew").classList.add("hide-item");
+                                    }}>حذف</button>
+                                </div>
+                            </div>
                         </div>
 
                         <div className='box-from-orderAd'>
@@ -281,7 +268,7 @@ const OrderAdd = () => {
                             <label htmlFor='price'>قیمت</label>
                             <br />
                             <span id='errprice' className='err-tiket-add'></span>
-                            <input type='number' id='price' onChange={(e) => handleInputChange(e)} />
+                            <input defaultValue={data?.price} type='number' id='price' onChange={(e) => handleInputChange(e)} />
                         </div>
 
                         
@@ -312,4 +299,4 @@ const OrderAdd = () => {
     );
 };
 
-export default OrderAdd;
+export default OrderEdit;

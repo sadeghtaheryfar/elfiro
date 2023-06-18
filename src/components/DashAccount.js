@@ -49,40 +49,40 @@ const DahAccount = () => {
                         if(response.status === "success")
                         {
                             window.location = "/Dashboard/Profile/Authentication"
-                        }
-                    })
-                    .catch(err => console.log(err));
-
-                fetch('https://server.elfiro.com/api/v1/basic/user', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if(response.status != "success")
-                        {
-                            window.location = "/Login";
                         }else{
-                            setuserdata(response);
-                            localStorage.setItem('user-name', response.data.user_data.user.name);
-                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
+                            fetch('https://server.elfiro.com/api/v1/basic/user', options)
+                                .then(response => response.json())
+                                .then(response => {
+                                    if(response.status != "success")
+                                    {
+                                        window.location = "/Login";
+                                    }else{
+                                        setuserdata(response);
+                                        localStorage.setItem('user-name', response.data.user_data.user.name);
+                                        localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
+                                    }
+                                })
+                                .catch(err => {
+                                    window.location = "/Login"
+                                });
+
+
+                            fetch('https://server.elfiro.com/api/v1/client/cards', options)
+                                .then(response => response.json())
+                                .then(response => setusercards(response.data.cards.records))
+                                .catch(err => console.log(err));
+
+                            fetch('https://server.elfiro.com/api/v1/client/accounting', options)
+                                .then(response => response.json())
+                                .then(response => setdata(response.data.requests.records))
+                                .catch(err => console.log(err));
+
+                            fetch('https://server.elfiro.com/api/v1/client/accounting/details', options)
+                                .then(response => response.json())
+                                .then(response => setdataAc(response.data.details))
+                                .catch(err => console.log(err));
                         }
                     })
-                    .catch(err => {
-                        window.location = "/Login"
-                    });
-
-
-                fetch('https://server.elfiro.com/api/v1/client/cards', options)
-                    .then(response => response.json())
-                    .then(response => setusercards(response.data.cards.records))
-                    .catch(err => console.log(err));
-
-                fetch('https://server.elfiro.com/api/v1/client/accounting', options)
-                    .then(response => response.json())
-                    .then(response => setdata(response.data.requests.records))
-                    .catch(err => console.log(err));
-
-                fetch('https://server.elfiro.com/api/v1/client/accounting/details', options)
-                    .then(response => response.json())
-                    .then(response => setdataAc(response.data.details))
                     .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
@@ -93,8 +93,6 @@ const DahAccount = () => {
     }, [])
 
     var sidbardashboard;
-    
-    console.log(dataAc);
 
     if(userName != undefined)
     {
@@ -242,13 +240,15 @@ const DahAccount = () => {
     }
 
     const fusendchargenum = () => {
+        let url = window.location.href;
+
         const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `${usertoken}`
             },
-            body: `{"price":${chargenum},"gateway":"zarinpal","call_back_address":"http://localhost:3000/Dashboard/Account"}`
+            body: `{"price":${chargenum},"gateway":"zarinpal","call_back_address":"${url}"}`
         };
 
         fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)

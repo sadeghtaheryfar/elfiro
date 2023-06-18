@@ -28,6 +28,7 @@ import Tickets from "./components/Tickets";
 import DashCards from "./components/DashCards";
 import DashCardAd from "./components/DashCardAd";
 import Bookmarks from "./components/Bookmarks";
+import OrderEdit from "./components/OrderEdit";
 
 function App() {
   
@@ -41,6 +42,7 @@ function App() {
         <Route path="/Dashboard"  element={<Dashboard/>}/>
         <Route path="/Dashboard/Order"  element={<DashOrder/>}/>
         <Route path="Order/add"  element={<OrderAdd/>}/>
+        <Route path="Order/edit/:id"  element={<OrderEdit/>}/>
         <Route path="/Dashboard/Order/Accepted"  element={<DashOrderAccepted/>}/>
         <Route path="/Dashboard/Order/Coming"  element={<DashOrderComing/>}/>
         <Route path="/Dashboard/Order/Failed"  element={<DashOrderFailed/>}/>

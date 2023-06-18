@@ -168,6 +168,11 @@ input[type="number"]:focus{
 }
 
 
+.color-black{
+    color: black !important;
+}
+
+
 .color-blue{
     color: #7007FA !important;
 }
@@ -260,6 +265,10 @@ input[type="number"]:focus{
 
 .font-number-en{
     font-family: "IranSensEnNu" !important;
+}
+
+#disable-defult:disabled{
+    background-color: rgba(255, 255, 255, 0) !important;
 }
 
 
@@ -908,7 +917,6 @@ body{
 .toggle__input {
     display: none;
 }
-
 
 .toggle__fill {
     position: relative;
@@ -5767,6 +5775,12 @@ td{
     .box-send-btn button{
         margin-top: 1rem;
         width: 100%;
+    }
+
+    .box-empity-supporddash{
+        width: 100%;
+        padding: 2rem;
+        box-sizing: border-box;
     }
 }
 

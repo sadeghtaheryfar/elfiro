@@ -50,30 +50,32 @@ const DashOrder = () => {
                         if(response.status === "success")
                         {
                             window.location = "/Dashboard/Profile/Authentication"
-                        }
-                    })
-                    .catch(err => console.log(err));
-
-                fetch('https://server.elfiro.com/api/v1/basic/user', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if(response.status != "success")
-                        {
-                            window.location = "/Login";
                         }else{
-                            setuserdata(response);
-                            localStorage.setItem('user-name', response.data.user_data.user.name);
-                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
+                            fetch('https://server.elfiro.com/api/v1/basic/user', options)
+                                .then(response => response.json())
+                                .then(response => {
+                                    if(response.status != "success")
+                                    {
+                                        window.location = "/Login";
+                                    }else{
+                                        setuserdata(response);
+                                        localStorage.setItem('user-name', response.data.user_data.user.name);
+                                        localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
+                                    }
+                                })
+                                .catch(err => {
+                                    window.location = "/Login"
+                                });
+
+                            fetch('https://server.elfiro.com/api/v1/client/orders', options)
+                                .then(response => response.json())
+                                .then(response => setdata(response.data.orders.records))
+                                .catch(err => console.log(err));
                         }
                     })
-                    .catch(err => {
-                        window.location = "/Login"
-                    });
-
-                fetch('https://server.elfiro.com/api/v1/client/orders', options)
-                    .then(response => response.json())
-                    .then(response => setdata(response.data.orders.records))
                     .catch(err => console.log(err));
+
+                
             }else{
                 window.location = "/Login";
             }
@@ -297,7 +299,7 @@ const DashOrder = () => {
                                 </div>
 
                                 <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
+                                    <Link to={`/order/edit/${item.id}`} className='flex-box'>ویرایش</Link>
 
                                     <button id='disabled' className='flex-box'>
                                         <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">

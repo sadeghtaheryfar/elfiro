@@ -30,37 +30,38 @@ const Tickets = () => {
                         if(response.status === "success")
                         {
                             window.location = "/Dashboard/Profile/Authentication"
+                        }else{
+                            fetch('https://server.elfiro.com/api/v1/basic/user', options)
+                                .then(response => response.json())
+                                .then(response => {
+                                    if(response.status != "success")
+                                    {
+                                        window.location = "/Login";
+                                    }else{
+                                        setuserdata(response);
+                                        localStorage.setItem('user-name', response.data.user_data.user.name);
+                                        localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
+                                    }
+                                })
+                                .catch(err => {
+                                    window.location = "/Login"
+                                });
+
+                            fetch(`https://server.elfiro.com/api/v1/client${idticket.toLowerCase()}`, options)
+                                .then(response => response.json())
+                                .then(response => {
+                                    if(response.status === "error")
+                                    {
+                                        window.location = "/Dashboard/support";
+                                    }else{
+                                        setdata(response.data.ticket.record);
                         }
                     })
                     .catch(err => console.log(err));
-
-                fetch('https://server.elfiro.com/api/v1/basic/user', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if(response.status != "success")
-                        {
-                            window.location = "/Login";
-                        }else{
-                            setuserdata(response);
-                            localStorage.setItem('user-name', response.data.user_data.user.name);
-                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
-                        }
-                    })
-                    .catch(err => {
-                        window.location = "/Login"
-                    });
-
-                fetch(`https://server.elfiro.com/api/v1/client${idticket.toLowerCase()}`, options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if(response.status === "error")
-                        {
-                            window.location = "/Dashboard/support";
-                        }else{
-                            setdata(response.data.ticket.record);
                         }
                     })
                     .catch(err => console.log(err));
+                
             }else{
                 window.location = "/Login";
             }
@@ -75,24 +76,42 @@ const Tickets = () => {
     const [Formdata, setFormData] = useState();
 
     const sendAnswer = () => {
-        const formdata = new FormData();
-        formdata.append("content","test 4");
-        setFormData(Formdata);
+        // const formdata = new FormData();
+        // formdata.append("content","test 4");
+        // // setFormData(Formdata);
         
-        const options = {
+        // const options = {
+        //     method: 'POST',
+        //     body: formdata,
+        //     headers: {'Content-Type': 'multipart/form-data', Authorization: `${usertoken}`}
+        // };
+
+        // console.log(formdata);
+
+        var formdata = new FormData();
+        formdata.append("content", messageForm);
+        if(fileForm != undefined)
+        {
+            formdata.append("file[0]", fileForm);
+        }
+
+        var requestOptions = {
             method: 'POST',
-            body: Formdata,
-            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
+            headers: {Authorization: `${usertoken}`},
+            body: formdata,
+            redirect: 'follow'
         };
 
-        console.log(formdata);
-
-        fetch(`https://server.elfiro.com/api/v1/client/tickets/${data.id}?_method=PUT`, options)
+        fetch(`https://server.elfiro.com/api/v1/client/tickets/${data.id}?_method=PUT`, requestOptions)
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(response => {
+                fechapi(response);
+                document.getElementById("message").value = "";
+                document.getElementById("file").value = "";
+            })
             .catch(err => console.log(err));
     }
-
+;
     const fechapi = (e) => {
         const options = {
             method: 'GET',
@@ -213,7 +232,7 @@ const Tickets = () => {
                             <div>
                                 <span id='message-error' className='error'></span>
 
-                                <input type='file' id='message' onChange={(e)=> setfileForm(e.target.files[0])} />
+                                <input type='file' id='file' onChange={(e)=> setfileForm(e.target.files[0])} />
                             </div>
 
                             <div>

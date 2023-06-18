@@ -25,37 +25,37 @@ const DashCardAd = () => {
                         if(response.status === "success")
                         {
                             window.location = "/Dashboard/Profile/Authentication"
-                        }
-                    })
-                    .catch(err => console.log(err));
-
-                fetch('https://server.elfiro.com/api/v1/basic/user', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if(response.status != "success")
-                        {
-                            window.location = "/Login";
                         }else{
-                            setuserdata(response);
-                            localStorage.setItem('user-name', response.data.user_data.user.name);
-                            localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
-                        }
-                    })
-                    .catch(err => {
-                        window.location = "/Login"
-                    });
+                            fetch('https://server.elfiro.com/api/v1/basic/user', options)
+                            .then(response => response.json())
+                            .then(response => {
+                                if(response.status != "success")
+                                {
+                                    window.location = "/Login";
+                                }else{
+                                    setuserdata(response);
+                                    localStorage.setItem('user-name', response.data.user_data.user.name);
+                                    localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
+                                }
+                            })
+                            .catch(err => {
+                                window.location = "/Login"
+                            });
 
-                fetch('https://server.elfiro.com/api/v1/client/tickets/details', options)
-                    .then(response => response.json())
-                    .then(response => setticketsdata(response.data.details))
-                    .catch(err => console.log(err));
+                        fetch('https://server.elfiro.com/api/v1/client/tickets/details', options)
+                            .then(response => response.json())
+                            .then(response => setticketsdata(response.data.details))
+                            .catch(err => console.log(err));
 
-                fetch('https://server.elfiro.com/api/v1/client/auth', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if(response.status === "success")
-                        {
-                            window.location = "/Dashboard/Profile/Authentication"
+                        fetch('https://server.elfiro.com/api/v1/client/auth', options)
+                            .then(response => response.json())
+                            .then(response => {
+                                if(response.status === "success")
+                                {
+                                    window.location = "/Dashboard/Profile/Authentication"
+                                }
+                            })
+                            .catch(err => console.log(err));
                         }
                     })
                     .catch(err => console.log(err));

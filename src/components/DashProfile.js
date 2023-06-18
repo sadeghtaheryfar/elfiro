@@ -17,6 +17,7 @@ const DashProfile = () => {
     const [passprofile, setpassprofile] = useState();
     const [province, setprovince] = useState("Tehran");
     const [city, setcity] = useState("Tehran");
+    const [image_profile, setimage_profile] = useState();
 
     useEffect(() => {
         window.addEventListener('resize', setWindow);
@@ -55,8 +56,12 @@ const DashProfile = () => {
                             setemailprofile(response.data.user_data.user.email);
                             setusernameprofile(response.data.user_data.user.user_name);
                             setnameprofile(response.data.user_data.user.name);
-                            // setcity(response.data.user_data.user.city);
-                            // setprovince(response.data.user_data.user.province);
+                            setimage_profile(response.data.user_data.user.profile_image);
+                            if(response.data.user_data.user.province != undefined)
+                            {
+                                setcity(response.data.user_data.user.city);
+                                setprovince(response.data.user_data.user.province);
+                            }
                             localStorage.setItem('user-name', response.data.user_data.user.name);
                             localStorage.setItem('user-profile', response.data.user_data.user.profile_image);
                         }
@@ -215,14 +220,13 @@ const DashProfile = () => {
         )
     }
 
-    console.log(userdata);
-
     var dataprofile;
 
     const imageprofiler = useRef();
 
     const chengeimage = (e) => {
         setimageprofile(e);
+        setimage_profile(URL.createObjectURL(e))
     }
 
     var dataprovince;
@@ -269,6 +273,7 @@ const DashProfile = () => {
                         <label htmlFor="city">شهر</label>
 
                         <select defaultValue={city} onChange={(e) => setcity(e.target.value)}>
+                            <option>انتخاب کنید</option>
                             {formattedCitis.map((item) => (
                                 <option key={item?.value} value={item?.value}>
                                     {item?.label}
@@ -375,7 +380,7 @@ const DashProfile = () => {
                     </div>
 
                     <button className='btn-upload-profile' onClick={() => imageprofiler.current?.click()}>
-                        <img src={userdata.profile_image} />
+                        <img src={image_profile} />
 
                         <div className='flex-box'>
                             <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
