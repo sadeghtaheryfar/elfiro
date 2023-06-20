@@ -125,12 +125,8 @@ const Order = () => {
             fetch('https://server.elfiro.com/api/v1/client/bookmarks', options)
                 .then(response => response.json())
                 .then(response => {
-                    if(response.status === "error")
-                    {
-                        console.log(response);
-                    }else{
                         window.location = "/Bookmarks"
-                    }
+                        
                     })
                 .catch(err => console.log(err));
         }else{
