@@ -546,7 +546,9 @@ const Dashboard = () => {
                         <div className='item-left-detalist-dashboard'>
                             <div className='flex-box'>
                                 <div className='flex-box'>
-                                    
+                                    <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M22.5 11.5V17.5C22.5 21.5 21.5 22.5 17.5 22.5H7.5C3.5 22.5 2.5 21.5 2.5 17.5V7.5C2.5 3.5 3.5 2.5 7.5 2.5H9C10.5 2.5 10.83 2.94 11.4 3.7L12.9 5.7C13.28 6.2 13.5 6.5 14.5 6.5H17.5C21.5 6.5 22.5 7.5 22.5 11.5Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10"/>
+                                    </svg>
                                 </div>
 
                                 <span className='width-max flex-box'>{dashboarddata.details.orders}</span>
@@ -560,7 +562,10 @@ const Dashboard = () => {
                         <div className='item-left-detalist-dashboard'>
                             <div className='flex-box'>
                                 <div className='flex-box'>
-                                    
+                                    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.0799 11.9999C16.0799 13.9799 14.4799 15.5799 12.4999 15.5799C10.5199 15.5799 8.91992 13.9799 8.91992 11.9999C8.91992 10.0199 10.5199 8.41992 12.4999 8.41992C14.4799 8.41992 16.0799 10.0199 16.0799 11.9999Z" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M12.4998 20.2697C16.0298 20.2697 19.3198 18.1897 21.6098 14.5897C22.5098 13.1797 22.5098 10.8097 21.6098 9.39973C19.3198 5.79973 16.0298 3.71973 12.4998 3.71973C8.96984 3.71973 5.67984 5.79973 3.38984 9.39973C2.48984 10.8097 2.48984 13.1797 3.38984 14.5897C5.67984 18.1897 8.96984 20.2697 12.4998 20.2697Z" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
                                 </div>
 
                                 <span className='width-max flex-box'>{dashboarddata.details.orders_views_count}</span>
@@ -574,7 +579,13 @@ const Dashboard = () => {
                         <div className='item-left-detalist-dashboard'>
                             <div className='flex-box'>
                                 <div className='flex-box'>
-                                    
+                                    <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2.5 17.5596H12.5" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M4.71997 14H10.28C12.06 14 12.5 14.44 12.5 16.2V20.31C12.5 22.07 12.06 22.51 10.28 22.51H4.71997C2.93997 22.51 2.5 22.07 2.5 20.31V16.2C2.5 14.44 2.93997 14 4.71997 14Z" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M22.5 15.5C22.5 19.37 19.37 22.5 15.5 22.5L16.55 20.75" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M2.5 9.5C2.5 5.63 5.63 2.5 9.5 2.5L8.45001 4.25" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M19 11.5C21.4853 11.5 23.5 9.48528 23.5 7C23.5 4.51472 21.4853 2.5 19 2.5C16.5147 2.5 14.5 4.51472 14.5 7C14.5 9.48528 16.5147 11.5 19 11.5Z" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
                                 </div>
 
                                 <span className='width-max flex-box'>{dashboarddata.details.orders_has_transaction}</span>

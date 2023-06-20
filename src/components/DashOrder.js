@@ -69,7 +69,7 @@ const DashOrder = () => {
 
                             fetch('https://server.elfiro.com/api/v1/client/orders', options)
                                 .then(response => response.json())
-                                .then(response => setdata(response.data.orders.records))
+                                .then(response => setdata(response.data.orders.records.reverse()))
                                 .catch(err => console.log(err));
                         }
                     })
@@ -266,14 +266,6 @@ const DashOrder = () => {
                                 <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
                                     <Link className='flex-box'>ویرایش</Link>
 
-                                    <button className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
                                     <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
                                 </div>
                             </div>
@@ -300,14 +292,6 @@ const DashOrder = () => {
 
                                 <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
                                     <Link to={`/order/edit/${item.id}`} className='flex-box'>ویرایش</Link>
-
-                                    <button id='disabled' className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
 
                                     <button id='disabled' className='flex-box'>حذف</button>
                                 </div>
@@ -336,14 +320,6 @@ const DashOrder = () => {
                                 <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
                                     <Link className='flex-box'>ویرایش</Link>
 
-                                    <button id='disabled' className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
                                     <button id='disabled' className='flex-box'>حذف</button>
                                 </div>
                             </div>
@@ -371,14 +347,6 @@ const DashOrder = () => {
                                 <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
                                     <Link id='disabled' className='flex-box'>ویرایش</Link>
 
-                                    <button id='disabled' className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
                                     <button id='disabled' className='flex-box'>حذف</button>
                                 </div>
                             </div>
@@ -405,14 +373,6 @@ const DashOrder = () => {
 
                                 <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
                                     <Link id='disabled' className='flex-box'>ویرایش</Link>
-
-                                    <button id='disabled' className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
 
                                     <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
                                 </div>

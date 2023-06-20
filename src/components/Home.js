@@ -20,7 +20,7 @@ const Home = () => {
     const handleShow = () => setShow(true);
 
     function handleScroll() {
-        if (Math.ceil(window.innerHeight + document.documentElement.scrollTop) === document.body.offsetHeight) {
+        if (Math.ceil(window.innerHeight + document.documentElement.scrollTop) > (document.body.offsetHeight - 300)) {
             page++;
             const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
             fetch(`https://server.elfiro.com/api/v1/home?page=${page}`, options)

@@ -105,43 +105,30 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
             .catch(err => console.log(err))
     }
 
-    // if(Data != undefined)
-    // {
-        
-    // }
-
-    console.log('>>>>>>>>>>>', Data)
-
     const [DataForm, setDataForm] = useState([]);
-
+    var formdata = new FormData();
+    var temp;
+    
     const saveDataFrom = (value,index,name) => {
-        let temp = DataForm;
-        temp[index] = {id:name,value};
-        setDataForm(temp);
+        temp = DataForm;
+        temp[index] = {name,value};
     }
 
-    console.log('>>>>>>>>>>>', Data)
-
     const startPay = () => {
-        // let form = [{
-        //     id : "text-648c5a50d3eb4",
-        //     value : "test"
-        // }]
-
-        // let form2 = [["text-648c5a50d3eb4","test"]]
-
-        const formdata2 = new FormData();
-        // formdata2.append("parameters",DataForm);
-        DataForm.forEach((item) => formdata2.append("parameters[]",item))
-
         const usertoken = localStorage.getItem("user-login");
         const options = {
             method: 'POST',
-            headers: {'Content-Type': 'multipart/form-data', Authorization: `${usertoken}`},
-            body: formdata2
+            headers: {Authorization: `${usertoken}`},
+            body: formdata
         };
 
-        console.log('>>>>>>>>formdata2>>>', options)
+        for(var i = 0; i < DataForm.length ; i++)
+        {
+            if(DataForm[i] != undefined)
+            {
+                formdata.append(DataForm[i].name,DataForm[i].value)
+            }
+        }
 
         fetch(`https://server.elfiro.com/api/v1/client/transactions/${Data.id}`, options)
             .then(response => response.json())
@@ -151,8 +138,15 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                     var tID = setTimeout(function () {
                         window.location.reload(false);
                     }, 2000);
+                    document.getElementById("errsend2").innerHTML = "";
+                    document.getElementById("sucsess-tiket-add-send").innerHTML = response.data.message.transaction[0];
                 }else{
-                    console.log(response);
+                    if(response.message.transaction != undefined)
+                    {
+                        response.message.transaction.map((item) => {
+                            document.getElementById("errsend2").innerHTML = `${item}<br/>`
+                        })
+                    }
                 }
             })
             .catch(err => console.log(err))
@@ -169,6 +163,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
         fetch(`https://server.elfiro.com/api/v1/client/transactions/${Data.id}`, options)
             .then(response => response.json())
             .then(response => {
+                window.location = "/Dashboard/Transaction/";
                 if(response.status === "success")
                 {
                     document.getElementById("sucsend2").innerHTML = response.data.message.transaction;
@@ -207,10 +202,16 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                 if(response.status === "success")
                 {
                     document.getElementById("sucsend5").innerHTML = response.data.message.transaction;
+                    var tID = setTimeout(function () {
+                        window.location.reload(false);
+                    }, 2000);
                 }else{
                     if(response.data.message != undefined)
                     {
                         document.getElementById("errsend5").innerHTML = response.data.message.transaction;
+                        var tID = setTimeout(function () {
+                            window.location.reload(false);
+                        }, 2000);
                     }
                 }
             })
@@ -232,10 +233,16 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                 if(response.status === "success")
                 {
                     document.getElementById("sucsend5").innerHTML = response.data.message.refund;
+                    var tID = setTimeout(function () {
+                        window.location.reload(false);
+                    }, 2000);
                 }else{
                     if(response.data.message != undefined)
                     {
                         document.getElementById("errsend5").innerHTML = response.data.message.refund;
+                        var tID = setTimeout(function () {
+                            window.location.reload(false);
+                        }, 2000);
                     }
                 }
             })
@@ -775,7 +782,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 <div className='btn-accept'>
                                     <button onClick={() => sendConfirm(true)}>شروع معامله</button>
 
-                                    <button onClick={() => sendConfirm(false)}>رد درخواست</button>
+                                    <button onClick={handleShowC}>رد درخواست</button>
                                 </div>
 
                                 <div className='flex-box'>
@@ -1734,29 +1741,76 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
 
                                 <div className='box-send-detalist-tran width-max'>
                                     <div className='inp'>
-                                        {/* <label htmlFor='text-in-detalist-tran'>مشخصات محصول</label>
-                                        <br />
-                                        <textarea id='text-in-detalist-tran'></textarea> */}
+                                        {
+                                            Object.keys(Data.current_status_data.fields)?.map(key => {
+                                                var item = Data.current_status_data.fields[key];
+                                                if(item.type == "text")
+                                                    {
+                                                        return (
+                                                            <div className='box-input-text' key={Math.random()}>
+                                                                <label htmlFor={item.name} dangerouslySetInnerHTML={{ __html: item.label}}></label>
 
-                                        {Data.current_status_data.fields?.map((item,index) => {
-                                            if(item.type == "text")
-                                            {
-                                                return (
-                                                    <input className='input-style' onChange={(e) => saveDataFrom(e.target.value, index, item.name)} key={Math.random()} type='text' placeholder={item.placeholder} />
-                                                )
-                                            }
-                                        })}
+                                                                <input id={item.name} name={item.name} onChange={(e) => saveDataFrom(e.target.value, key, item?.name)} type='text' placeholder={item.placeholder} />
+                                                            </div>
+                                                        )
+                                                    }
+
+                                                    if(item.type == "customRadio")
+                                                    {
+                                                        return (
+                                                            <div className='box-input-text' key={Math.random()}>
+                                                                <label dangerouslySetInnerHTML={{ __html: item.label}}></label>
+
+                                                                {item.options.map((item2) => (
+                                                                    <div className='flex-box flex-right' key={Math.random()}>
+                                                                        <input className='cursor-pointer' id={item2.value} name={item.name} value={item2.value} onChange={(e) => saveDataFrom(e.target.value, key, item.name)} type='radio' />
+                                                                        
+                                                                        <label htmlFor={item2.value } className='margin-horizontal-0-5  cursor-pointer'>{item2.name}</label>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )
+                                                    }
+
+                                                    if(item.type == "textArea")
+                                                    {
+                                                        return (
+                                                            <div className='box-input-text' key={Math.random()}>
+                                                                <label htmlFor={item.name} dangerouslySetInnerHTML={{ __html: item.label}}></label>
+
+                                                                <textarea id={item.name} name={item.name} onChange={(e) => saveDataFrom(e.target.value, key, item.name)} type='text' placeholder={item.placeholder} ></textarea>
+                                                            </div>
+                                                        )
+                                                    }
+
+                                                    if(item.type == "select")
+                                                    {
+                                                        return (
+                                                            <div className='box-input-text' key={Math.random()}>
+                                                                <label htmlFor={item.name} dangerouslySetInnerHTML={{ __html: item.label}}></label>
+
+                                                                <select id={item.name} name={item.name} onChange={(e) => saveDataFrom(e.target.value, key, item.name)}>
+                                                                    <option>انتخاب کنید</option>
+                                                                    {item.options.map((item2) => (
+                                                                        <option value={item2.value} key={Math.random()}>{item2.name}</option>
+                                                                    ))}
+                                                                </select>
+                                                            </div>
+                                                        )
+                                                    }
+                                            })
+                                        }
                                     </div>
 
-                                    <div className='btns flex-box'>
+                                    <div className='btns flex-box margin-vetical-1'>
                                         <button onClick={startPay}>ارسال اطلاعات</button>
 
                                         <button onClick={handleShowC}>لغو معامله</button>
                                     </div>
                                     
-                                    <div className='flex-box'>
+                                    <div className='flex-box flex-right'>
                                         <span id='errsend2' className='err-tiket-add'></span>
-                                        <span id='sucsend2' className='sucsess-tiket-add'></span>
+                                        <span id='sucsess-tiket-add-send' className='sucsess-tiket-add'></span>
                                     </div>
                                 </div>
                             </div>
@@ -1997,12 +2051,19 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                         </svg>
                                     </div>
 
-                                    <div id='message-detalit-pru-tran' className='message hide-item'>
-                                        <span>
-                                            رمز:123456
-                                            <br/>
-                                            asda5846:یوزر نیم 
-                                        </span>
+                                    <div id='message-detalit-pru-tran' className='hide-item'>
+                                        {
+                                            Object.keys(Data.data.value)?.map(key => {
+                                                var item = Data.data.value[key];
+                                                return (
+                                                    <div className='message flex-box flex-justify-space'>
+                                                        <div dangerouslySetInnerHTML={{ __html: item.label}}></div>
+
+                                                        <span>{item.value}</span>
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
                                 </div>
 

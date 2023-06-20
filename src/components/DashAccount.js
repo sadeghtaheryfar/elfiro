@@ -286,7 +286,6 @@ const DahAccount = () => {
                 {
                     window.location = "/Dashboard/Account"
                 }else{
-                    console.log(response);
                     if(response.data.message.price != undefined)
                     {
                         document.getElementById("err-cardnumb-dashcard").innerHTML = response.data.message.price;
@@ -371,7 +370,6 @@ const DahAccount = () => {
             </Modal>
         )
     }
-
     
     if(userdata != undefined)
     {
@@ -381,7 +379,7 @@ const DahAccount = () => {
                     <span>موجودی کیف پول</span>
 
                     <div>
-                        <span>{userdata.data.user_data.user.wallet}</span>
+                        <span>{dataAc?.total_inventory}</span>
 
                         <span>تومان</span>
                     </div>
@@ -393,7 +391,7 @@ const DahAccount = () => {
                     <span>قابل برداشت</span>
 
                     <div className='flex-box'>
-                        <span>{userdata.data.user_data.user.wallet}</span>
+                        <span>{dataAc?.removable_inventory}</span>
 
                         <span>تومان</span>
                         
@@ -471,9 +469,7 @@ const DahAccount = () => {
                                         <td>{item.id}</td>
                                         
                                         <td>
-                                            <span>{item.price}</span>
-
-                                            <span>تومان</span>
+                                            <span>{`${item.price} تومان`}</span>
                                         </td>
                                     </tr>
                                 ))}

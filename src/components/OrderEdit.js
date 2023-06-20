@@ -3,6 +3,9 @@ import { useEffect,useState,useRef } from 'react';
 import Header from './Header';
 import { Checkbox } from 'antd';
 import { useParams } from 'react-router-dom';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 
 const OrderEdit = (props) => {
     const usertoken = localStorage.getItem("user-login");
@@ -20,11 +23,7 @@ const OrderEdit = (props) => {
     const galleryOr = [];
     const [inputValue, setInputValue] = useState(0);
     const [formattedValue, setFormattedValue] = useState(0);
-
     let propsL = useParams();
-
-    console.log(propsL.id)
-
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
         {
@@ -62,11 +61,17 @@ const OrderEdit = (props) => {
                                     setdata(item);
                                     setFormattedValue(item.price);
                                     setInputValue(item.price);
+                                    setpriceOr(item.price);
+                                    setimageOr(item.image);
+                                    setnameOr(item.name);
+                                    setdescriptionOr(item.name);
                                     setcategoryOr(item.category.id);
+                                }else{
+                                    window.location = "/Dashboard/Order";
                                 }
                             })
                         }else{
-                            window.location = "/Login";
+                            window.location = "/Dashboard/Order";
                         }
                     })
                     .catch(err => console.error(err));
@@ -77,8 +82,6 @@ const OrderEdit = (props) => {
             window.location = "/Login";
         }
     }, []);
-
-    console.log(data);
 
     const chengegallety = (e) => {
         galleryOr.push(e);
@@ -110,21 +113,20 @@ const OrderEdit = (props) => {
 
     const onSend = async () => {
         const formData = new FormData();
-        formData.append('category_id', 2);
+        formData.append('category_id', "2");
         formData.append('name', nameOr);
         formData.append('content', descriptionOr);
         formData.append('price', priceOr);
         formData.append('image', imageOr);
         // formData.append('gallery', galleryOr);
 
-        fetch(`https://server.elfiro.com/api/v1/client/orders/${data.id}`, {
-            method: 'PUT',
-            body: formData,
-            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`},
+        fetch(`https://server.elfiro.com/api/v1/client/orders/${data.id}?_method=PUT`, {
+            method: 'POST',
+            body:  formData,
+            headers: {Authorization: `${usertoken}`},
         })
             .then((res) => res.json())
             .then((res) => {
-                console.log('>>>>>>>>>>>', res)
                 if(res.status === "success")
                 {
                     document.getElementById("sucsend").innerHTML = res.data.message.order;
@@ -134,6 +136,9 @@ const OrderEdit = (props) => {
                     document.getElementById("errprice").innerHTML = "";
                     document.getElementById("errsend").innerHTML = "";
                 }else{
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+
                     if(res.data.message.name != undefined)
                     {
                         document.getElementById("errname").innerHTML = res.data.message.name;
@@ -261,7 +266,21 @@ const OrderEdit = (props) => {
                             <label htmlFor='description'>توضیحات</label>
                             <br />
                             <span id='errdescription' className='err-tiket-add'></span>
-                            <textarea type='text' id='description' onChange={(e) => setdescriptionOr(e.target.value)} />
+
+                            <div className='margin-vetical-1'>
+                                <CKEditor
+                                    editor={ ClassicEditor }
+                                    config={{
+                                        language: 'fa',
+                                        direction: 'rtl',
+                                    }}
+                                    data={descriptionOr}
+                                    onChange={ ( event, editor ) => {
+                                        const data = editor.getData();
+                                        setdescriptionOr(data)
+                                    } }
+                                />
+                            </div>
                         </div>
 
                         <div className='box-from-orderAd'>

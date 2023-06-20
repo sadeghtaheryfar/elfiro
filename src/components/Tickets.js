@@ -73,21 +73,7 @@ const Tickets = () => {
     var headerticket;
     var datachat;
 
-    const [Formdata, setFormData] = useState();
-
     const sendAnswer = () => {
-        // const formdata = new FormData();
-        // formdata.append("content","test 4");
-        // // setFormData(Formdata);
-        
-        // const options = {
-        //     method: 'POST',
-        //     body: formdata,
-        //     headers: {'Content-Type': 'multipart/form-data', Authorization: `${usertoken}`}
-        // };
-
-        // console.log(formdata);
-
         var formdata = new FormData();
         formdata.append("content", messageForm);
         if(fileForm != undefined)
@@ -130,8 +116,6 @@ const Tickets = () => {
             })
             .catch(err => console.log(err));
     }
-
-    // console.log(data);
 
     if(data != undefined)
     {
