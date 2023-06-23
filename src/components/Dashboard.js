@@ -52,6 +52,14 @@ const Dashboard = () => {
     const [supdata, setsupdata] = useState();
     const [usercards, setusercards] = useState();
     const [userlistreq, setuserlistreq] = useState();
+    const [dataorder, setdataorder] = useState();
+    const [number, setNumber] = useState();
+    const [showB, setShowB] = useState(false);
+    const handleCloseB = () => setShowB(false);
+    const handleShowB = (e) => {
+        setShowB(true);
+        setNumber(e);
+    };
 
     useEffect(() => {
         if(localStorage.getItem("user-login") != undefined)
@@ -137,6 +145,11 @@ const Dashboard = () => {
                     fetch('https://server.elfiro.com/api/v1/client/accounting', options)
                         .then(response => response.json())
                         .then(response => setuserlistreq(response.data.requests.records))
+                        .catch(err => console.log(err));
+
+                    fetch('https://server.elfiro.com/api/v1/client/orders', options)
+                        .then(response => response.json())
+                        .then(response => setdataorder(response.data.orders.records.reverse()))
                         .catch(err => console.log(err));
             }else{
                 window.location = "/Login";
@@ -1209,6 +1222,165 @@ const Dashboard = () => {
             </div>
         )
     }
+
+    var DataOrders;
+
+    const deleteAc = () => {
+        handleCloseB();
+
+        const options = {
+            method: 'DELETE',
+            headers: {'Content-Type': 'application/json', Authorization: `${usertoken}`}
+        };
+
+        fetch(`https://server.elfiro.com/api/v1/client/orders/${number}`, options)
+            .then(response => response.json())
+            .then(response => window.location.reload(false))
+            .catch(err => console.log(err));
+    }
+
+
+    if(dataorder != undefined)
+    {
+        DataOrders = (
+            dataorder.map((item) => {
+                if(item.status_label === "تایید شده")
+                {
+                    return (
+                        <div className='box-item-order-dashboard' key={item.id}>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src={item.image} />
+
+                                    <div>
+                                        <span>{item.status_label}</span>
+                                    </div>
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>{item.name}</span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link to={`/order/edit/${item.id}`} className='flex-box'>ویرایش</Link>
+
+                                    <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
+
+                if(item.status_label === "تایید نشده")
+                {
+                    return (
+                        <div className='box-item-order-dashboard' key={item.id}>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src={item.image} />
+
+                                    <div>
+                                        <span>{item.status_label}</span>
+                                    </div>
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>{item.name}</span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link to={`/order/edit/${item.id}`} className='flex-box'>ویرایش</Link>
+
+                                    <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
+
+                if(item.status_label === "رد شده")
+                {
+                    return (
+                        <div className='box-item-order-dashboard' key={item.id}>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src={item.image} />
+
+                                    <div>
+                                        <span>{item.status_label}</span>
+                                    </div>
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>{item.name}</span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link to={`/order/edit/${item.id}`} className='flex-box'>ویرایش</Link>
+
+                                    <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
+
+                if(item.status_label === "معامله شده")
+                {
+                    return (
+                        <div className='box-item-order-dashboard' key={item.id}>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src={item.image} />
+
+                                    <div>
+                                        <span>{item.status_label}</span>
+                                    </div>
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>{item.name}</span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link id='disabled' className='flex-box'>ویرایش</Link>
+
+                                    <button id='disabled' className='flex-box'>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
+
+                if(item.status_label === "  جدید")
+                {
+                    return (
+                        <div className='box-item-order-dashboard' key={item.id}>
+                            <div className='show-item-order-dashboard flex-box flex-column'>
+                                <div className='img-item-order-dashboard'>
+                                    <img src={item.image} />
+
+                                    <div>
+                                        <span>{item.status_label}</span>
+                                    </div>
+                                </div>
+
+                                <div className='title-item-order-dashboard'>
+                                    <span>{item.name}</span>
+                                </div>
+
+                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
+                                    <Link   Link to={`/order/edit/${item.id}`} className='flex-box'>ویرایش</Link>
+
+                                    <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
+            })
+        )
+    }
     
     return (
         <>
@@ -1232,155 +1404,9 @@ const Dashboard = () => {
                             <SwiperSlide className='slider-orders-modal active flex-box'>
                                 <span>همه آگهی ها</span>
                             </SwiperSlide>
-
-                            <SwiperSlide className='slider-orders-modal flex-box'>
-                                <span>تایید شده</span>
-                            </SwiperSlide>
-                            
-                            <SwiperSlide className='slider-orders-modal flex-box'>
-                                <span>در انتظار تایید</span>
-                            </SwiperSlide>
-                            
-                            <SwiperSlide className='slider-orders-modal flex-box'>
-                                <span>رد شده</span>
-                            </SwiperSlide>
-                            
-                            <SwiperSlide className='slider-orders-modal flex-box'>
-                                <span>فروخته شده</span>
-                            </SwiperSlide>
                     </Swiper>
 
-                    <div className='flex-box flex-aling-right flex-wrap flex-right width-max'>
-                        <div className='box-item-order-dashboard'>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
-
-                                    <button className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button className='flex-box'>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div className='box-item-order-dashboard'>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
-
-                                    <button className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button className='flex-box'>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div className='box-item-order-dashboard'>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
-
-                                    <button className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button className='flex-box'>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div className='box-item-order-dashboard'>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
-
-                                    <button className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button className='flex-box'>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div className='box-item-order-dashboard'>
-                            <div className='show-item-order-dashboard flex-box flex-column'>
-                                <div className='img-item-order-dashboard'>
-                                    <img src='http://server.elfiro.com/storage/orders/1663731840-1619816463993.jpg' />
-                                </div>
-
-                                <div className='title-item-order-dashboard'>
-                                    <span>اکانت فورتنایت از سیزن دو اکانت فورتنایت از سیزن دو  </span>
-                                </div>
-
-                                <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
-
-                                    <button className='flex-box'>
-                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.34586 8.53706L0.682638 4.87383C0.462558 4.65375 0.462558 4.29692 0.682638 4.07682L1.47963 3.2798C1.69971 3.0597 2.05657 3.0597 2.27665 3.2798L4.74437 5.7475L10.03 0.461935C10.25 0.241855 10.6069 0.241855 10.827 0.461935L11.624 1.25895C11.844 1.47903 11.844 1.83586 11.624 2.05597L5.14288 8.53708C4.92278 8.75716 4.56594 8.75716 4.34586 8.53706Z" fill="#0DD400"/>
-                                        </svg>
-
-                                        <span>فروخته شد</span>
-                                    </button>
-
-                                    <button className='flex-box'>حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {DataOrders}
                 </Modal.Body>
             </Modal>
 
@@ -1444,6 +1470,23 @@ const Dashboard = () => {
                     {datacards}
                 </Modal.Body>
             </Modal>
+
+            {/* <!-- Modal --> */}
+            <Modal className='modal-detalist-tran' show={showB} onHide={handleCloseB} centered>
+                    <Modal.Body>
+                        <div className='flex-box flex-column'>
+                            <div className='message'>
+                                <span>آیا از حذف این اگهی اطمینان دارید؟</span>
+                            </div>
+
+                            <div className='btns flex-box'>
+                                <button onClick={deleteAc}>تایید</button>
+                                
+                                <button onClick={handleCloseB}>لغو</button>
+                            </div>
+                        </div>
+                    </Modal.Body>
+                </Modal>
 
             {/* <!-- Modal --> */}
             <Modal className='modal-detalist-tran' show={showAuth} onHide={handleCloseAuth} centered>

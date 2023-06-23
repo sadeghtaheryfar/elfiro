@@ -94,7 +94,7 @@ const DashOrder = () => {
 
         fetch(`https://server.elfiro.com/api/v1/client/orders/${number}`, options)
             .then(response => response.json())
-            .then(response => console.log(response))
+            .then(response => window.location.reload(false))
             .catch(err => console.log(err));
     }
 
@@ -264,7 +264,7 @@ const DashOrder = () => {
                                 </div>
 
                                 <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
+                                    <Link to={`/order/edit/${item.id}`} className='flex-box'>ویرایش</Link>
 
                                     <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
                                 </div>
@@ -293,7 +293,7 @@ const DashOrder = () => {
                                 <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
                                     <Link to={`/order/edit/${item.id}`} className='flex-box'>ویرایش</Link>
 
-                                    <button id='disabled' className='flex-box'>حذف</button>
+                                    <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
                                 </div>
                             </div>
                         </div>
@@ -318,9 +318,9 @@ const DashOrder = () => {
                                 </div>
 
                                 <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link className='flex-box'>ویرایش</Link>
+                                    <Link to={`/order/edit/${item.id}`} className='flex-box'>ویرایش</Link>
 
-                                    <button id='disabled' className='flex-box'>حذف</button>
+                                    <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
                                 </div>
                             </div>
                         </div>
@@ -372,7 +372,7 @@ const DashOrder = () => {
                                 </div>
 
                                 <div className='btn-item-order-dashboard flex-box flex-justify-space width-max'>
-                                    <Link id='disabled' className='flex-box'>ویرایش</Link>
+                                    <Link   Link to={`/order/edit/${item.id}`} className='flex-box'>ویرایش</Link>
 
                                     <button className='flex-box' onClick={(e) => handleShowB(item.id)}>حذف</button>
                                 </div>

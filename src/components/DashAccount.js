@@ -248,18 +248,20 @@ const DahAccount = () => {
                 'Content-Type': 'application/json',
                 Authorization: `${usertoken}`
             },
-            body: `{"price":${chargenum},"gateway":"zarinpal","call_back_address":"${url}"}`
+            body: `{"price":${chargenum},"gateway":"payir","call_back_address":"${url}"}`
         };
 
         fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
             .then(response => response.json())
             .then(response => {
+                console.log('>>>>>>>>>>>', response)
                 if(response.status === "success")
                 {
                     window.location = response.data.gateway.link;
                     setchargeerr("");
                 }else{
                     setchargeerr(response.data.message.price);
+                    console.log('>>>>>>>>>>>', response)
                 }
             })
             .catch(err => console.log(err));
@@ -370,6 +372,8 @@ const DahAccount = () => {
             </Modal>
         )
     }
+
+    console.log('>>>>>>>>>>>', dataAc)
     
     if(userdata != undefined)
     {

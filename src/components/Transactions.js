@@ -6,6 +6,7 @@ import Checkbox from 'antd/es/checkbox/Checkbox';
 import Modal from 'react-bootstrap/Modal';
 
 const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    var url = window.location.href;
     var idorder = window.location.pathname;
     const [Data, setData] = useState();
     const [userdata, setuserdata] = useState();
@@ -18,6 +19,8 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
     const [retrntPruDeta, setretrntPruDeta] = useState();
     const [CoTextTran, setCoTextTran] = useState();
     const [CoSroceTran, setCoSroceTran] = useState();
+    const [pay, setpay] = useState(false);
+    let price;
 
     useEffect(() => {
         const usertoken = localStorage.getItem("user-login");
@@ -71,6 +74,29 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                 .then(response => response.json())
                 .then(response => {
                     setData(response.data.transaction.record);
+                    if(response.data.transaction.record.current_status_data.is_paid == 1 && response.data.transaction.record.status == "wait_for_pay")
+                    {
+                        const urlObj = new URL(url);
+                        urlObj.search = '';
+                        urlObj.hash = '';
+                        const result = urlObj.toString();
+
+                        const options = {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                Authorization: `${usertoken}`
+                            },
+                            body: `{"gateway":"zarinpal","call_back_address":"${result}","price":${response.data.transaction.record.order.price}}`
+                        };
+    
+                        fetch(`https://server.elfiro.com/api/v1/client/transactions/${response.data.transaction.record.id}`, options)
+                            .then(response => response.json())
+                            .then(response => {
+                                window.location = result;
+                            })
+                            .catch(err => console.log(err))
+                    }
                 })
                 .catch(err => console.error(err));
         }
@@ -104,6 +130,8 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
             })
             .catch(err => console.log(err))
     }
+
+    console.log('>>>>>>>>>>>', Data)
 
     const [DataForm, setDataForm] = useState([]);
     var formdata = new FormData();
@@ -150,6 +178,109 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                 }
             })
             .catch(err => console.log(err))
+    }
+
+    const PayTransition = () => {
+        const usertoken = localStorage.getItem("user-login");
+        var url = window.location.href;
+
+        if(pay == true)
+        {
+            if(price == 0)
+            {
+                startPay();
+            }else{
+                if(price > 1000)
+                {
+                    const options = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `${usertoken}`
+                        },
+                        body: `{"transaction_id":${Data.id},"gateway":"zarinpal","call_back_address":"${url}","price":${price}}`
+                    };
+
+                    fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
+                        .then(response => response.json())
+                        .then(response => {
+                            if(response.status === "success")
+                            {
+                                window.location = response.data.gateway.link;
+                            }else{
+                                console.log('>>>>>>>>>>>', response)
+                            }
+                        })
+                        .catch(err => console.log(err));
+                }else{
+                    const options = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `${usertoken}`
+                        },
+                        body: `{"transaction_id":${Data.id},"gateway":"zarinpal","call_back_address":"${url}","price":1000}`
+                    };
+
+                    fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
+                        .then(response => response.json())
+                        .then(response => {
+                            if(response.status === "success")
+                            {
+                                window.location = response.data.gateway.link;
+                            }else{
+                                console.log('>>>>>>>>>>>', response)
+                            }
+                        })
+                        .catch(err => console.log(err));
+                }
+            }
+        }else{
+            if(Data.order.price < 1000)
+                {
+                    const options = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `${usertoken}`
+                        },
+                        body: `{"transaction_id":${Data.id},"gateway":"zarinpal","call_back_address":"${url}","price":1000}`
+                    };
+
+                    fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
+                        .then(response => response.json())
+                        .then(response => {
+                            if(response.status === "success")
+                            {
+                                window.location = response.data.gateway.link;
+                            }else{
+                                console.log('>>>>>>>>>>>', response)
+                            }
+                        })
+                        .catch(err => console.log(err));
+            }else{
+                const options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `${usertoken}`
+                    },
+                    body: `{"transaction_id":${Data.id},"gateway":"zarinpal","call_back_address":"${url}","price":${Data.order.price}}`
+                };
+
+                fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if(response.status === "success")
+                        {
+                            window.location = response.data.gateway.link;
+                        }else{
+                            console.log('>>>>>>>>>>>', response)
+                        }
+                    })
+                    .catch(err => console.log(err));
+            }
+        }
     }
 
     const cancelPay = () => {
@@ -799,7 +930,6 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
 
     if(Data != undefined && userdata != undefined && Data.status === "wait_for_pay")
     {
-        let price;
 
         if(Data.order.price - userdata.wallet < 0)
         {
@@ -926,20 +1056,20 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 <span className='color-blue'>تومان</span>
                             </div>
 
-                            {/* <div className='use-wallet'>
-                                <Checkbox>استفاده از کیف پول</Checkbox>
-                            </div> */}
+                            <div className='use-wallet'>
+                                <Checkbox onChange={(e) => setpay(e.target.checked)}>استفاده از کیف پول</Checkbox>
+                            </div>
 
                             <div className='payment flex-box'>
                                 <span>مبلغ قابل پرداخت</span>
 
-                                <span className='margin-horizontal-0-5'>{price}</span>
+                                <span className='margin-horizontal-0-5'>{(pay) ? price : Data.order.price}</span>
 
                                 <span>تومان</span>
                             </div>
 
                             <div className='btns'>
-                                <button onClick={startPay}>درگاه پرداخت</button>
+                                <button onClick={PayTransition}>درگاه پرداخت</button>
 
                                 <button onClick={handleShowC}>لغو معامله</button>
                             </div>
@@ -2056,7 +2186,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                             Object.keys(Data.data.value)?.map(key => {
                                                 var item = Data.data.value[key];
                                                 return (
-                                                    <div className='message flex-box flex-justify-space'>
+                                                    <div className='message flex-box flex-justify-space' key={Math.random()}>
                                                         <div dangerouslySetInnerHTML={{ __html: item.label}}></div>
 
                                                         <span>{item.value}</span>

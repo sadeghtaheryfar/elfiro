@@ -64,10 +64,8 @@ const OrderEdit = (props) => {
                                     setpriceOr(item.price);
                                     setimageOr(item.image);
                                     setnameOr(item.name);
-                                    setdescriptionOr(item.name);
+                                    setdescriptionOr(item.content);
                                     setcategoryOr(item.category.id);
-                                }else{
-                                    window.location = "/Dashboard/Order";
                                 }
                             })
                         }else{
@@ -127,6 +125,7 @@ const OrderEdit = (props) => {
         })
             .then((res) => res.json())
             .then((res) => {
+                console.log(res);
                 if(res.status === "success")
                 {
                     document.getElementById("sucsend").innerHTML = res.data.message.order;
