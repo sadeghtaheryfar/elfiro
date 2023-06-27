@@ -6,12 +6,22 @@ const Login = () => {
     const [DataLogin, SetDataLogin] = useState("");
     const [PassLogin, SetPassLogin] = useState("");
     const usertoken = localStorage.getItem("user-login");
-
     const [otp, setOtp] = useState("");
     const [minutes, setMinutes] = useState(1);
     const [seconds, setSeconds] = useState(30);
+    const [img, setimg] = useState(30);
 
     useEffect(() => {
+        const options = {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        };
+
+        fetch('https://server.elfiro.com/api/v1/basic/loginImage',options)
+            .then(response => response.json())
+            .then(response => setimg(response.data))
+            .catch(err => {});
+
         
         if(localStorage.getItem("user-login") != undefined)
         {
@@ -203,9 +213,7 @@ const Login = () => {
                 </div>
             </section>
 
-            <section id='left-login'>
-
-            </section>
+            <section id='left-login'><img src={img?.loginImage} /></section>
         </div>
     );
 };

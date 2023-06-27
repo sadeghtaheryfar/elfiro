@@ -105,7 +105,7 @@ const Profile = () => {
                         }
                     }
                 })
-                .catch(err => console.log('>>>>>>>>>>>', err))
+                .catch(err => console.log(err))
         }else{
             window.location = "/login";
         }

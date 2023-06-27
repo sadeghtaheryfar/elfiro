@@ -190,7 +190,7 @@ const Order = () => {
                         }
 
                     })
-                    .catch(err => console.log('>>>>>>>>>>>', err))
+                    .catch(err => console.log(err))
             }else{
                 window.location = "/login"
             }
@@ -226,7 +226,7 @@ const Order = () => {
                             window.location = "/chats";
                         }
                     })
-                    .catch(err => console.log('>>>>>>>>>>>', err))
+                    .catch(err => console.log(err))
             }else{
                 window.location = "/login";
             }
@@ -269,7 +269,7 @@ const Order = () => {
                         }
                     }
                 })
-                .catch(err => console.log('>>>>>>>>>>>', err))
+                .catch(err => console.log(err))
         }else{
             window.location = "/login";
         }

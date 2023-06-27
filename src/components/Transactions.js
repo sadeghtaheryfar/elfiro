@@ -87,7 +87,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                                 'Content-Type': 'application/json',
                                 Authorization: `${usertoken}`
                             },
-                            body: `{"gateway":"zarinpal","call_back_address":"${result}","price":${response.data.transaction.record.order.price}}`
+                            body: `{"gateway":"zarinpal","call_back_address":"${result}"}`
                         };
     
                         fetch(`https://server.elfiro.com/api/v1/client/transactions/${response.data.transaction.record.id}`, options)
@@ -130,8 +130,6 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
             })
             .catch(err => console.log(err))
     }
-
-    console.log('>>>>>>>>>>>', Data)
 
     const [DataForm, setDataForm] = useState([]);
     var formdata = new FormData();
@@ -184,102 +182,28 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
         const usertoken = localStorage.getItem("user-login");
         var url = window.location.href;
 
-        if(pay == true)
+        if(price == 0)
         {
-            if(price == 0)
-            {
-                startPay();
-            }else{
-                if(price > 1000)
-                {
-                    const options = {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `${usertoken}`
-                        },
-                        body: `{"transaction_id":${Data.id},"gateway":"zarinpal","call_back_address":"${url}","price":${price}}`
-                    };
-
-                    fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
-                        .then(response => response.json())
-                        .then(response => {
-                            if(response.status === "success")
-                            {
-                                window.location = response.data.gateway.link;
-                            }else{
-                                console.log('>>>>>>>>>>>', response)
-                            }
-                        })
-                        .catch(err => console.log(err));
-                }else{
-                    const options = {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `${usertoken}`
-                        },
-                        body: `{"transaction_id":${Data.id},"gateway":"zarinpal","call_back_address":"${url}","price":1000}`
-                    };
-
-                    fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
-                        .then(response => response.json())
-                        .then(response => {
-                            if(response.status === "success")
-                            {
-                                window.location = response.data.gateway.link;
-                            }else{
-                                console.log('>>>>>>>>>>>', response)
-                            }
-                        })
-                        .catch(err => console.log(err));
-                }
-            }
+            startPay();
         }else{
-            if(Data.order.price < 1000)
-                {
-                    const options = {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `${usertoken}`
-                        },
-                        body: `{"transaction_id":${Data.id},"gateway":"zarinpal","call_back_address":"${url}","price":1000}`
-                    };
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `${usertoken}`
+                },
+                body: `{"orders_transaction_id":${Data.id},"gateway":"zarinpal","call_back_address":"${url}"}`
+            };
 
-                    fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
-                        .then(response => response.json())
-                        .then(response => {
-                            if(response.status === "success")
-                            {
-                                window.location = response.data.gateway.link;
-                            }else{
-                                console.log('>>>>>>>>>>>', response)
-                            }
-                        })
-                        .catch(err => console.log(err));
-            }else{
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `${usertoken}`
-                    },
-                    body: `{"transaction_id":${Data.id},"gateway":"zarinpal","call_back_address":"${url}","price":${Data.order.price}}`
-                };
-
-                fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if(response.status === "success")
-                        {
-                            window.location = response.data.gateway.link;
-                        }else{
-                            console.log('>>>>>>>>>>>', response)
-                        }
-                    })
-                    .catch(err => console.log(err));
-            }
+            fetch('https://server.elfiro.com/api/v1/client/accounting/charge', options)
+                .then(response => response.json())
+                .then(response => {
+                    if(response.status === "success")
+                    {
+                        window.location = response.data.gateway.link;
+                    }
+                })
+                .catch(err => console.log(err));
         }
     }
 
@@ -559,7 +483,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         <div className='border-header-tran'></div>
                         
                         <div className='price-box-tran flex-box'>
-                            <span>{Data.order.price}</span>
+                            <span>{Data.current_status_data.price.toLocaleString()}</span>
 
                             <span>تومان</span>
 
@@ -787,7 +711,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         <div className='border-header-tran'></div>
                         
                         <div className='price-box-tran flex-box'>
-                            <span>{Data.order.price}</span>
+                            <span>{Data.current_status_data.price.toLocaleString()}</span>
 
                             <span>تومان</span>
 
@@ -930,12 +854,11 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
 
     if(Data != undefined && userdata != undefined && Data.status === "wait_for_pay")
     {
-
-        if(Data.order.price - userdata.wallet < 0)
+        if(Data.current_status_data.price - userdata.wallet < 0)
         {
             price = 0;
         }else{
-            price = Data.order.price - userdata.wallet;
+            price = Data.current_status_data.price - userdata.wallet;
         }
 
         if(Data.customer.phone === userdata.phone)
@@ -1040,7 +963,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         <div className='border-header-tran'></div>
                         
                         <div className='price-box-tran flex-box'>
-                            <span>{Data.order.price}</span>
+                            <span>{Data.current_status_data.price.toLocaleString()}</span>
 
                             <span>تومان</span>
 
@@ -1048,28 +971,36 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         </div>
 
                         <div className='box-pay-header-tran'>
-                            <div className='inventory'>
+                            <div className='inventory flex-box'>
                                 <span>موجودی کیف پول : </span>
 
-                                <span className='color-blue'>{userdata.wallet}</span>
+                                <div>
+                                    <span>{userdata.wallet}</span>
 
-                                <span className='color-blue'>تومان</span>
+                                    <span className='margin-horizontal-0-5'>تومان</span>
+
+                                    <div className='boarder'></div>
+                                </div>
                             </div>
 
-                            <div className='use-wallet'>
+                            {/* <div className='use-wallet'>
                                 <Checkbox onChange={(e) => setpay(e.target.checked)}>استفاده از کیف پول</Checkbox>
-                            </div>
+                            </div> */}
 
-                            <div className='payment flex-box'>
+                            <div className='inventory flex-box'>
                                 <span>مبلغ قابل پرداخت</span>
 
-                                <span className='margin-horizontal-0-5'>{(pay) ? price : Data.order.price}</span>
+                                <div>
+                                    <span className='margin-horizontal-0-5'>{price}</span>
 
-                                <span>تومان</span>
+                                    <span>تومان</span>
+
+                                    <div className='boarder'></div>
+                                </div>
                             </div>
 
                             <div className='btns'>
-                                <button onClick={PayTransition}>درگاه پرداخت</button>
+                                <button onClick={PayTransition}>پرداخت</button>
 
                                 <button onClick={handleShowC}>لغو معامله</button>
                             </div>
@@ -1294,7 +1225,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         <div className='border-header-tran'></div>
                         
                         <div className='price-box-tran flex-box'>
-                            <span>{Data.order.price}</span>
+                            <span>{Data.current_status_data.price.toLocaleString()}</span>
 
                             <span>تومان</span>
 
@@ -1522,7 +1453,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         <div className='border-header-tran'></div>
                         
                         <div className='price-box-tran flex-box'>
-                            <span>{Data.order.price}</span>
+                            <span>{Data.current_status_data.price.toLocaleString()}</span>
 
                             <span>تومان</span>
 
@@ -1748,7 +1679,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         <div className='border-header-tran'></div>
                         
                         <div className='price-box-tran flex-box'>
-                            <span>{Data.order.price}</span>
+                            <span>{Data.current_status_data.price.toLocaleString()}</span>
 
                             <span>تومان</span>
 
@@ -2055,7 +1986,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         <div className='border-header-tran'></div>
                         
                         <div className='price-box-tran flex-box'>
-                            <span>{Data.order.price}</span>
+                            <span>{Data.current_status_data.price.toLocaleString()}</span>
 
                             <span>تومان</span>
 
@@ -2355,7 +2286,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         <div className='border-header-tran'></div>
                         
                         <div className='price-box-tran flex-box'>
-                            <span>{Data.order.price}</span>
+                            <span>{Data.current_status_data.price.toLocaleString()}</span>
 
                             <span>تومان</span>
 
@@ -2667,7 +2598,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         <div className='border-header-tran'></div>
                         
                         <div className='price-box-tran flex-box'>
-                            <span>{Data.order.price}</span>
+                            <span>{Data.current_status_data.price.toLocaleString()}</span>
 
                             <span>تومان</span>
 
@@ -2885,7 +2816,7 @@ const Transactions = () => {    const [thumbsSwiper, setThumbsSwiper] = useState
                         <div className='border-header-tran'></div>
                         
                         <div className='price-box-tran flex-box'>
-                            <span>{Data.order.price}</span>
+                            <span>{Data.current_status_data.price.toLocaleString()}</span>
 
                             <span>تومان</span>
 

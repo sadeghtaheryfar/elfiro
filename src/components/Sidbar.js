@@ -143,7 +143,7 @@ const Sidbar = () => {
                         {CategorySidbar}
                     </div>
 
-                    <div className='box-filter-menu-sidbar width-max'>
+                    {/* <div className='box-filter-menu-sidbar width-max'>
                         <div className='item-filter-menu-sidbar'>
                             <div className='box-header-menu width-max flex-box flex-right' onClick={event => chengedrapdownsidbar(event, 0)}>
                                 <svg className='svg-box-header-menu' width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -178,12 +178,12 @@ const Sidbar = () => {
                                 <SliderRange />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className='box-ul-sidbar'>
                         <ul className="flex-box flex-wrap">
                             <li>
-                                <Link to={"/Dashboard/support"}>پشتیبانی</Link>
+                                <Link onClick={(e) => window.Goftino.open()}>پشتیبانی</Link>
                             </li>
 
                             <li>
@@ -191,7 +191,7 @@ const Sidbar = () => {
                             </li>
 
                             <li>
-                                <Link>سوالات متداول</Link>
+                                <Link to={"/faq"}>سوالات متداول</Link>
                             </li>
 
                             <li>

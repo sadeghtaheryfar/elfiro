@@ -125,7 +125,6 @@ const OrderEdit = (props) => {
         })
             .then((res) => res.json())
             .then((res) => {
-                console.log(res);
                 if(res.status === "success")
                 {
                     document.getElementById("sucsend").innerHTML = res.data.message.order;
