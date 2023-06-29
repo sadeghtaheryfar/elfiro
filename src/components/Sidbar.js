@@ -195,7 +195,7 @@ const Sidbar = () => {
                             </li>
 
                             <li>
-                                <Link>درباره ما</Link>
+                                <Link to={"/contactus"}>درباره ما</Link>
                             </li>
                         </ul>
                     </div>

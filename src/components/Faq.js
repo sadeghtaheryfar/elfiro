@@ -14,7 +14,6 @@ const Faq = () => {
     }, [])
 
     const showAcardeon = (event) => {
-        // event.target.parentElement.classList.toggle("active");
         document.getElementsByClassName("item-faq")[event].classList.toggle("active");
     }
 

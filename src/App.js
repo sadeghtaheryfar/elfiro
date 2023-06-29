@@ -29,6 +29,7 @@ import DashCards from "./components/DashCards";
 import DashCardAd from "./components/DashCardAd";
 import Bookmarks from "./components/Bookmarks";
 import OrderEdit from "./components/OrderEdit";
+import ContactUs from "./components/ContactUs";
 import Faq from "./components/Faq";
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
         <Route path="/chats"  element={<Chat/>}/>
         <Route path="/Rules"  element={<Rules/>}/>
         <Route path="/Faq"  element={<Faq/>}/>
+        <Route path="/ContactUs"  element={<ContactUs/>}/>
         <Route path="/Bookmarks"  element={<Bookmarks/>}/>
         <Route path="/orders/:productId" element={<Order/>} />
         <Route path="/users/:username" element={<Profile/>} />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import loginImageDefult from './../imags/login.jpg'
 
 const Login = () => {
     const [DataLogin, SetDataLogin] = useState("");
@@ -9,7 +10,7 @@ const Login = () => {
     const [otp, setOtp] = useState("");
     const [minutes, setMinutes] = useState(1);
     const [seconds, setSeconds] = useState(30);
-    const [img, setimg] = useState(30);
+    const [img, setimg] = useState(loginImageDefult);
 
     useEffect(() => {
         const options = {
@@ -19,7 +20,7 @@ const Login = () => {
 
         fetch('https://server.elfiro.com/api/v1/basic/loginImage',options)
             .then(response => response.json())
-            .then(response => setimg(response.data))
+            .then(response => setimg(response.data.loginImage))
             .catch(err => {});
 
         
@@ -147,63 +148,80 @@ const Login = () => {
         <div className='flex-box flex-column-mobile'>
             <section id='right-login' className='flex-box'>
                 <div className='show-right-login'>
-                    <div id='form-login-header' className='form-login-header'>
-                        <div className='message-login-header flex-box flex-right'>
-                            <span> ورود به </span>
+                    <form id='send-code-form'>
+                        <div id='form-login-header' className='form-login-header' onSubmit={(e) => {
+                            sendcode();
+                            e.preventDefault();
+                        }}>
+                            <div className='message-login-header flex-box flex-right'>
+                                <span> ورود به </span>
 
-                            <span className='color-blue margin-horizontal-1'> فارس گیمر </span>
-                        </div>
+                                <span className='color-blue margin-horizontal-1'> فارس گیمر </span>
+                            </div>
 
-                        <div>
-                            <label htmlFor="number-phone-login">شماره</label>
-                            <br />
-                            <input id='number-phone-login' type={"number"} onChange={setcode} />
-                            <br></br>
-                            <span id='error-phone-login'></span>
-                        </div>
+                            <div>
+                                <label htmlFor="number-phone-login">شماره</label>
+                                <br />
+                                <input id='number-phone-login' type={"number"} onChange={setcode} />
+                                <br></br>
+                                <span id='error-phone-login'></span>
+                            </div>
 
-                        <div>
-                            <input type={"button"} value={"تایید"} onClick={sendcode} />
-                        </div>
-                    </div>
-
-                    <div id='form-pass-header' className='form-pass-header hide-item'>
-                        <div>
-                            <span>کد ارسالی به شماره </span>
-
-                            <span className='color-blue'>{DataLogin}</span>
-
-                            <span> را وارد کنید </span>
-                        </div>
-
-                        <div>
-                            <label htmlFor="number-phone-login">کد ارسالی</label>
-                            <br />
-                            <input id='pass-login' type={"number"} onChange={setpass} />
-                            <br></br>
-                            <span id='error-phone-pass'></span>
-                            <div className='recent-code-login flex-box flex-justify-space'>
-                                <a href='/login'>تصحیح شماره</a>
-
-                                <div className="countdown-text">
-                                    <button
-                                        id='disable-defult'
-                                        disabled={seconds > 0 || minutes > 0}
-                                        onClick={resendOTP}
-                                    >
-                                        <p>
-                                            ارسال مجدد کد: ({minutes < 10 ? `0${minutes}` : minutes}:
-                                            {seconds < 10 ? `0${seconds}` : seconds})
-                                        </p>
-                                    </button>
-                                </div>
+                            <div>
+                                <input type={"submit"} value={"تایید"} onClick={(e) => {
+                                    e.preventDefault();
+                                    sendcode();
+                                }} />
                             </div>
                         </div>
+                    </form>
 
-                        <div>
-                            <input type={"button"} value={"تایید"} onClick={sendpass} />
+                    <form id='form-send-pass' onSubmit={(e) => {
+                            sendpass();
+                            e.preventDefault();
+                        }}>
+                        <div id='form-pass-header' className='form-pass-header hide-item'>
+                            <div>
+                                <span>کد ارسالی به شماره </span>
+
+                                <span className='color-blue'>{DataLogin}</span>
+
+                                <span> را وارد کنید </span>
+                            </div>
+
+                            <div>
+                                <label htmlFor="number-phone-login">کد ارسالی</label>
+                                <br />
+                                <input id='pass-login' type={"number"} onChange={setpass} />
+                                <br></br>
+                                <span id='error-phone-pass'></span>
+                                <div className='recent-code-login flex-box flex-justify-space'>
+                                    <a href='/login'>تصحیح شماره</a>
+
+                                    <div className="countdown-text">
+                                        <button
+                                            type='button'
+                                            id='disable-defult'
+                                            disabled={seconds > 0 || minutes > 0}
+                                            onClick={resendOTP}
+                                        >
+                                            <p>
+                                                ارسال مجدد کد: ({minutes < 10 ? `0${minutes}` : minutes}:
+                                                {seconds < 10 ? `0${seconds}` : seconds})
+                                            </p>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <input type={"submit"} value={"تایید"} onSubmitCapture={(e) => {
+                                    sendpass();
+                                    e.preventDefault();
+                                }} />
+                            </div>
                         </div>
-                    </div>
+                    </form>
 
                     <div className='more-login-header'>
                         <span>حساب کاربری ندارید؟</span>
@@ -213,7 +231,7 @@ const Login = () => {
                 </div>
             </section>
 
-            <section id='left-login'><img src={img?.loginImage} /></section>
+            <section id='left-login'><img src={img} /></section>
         </div>
     );
 };

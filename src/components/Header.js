@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Header = (props) => {
     const [DataHeader, SetDataHeader] = useState();
+    const [DataHeaderAL, SetDataHeaderAL] = useState();
     const [Logo, SetLogo] = useState();
     const [Tel, SetTel] = useState();
     const [DataUser, SetDataUser] = useState();
@@ -40,7 +41,10 @@ const Header = (props) => {
         const options = {method: 'GET', headers: {'Content-Type': 'application/json'}};
         fetch('https://server.elfiro.com/api/v1/basic/base', options)
             .then(response => response.json())
-            .then(result => SetDataHeader(result.data.base))
+            .then(result => {
+                SetDataHeader(result.data.base);
+                SetDataHeaderAL(result.data.base.notification);
+            })
 
         fetch('https://server.elfiro.com/api/v1/notifications/public', options)
             .then(response => response.json())
@@ -275,82 +279,103 @@ const Header = (props) => {
         }
     }
 
+    var styleNotifBox = " hide-item";
+
+    if(DataHeaderAL != undefined && DataHeaderAL != "" && document.getElementById("tp-alert") != undefined)
+    {
+        document.getElementById("root").style.paddingTop = document.getElementById("tp-alert")?.offsetHeight + "px";
+        styleNotifBox = "";
+    }else{
+        document.getElementById("root").style.paddingTop = 0 + "px";
+        styleNotifBox = " hide-item";
+    }
+
     return (
         <>
             <div className='show-box-header'>
-                <div className='box-header flex-box flex-justify-space' style={{padding: styleH.style}}>
-                    <Link to='/' id='logo-header'>
-                        <img src={Logo}></img>
-                    </Link>
+                <div className='box-header' style={{padding: styleH.style}}>
+                    <div id='tp-alert' className={`alert tp-alert` + styleNotifBox}>
+                        <p className="tp-alert__message">{DataHeader?.notification}</p>
+                        <button className="tp-alert__action" onClick={(e) => {
+                            document.getElementById("tp-alert").remove();
+                            document.getElementById("root").style.paddingTop = 0 + "px";
+                        }}>بستن اعلان</button>
+                    </div>
 
-                    <div className='flex-box'>
-                        <div className='flex-box box-icons-header'>
-                            <div className='flex-box'>
-                                <Link to={"/bookmarks"} className='flex-box'>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9.25 9.05005C11.03 9.70005 12.97 9.70005 14.75 9.05005" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M16.8199 2H7.17995C5.04995 2 3.31995 3.74 3.31995 5.86V19.95C3.31995 21.75 4.60995 22.51 6.18995 21.64L11.0699 18.93C11.5899 18.64 12.4299 18.64 12.9399 18.93L17.8199 21.64C19.3999 22.52 20.6899 21.76 20.6899 19.95V5.86C20.6799 3.74 18.9499 2 16.8199 2Z" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M16.8199 2H7.17995C5.04995 2 3.31995 3.74 3.31995 5.86V19.95C3.31995 21.75 4.60995 22.51 6.18995 21.64L11.0699 18.93C11.5899 18.64 12.4299 18.64 12.9399 18.93L17.8199 21.64C19.3999 22.52 20.6899 21.76 20.6899 19.95V5.86C20.6799 3.74 18.9499 2 16.8199 2Z" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </Link>
+                    <div className='flex-box flex-justify-space'>
+                        <Link to='/' id='logo-header'>
+                            <img src={Logo}></img>
+                        </Link>
 
-                                <span></span>
-                            </div>
-                            
-                            <div className='flex-box'>
-                                <Link to={"/chats"} className='flex-box'>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8.5 19H8C4 19 2 18 2 13V8C2 4 4 2 8 2H16C20 2 22 4 22 8V13C22 17 20 19 16 19H15.5C15.19 19 14.89 19.15 14.7 19.4L13.2 21.4C12.54 22.28 11.46 22.28 10.8 21.4L9.3 19.4C9.14 19.18 8.77 19 8.5 19Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M15.9965 11H16.0054" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M11.9955 11H12.0045" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M7.99451 11H8.00349" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </Link>
-                            </div>
-                            
-                            <div className='flex-box'>
-                                <a className='flex-box' onClick={notifhoverheaders}>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round"/>
-                                    <path d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10"/>
-                                    </svg>
-                                </a>
-                                
-                                <a className='flex-box' onClick={notifmodShow}>
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round"/>
-                                    <path d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-                                    <path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10"/>
-                                    </svg>
-                                </a>
+                        <div className='flex-box'>
+                            <div className='flex-box box-icons-header'>
+                                <div className='flex-box'>
+                                    <Link to={"/bookmarks"} className='flex-box'>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M9.25 9.05005C11.03 9.70005 12.97 9.70005 14.75 9.05005" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M16.8199 2H7.17995C5.04995 2 3.31995 3.74 3.31995 5.86V19.95C3.31995 21.75 4.60995 22.51 6.18995 21.64L11.0699 18.93C11.5899 18.64 12.4299 18.64 12.9399 18.93L17.8199 21.64C19.3999 22.52 20.6899 21.76 20.6899 19.95V5.86C20.6799 3.74 18.9499 2 16.8199 2Z" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M16.8199 2H7.17995C5.04995 2 3.31995 3.74 3.31995 5.86V19.95C3.31995 21.75 4.60995 22.51 6.18995 21.64L11.0699 18.93C11.5899 18.64 12.4299 18.64 12.9399 18.93L17.8199 21.64C19.3999 22.52 20.6899 21.76 20.6899 19.95V5.86C20.6799 3.74 18.9499 2 16.8199 2Z" stroke="#7007FA" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    </Link>
 
-                                <span></span>
-
-                                <div id='box-hover-notif-header' className='box-hover-notif-header hide-item'>
-                                    <div className='navbar flex-box'>
-                                        <div id='public-nav-notif-modal' className='active flex-box' onClick={(e) => cheangeBoxNotif("public")}>
-                                            <span>اطلاعیه عمومی</span>
-                                        </div>
-
-                                        <div id='private-nav-notif-modal' className='flex-box' onClick={(e) => cheangeBoxNotif("privet")}>
-                                            <span>اطلاعیه شخصی</span>
-                                        </div>
-                                    </div>
-                                    
-                                    {datanotif}
+                                    <span></span>
                                 </div>
+                                
+                                <div className='flex-box'>
+                                    <Link to={"/chats"} className='flex-box'>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.5 19H8C4 19 2 18 2 13V8C2 4 4 2 8 2H16C20 2 22 4 22 8V13C22 17 20 19 16 19H15.5C15.19 19 14.89 19.15 14.7 19.4L13.2 21.4C12.54 22.28 11.46 22.28 10.8 21.4L9.3 19.4C9.14 19.18 8.77 19 8.5 19Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M15.9965 11H16.0054" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M11.9955 11H12.0045" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M7.99451 11H8.00349" stroke="#7007FA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    </Link>
+                                </div>
+                                
+                                <div className='flex-box'>
+                                    <a className='flex-box' onClick={notifhoverheaders}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round"/>
+                                        <path d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10"/>
+                                        </svg>
+                                    </a>
+                                    
+                                    <a className='flex-box' onClick={notifmodShow}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.02 2.90991C8.70997 2.90991 6.01997 5.59991 6.01997 8.90991V11.7999C6.01997 12.4099 5.75997 13.3399 5.44997 13.8599L4.29997 15.7699C3.58997 16.9499 4.07997 18.2599 5.37997 18.6999C9.68997 20.1399 14.34 20.1399 18.65 18.6999C19.86 18.2999 20.39 16.8699 19.73 15.7699L18.58 13.8599C18.28 13.3399 18.02 12.4099 18.02 11.7999V8.90991C18.02 5.60991 15.32 2.90991 12.02 2.90991Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round"/>
+                                        <path d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.90002 21.1801C9.36002 20.6401 9.02002 19.8801 9.02002 19.0601" stroke="#7007FA" strokeWidth="1.5" strokeMiterlimit="10"/>
+                                        </svg>
+                                    </a>
 
-                                <div id='hover-notif-header' className='hover-notif-header hide-item'></div>
+                                    <span></span>
 
-                                <div id='exit-notif-header' className='hide-item' onClick={notifhoverheaders}></div>
+                                    <div id='box-hover-notif-header' className='box-hover-notif-header hide-item'>
+                                        <div className='navbar flex-box'>
+                                            <div id='public-nav-notif-modal' className='active flex-box' onClick={(e) => cheangeBoxNotif("public")}>
+                                                <span>اطلاعیه عمومی</span>
+                                            </div>
+
+                                            <div id='private-nav-notif-modal' className='flex-box' onClick={(e) => cheangeBoxNotif("privet")}>
+                                                <span>اطلاعیه شخصی</span>
+                                            </div>
+                                        </div>
+                                        
+                                        {datanotif}
+                                    </div>
+
+                                    <div id='hover-notif-header' className='hover-notif-header hide-item'></div>
+
+                                    <div id='exit-notif-header' className='hide-item' onClick={notifhoverheaders}></div>
+                                </div>
+                                
+                                {DataIconLogin}
                             </div>
-                            
-                            {DataIconLogin}
-                        </div>
 
-                        <div className='box-number-header flex-box flex-left'>
-                            <a href={'tel:' + Tel}>{Tel}</a>
+                            <div className='box-number-header flex-box flex-left'>
+                                <a href={'tel:' + Tel}>{Tel}</a>
+                            </div>
                         </div>
                     </div>
                 </div>

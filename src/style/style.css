@@ -1526,8 +1526,8 @@ body{
 
 #left-login img{
     width: 100%;
-    height: 100%;
     border-radius: 32px;
+    background-color: #7007FA;
 }
 
 
@@ -1539,7 +1539,7 @@ body{
 }
 
 
-.form-login-header > div:nth-child(2) label{
+.form-login-header > form:nth-child(2) label{
     font-weight: 400;
     font-size: 12px;
     color: #808191;
@@ -1612,7 +1612,7 @@ body{
 }
 
 
-.form-login-header > div:nth-child(3) input[type="button"]{
+.form-login-header > div:nth-child(3) input[type="submit"]{
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -1644,7 +1644,7 @@ body{
 }
 
 
-.form-pass-header > div:nth-child(3) input[type="button"]{
+.form-pass-header > div:nth-child(3) input[type="submit"]{
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
@@ -5498,6 +5498,131 @@ td{
     transform: rotate(180deg);
 }
 
+
+.item-contact-us-item{
+    width: 30%;
+    background-color: #3d42df36;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border-radius: 16px;
+    color: black;
+}
+
+
+
+.item-contact-us-item .header{
+    background-color: #7007FA;
+    border-radius: 16px;
+    padding: 0.5rem;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.item-contact-us-item .contact{
+    padding: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+#box-notif{
+    width: 100%;
+    background-color: red;
+}
+
+
+.tp-alert{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
+    background-color: #cf3235;
+    color: white;
+    font-size: 14px;
+    position: relative;
+    margin: -1.1rem -2rem 0.5rem -2rem;
+}
+
+
+.tp-alert::before{
+    content: "";
+    background-image: url("https://www.farsgamer.com/site/svg/double-rotated-game-control.svg");
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 11;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+}
+
+
+.tp-alert__message{
+    position: relative;
+    z-index: 12;
+}
+
+
+.tp-alert__action{
+    padding: 0.5rem 1.5rem;
+    background-color: #ff000000;
+    border: 1px solid white;
+    border-radius: 100px;
+    cursor: pointer;
+    color: white;
+    transition: 0.3s;
+    position: relative;
+    z-index: 12;
+    min-width: max-content;
+    margin-right: 1rem;
+}
+
+
+.tp-alert__action:hover{
+    background-color: white;
+    color: red;
+}
+
+
+#box-about{
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+
+#box-about > div:nth-child(1){
+    width: 40%;
+}
+
+
+#box-about > div:nth-child(2){
+    width: 60%;
+    box-sizing: border-box;
+    margin-right: 1rem;
+    text-align: justify;
+}
+
+
+.slider-about{
+    height: 13rem;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+
+.slider-about img{
+    width: 100%;
+}
+
+
+.item-navbar-mobile{
+    height: 3.5rem;
+}
+
 /* style mobile ................................................................. */
 
 @media screen and (max-width : 1450px) {
@@ -5537,6 +5662,21 @@ td{
 }
 
 @media screen and (max-width : 1024px){
+    #tp-alert{
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        padding: 1rem;
+    }
+
+    .tp-alert__message{
+        padding: 0rem 1rem;
+    }   
+
+    .tp-alert__action{
+        margin: 1rem 0rem 0rem 1rem;
+    }
+
     .width-max-mo{
         width: 100% !important;
     }
